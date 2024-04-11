@@ -1,7 +1,6 @@
-package com.sarrawi.mynokat
+package com.sarrawi.mynokat.ui
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -9,29 +8,48 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.sarrawi.mynokat.R
+import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.databinding.ActivityMainBinding
+import com.sarrawi.mynokat.repository.NokatRepo
+import com.sarrawi.mynokat.viewModel.MyViewModelFactory
+import com.sarrawi.mynokat.viewModel.NokatViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var bottomNav : BottomNavigationView
+    private lateinit var navController: NavController
+
+    lateinit var viewModel: NokatViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
 
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        bottomNav = findViewById(R.id.bottomNav)
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
+        navController = findNavController(R.id.nav_host_fragment_content_main)
+
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.mainFragment, R.id.favFragment))
+
+        bottomNav.setupWithNavController(navController)
+
+        val retrofitService = ApiService.provideRetrofitInstance()
+        val mainRepository = NokatRepo(retrofitService)
+        viewModel =
+            ViewModelProvider(this, MyViewModelFactory(mainRepository, this)).get(
+                NokatViewModel::class.java
+            )
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -41,9 +59,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
