@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.api.ApiService
@@ -48,12 +49,12 @@ class NokatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpRvth()
+        setup()
     }
 
-    private fun setUpRvth() {
+    private fun setUpRv() {
         if (isAdded) {
-            binding.rcNokat.layoutManager = GridLayoutManager(requireContext(), 2)
+            binding.rcNokat.layoutManager = LinearLayoutManager(requireContext())
 
             binding.rcNokat.adapter = PagingAdapterNokat
 
@@ -66,11 +67,28 @@ class NokatFragment : Fragment() {
 
             }
             PagingAdapterNokat.stateRestorationPolicy =
-                RecyclerView.Adapter.StateRestorationPolicy.ALLOW
+            RecyclerView.Adapter.StateRestorationPolicy.ALLOW
             binding.rcNokat.scrollToPosition(0)
 
         }
 
 
     }
+
+    private fun setup() {
+        if (isAdded) {
+            binding.rcNokat.layoutManager = LinearLayoutManager(requireContext())
+
+            val pagingAdapter = PagingAdapterNokat(requireContext())
+            binding.rcNokat.adapter = pagingAdapter
+
+            nokatViewModel.getAllNokat().observe(viewLifecycleOwner) { pagingData ->
+                pagingAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+            }
+
+            PagingAdapterNokat.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
+            // يمكنك وضع scrollToPosition(0) هنا أو في مكان مناسب بالنسبة لدورة حياة مشهد الفريق
+        }
+    }
+
 }

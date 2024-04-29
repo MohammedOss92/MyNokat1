@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Large Text"
-                android:id="@+id/tvMsg_m"
+                android:id="@+id/tvNokat_n"
                 android:gravity="right"
                 android:textSize="25sp"
                 />
@@ -83,7 +83,7 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="28dp"
-                    android:id="@+id/new_Msg_m"
+                    android:id="@+id/new_Nokat"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/fav_btn"
                     android:src="@drawable/new_msg"

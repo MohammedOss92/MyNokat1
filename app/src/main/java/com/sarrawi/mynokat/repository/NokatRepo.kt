@@ -6,7 +6,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
 import com.sarrawi.mynokat.api.ApiService
+import com.sarrawi.mynokat.model.ImgsNokatModel
 import com.sarrawi.mynokat.model.NokatModel
+import com.sarrawi.mynokat.paging.ImagePaging
 import com.sarrawi.mynokat.paging.NokatPaging
 
 class NokatRepo constructor(private val apiService: ApiService) {
@@ -23,6 +25,14 @@ class NokatRepo constructor(private val apiService: ApiService) {
         ).liveData
     }
 
+    fun getAllImgsNokatSerPa():LiveData<PagingData<ImgsNokatModel>>{
+        return  Pager(
+            config = PagingConfig(pageSize = 12,
+            enablePlaceholders =  false
+            ),
 
+        pagingSourceFactory = { ImagePaging(apiService) }
+        ).liveData
+    }
 
 }

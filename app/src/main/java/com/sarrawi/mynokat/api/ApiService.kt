@@ -1,5 +1,6 @@
 package com.sarrawi.mynokat.api
 
+import com.sarrawi.mynokat.model.ImgsNokatResponse
 import com.sarrawi.mynokat.model.NokatRespone
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -17,6 +18,11 @@ interface ApiService {
 
         @Query("page") page: Int
     ): Response<NokatRespone>
+
+    @GET("imgnokatapi")
+    suspend fun getAllImgNokatPa(
+        @Query("page") page: Int
+    ):Response<ImgsNokatResponse>
 
     companion object {
         var retrofitService: ApiService? = null
