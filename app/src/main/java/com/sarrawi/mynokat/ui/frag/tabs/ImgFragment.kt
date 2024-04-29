@@ -6,9 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.databinding.FragmentImgBinding
+import com.sarrawi.mynokat.paging.PagingAdapterImg
+import com.sarrawi.mynokat.paging.PagingAdapterNokat
 import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
 import com.sarrawi.mynokat.viewModel.NokatViewModel
@@ -16,9 +21,9 @@ import com.sarrawi.mynokat.viewModel.NokatViewModel
 
 class ImgFragment : Fragment() {
 
-    private var _binding: FragmentImgBinding? = null
+    private lateinit var _binding: FragmentImgBinding
 
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     private val retrofitService = ApiService.provideRetrofitInstance()
     private val mainRepository by lazy { NokatRepo(retrofitService) }
@@ -26,20 +31,62 @@ class ImgFragment : Fragment() {
         MyViewModelFactory(mainRepository, requireContext())
     }
 
+    private val PagingAdapterImg by lazy { PagingAdapterImg(requireActivity()) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        //setup()
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentImgBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    fun setUpRV(){
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setup()
+    }
+
+
+    private fun setuprv() {
+        if (isAdded) {
+            binding.rcImgNokat.layoutManager = LinearLayoutManager(requireContext())
+
+            val pagingAdapter = PagingAdapterImg(requireContext())
+            binding.rcImgNokat.adapter = pagingAdapter
+
+            nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
+                pagingAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+            }
+
+            pagingAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
+            // يمكنك وضع scrollToPosition(0) هنا أو في مكان مناسب بالنسبة لدورة حياة مشهد الفريق
+        }
+    }
+
+    private fun setup() {
+        if (isAdded) {
+            binding.rcImgNokat.layoutManager = GridLayoutManager(requireContext(),2)
+
+
+            binding.rcImgNokat.adapter = PagingAdapterImg
+
+            nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
+                PagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
+            }
+
+            // تصحيح الخ
+        }
+
+        }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
 
     }
 

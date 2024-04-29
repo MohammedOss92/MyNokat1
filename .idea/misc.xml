@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable-anydpi/error_a.xml" value="0.1" />
+        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable-v24/error_a.xml" value="0.1405" />
+        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable-v24/ic_baseline_autorenew_24.xml" value="0.1405" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable-xxhdpi/ic_favorite.xml" value="0.1405" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable-xxhdpi/more.xml" value="0.1405" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable-xxhdpi/shape.xml" value="0.1405" />
@@ -14,7 +17,7 @@
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_main.xml" value="0.1" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_nokat.xml" value="0.1" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_second.xml" value="0.24739583333333334" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/img_row.xml" value="0.22780797101449277" />
+        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/img_row.xml" value="0.1" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/nokat_design.xml" value="0.24635416666666668" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/menu/bottom_menu.xml" value="0.24739583333333334" />
       </map>
