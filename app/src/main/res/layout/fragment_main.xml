@@ -17,6 +17,9 @@
         app:tabGravity="fill"
         app:tabIndicator="@color/black"
         app:tabSelectedTextColor="@color/teal_700"
+        app:tabIndicatorColor="@color/black"
+        app:tabRippleColor="@color/black"
+
         android:contentDescription="hg"/>
     
     <androidx.viewpager.widget.ViewPager

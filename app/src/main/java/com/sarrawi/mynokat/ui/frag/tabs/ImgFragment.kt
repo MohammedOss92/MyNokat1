@@ -33,10 +33,7 @@ class ImgFragment : Fragment() {
 
     private val PagingAdapterImg by lazy { PagingAdapterImg(requireActivity()) }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //setup()
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,21 +50,8 @@ class ImgFragment : Fragment() {
     }
 
 
-    private fun setuprv() {
-        if (isAdded) {
-            binding.rcImgNokat.layoutManager = LinearLayoutManager(requireContext())
 
-            val pagingAdapter = PagingAdapterImg(requireContext())
-            binding.rcImgNokat.adapter = pagingAdapter
 
-            nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
-                pagingAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
-            }
-
-            pagingAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
-            // يمكنك وضع scrollToPosition(0) هنا أو في مكان مناسب بالنسبة لدورة حياة مشهد الفريق
-        }
-    }
 
     private fun setup() {
         if (isAdded) {
@@ -80,7 +64,6 @@ class ImgFragment : Fragment() {
                 PagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
             }
 
-            // تصحيح الخ
         }
 
         }
