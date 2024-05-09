@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.databinding.FragmentImgBinding
@@ -55,7 +56,7 @@ class ImgFragment : Fragment() {
 
     private fun setup() {
         if (isAdded) {
-            binding.rcImgNokat.layoutManager = GridLayoutManager(requireContext(),2)
+            binding.rcImgNokat.layoutManager = StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL)
 
 
             binding.rcImgNokat.adapter = PagingAdapterImg
@@ -72,5 +73,7 @@ class ImgFragment : Fragment() {
         super.onDestroyView()
 
     }
+
+
 
 }
