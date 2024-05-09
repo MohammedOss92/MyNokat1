@@ -29,10 +29,11 @@ class PagingAdapterImg(val con: Context) : PagingDataAdapter<ImgsNokatModel, Pag
         private fun setupListeners() {
             binding.imageView.setOnClickListener {
                 val randomNumber = (1..2).random()
-                if (randomNumber == 1) {
-                    flipTheCoin(R.drawable.nonet, "gfgf")
+                val imageUrl = getItem(bindingAdapterPosition)?.image_url
+                if (randomNumber == 1&& imageUrl != null) {
+                    flipTheCoin(imageUrl, "gfgf")
                 } else {
-                    flipTheCoin(R.drawable.nonet, "gdfgdfg")
+                    flipTheCoin("button", "gdfgdfg")
                 }
 
             }
@@ -67,13 +68,19 @@ class PagingAdapterImg(val con: Context) : PagingDataAdapter<ImgsNokatModel, Pag
             }
         }
 
-        fun flipTheCoin(imageId: Int, coinSide: String) {
+        fun flipTheCoin(imageId: String, coinSide: String) {
+            if (imageId == "button") {
+                // إظهار الأزرار هنا
+
+                return
+            }
             binding.imageView.animate().apply {
                 duration = 1000
                 rotationYBy(1800f)
                 binding.imageView.isClickable = false
             }.withEndAction {
-                binding.imageView.setImageResource(imageId)
+                val resourceId = imageId.toIntOrNull() ?: R.drawable.nonet
+                binding.imageView.setImageResource(resourceId)
                 Toast.makeText(con, coinSide, Toast.LENGTH_SHORT).show()
                 binding.imageView.isClickable = true
             }.start()
