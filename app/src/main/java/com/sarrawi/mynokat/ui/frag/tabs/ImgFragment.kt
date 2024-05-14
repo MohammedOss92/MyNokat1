@@ -64,6 +64,13 @@ class ImgFragment : Fragment() {
             nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
                 PagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
             }
+            /*
+            * val mutableListShows = listShows.toMutableList()
+            // إضافة عنصر "مرحبا" إلى القائمة
+            mutableListShows.add("مرحبا")
+            showSnackbar("لا يوجد بيانات")
+            // تحديث القائمة بعد الإضافة
+            listShows = mutableListShows.toList()*/
 
         }
 

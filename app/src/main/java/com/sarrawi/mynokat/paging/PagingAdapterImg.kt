@@ -19,6 +19,10 @@ import com.sarrawi.mynokat.model.NokatModel
 class PagingAdapterImg(val con: Context) : PagingDataAdapter<ImgsNokatModel, PagingAdapterImg.ViewHolder>(COMPARATOR) {
 
     private var isInternetConnected: Boolean = true
+    // تعريف متغير لتتبع حالة العرض
+    // تعريف متغيرات لتتبع حالة العرض واتجاه الدوران
+    private var isImageVisible = true
+    private var rotationDirection = 1
 
     inner class ViewHolder(private val binding: ImgRowBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -26,18 +30,7 @@ class PagingAdapterImg(val con: Context) : PagingDataAdapter<ImgsNokatModel, Pag
             setupListeners()
         }
 
-        private fun setupListeners() {
-            binding.imageView.setOnClickListener {
-                val randomNumber = (1..2).random()
-                val imageUrl = getItem(bindingAdapterPosition)?.image_url
-                if (randomNumber == 1&& imageUrl != null) {
-                    flipTheCoin(imageUrl, "gfgf")
-                } else {
-                    flipTheCoin("button", "gdfgdfg")
-                }
 
-            }
-        }
 
         fun bind(imgModel: ImgsNokatModel?, isInternetConnected: Boolean) {
             if (isInternetConnected) {
@@ -68,23 +61,53 @@ class PagingAdapterImg(val con: Context) : PagingDataAdapter<ImgsNokatModel, Pag
             }
         }
 
-        fun flipTheCoin(imageId: String, coinSide: String) {
-            if (imageId == "button") {
-                // إظهار الأزرار هنا
 
-                return
+
+
+
+
+
+        private fun setupListeners() {
+            binding.root.setOnClickListener {
+                val randomNumber = (1..2).random()
+                val imageUrl = getItem(bindingAdapterPosition)?.image_url
+                if (randomNumber == 1 && imageUrl != null) {
+                    flipTheCoin(imageUrl, "gfgf")
+                } else {
+                    flipTheCoin("button", "gdfgdfg")
+                }
             }
-            binding.imageView.animate().apply {
+        }
+
+        fun flipTheCoin(imageId: String, coinSide: String) {
+            binding.root.animate().apply {
                 duration = 1000
-                rotationYBy(1800f)
+                rotationYBy(if (isImageVisible) 360f else -360f)
                 binding.imageView.isClickable = false
             }.withEndAction {
-                val resourceId = imageId.toIntOrNull() ?: R.drawable.nonet
-                binding.imageView.setImageResource(resourceId)
+                if (isImageVisible) {
+                    // إخفاء الصورة وعرض الأزرار
+                    binding.imageView.visibility = View.GONE
+                    binding.btncopy.visibility = View.VISIBLE
+                    binding.btncshare.visibility = View.VISIBLE
+                    isImageVisible = false
+                } else {
+                    // عرض الصورة وإخفاء الأزرار
+                    binding.imageView.visibility = View.VISIBLE
+                    binding.btncopy.visibility = View.GONE
+                    binding.btncshare.visibility = View.GONE
+                    isImageVisible = true
+                }
+
                 Toast.makeText(con, coinSide, Toast.LENGTH_SHORT).show()
                 binding.imageView.isClickable = true
             }.start()
         }
+
+
+
+
+
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
