@@ -35,13 +35,13 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
-        bottomNav = findViewById(R.id.bottomNav)
+//        bottomNav = findViewById(R.id.bottomNav)
 
         navController = findNavController(R.id.nav_host_fragment_content_main)
 
         appBarConfiguration = AppBarConfiguration(setOf(R.id.mainFragment, R.id.favFragment))
 
-        bottomNav.setupWithNavController(navController)
+//        bottomNav.setupWithNavController(navController)
 
         val retrofitService = ApiService.provideRetrofitInstance()
         val mainRepository = NokatRepo(retrofitService)

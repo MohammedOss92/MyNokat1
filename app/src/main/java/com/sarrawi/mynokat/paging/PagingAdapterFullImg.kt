@@ -14,17 +14,18 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.sarrawi.mynokat.R
+import com.sarrawi.mynokat.databinding.ImageFullBinding
 import com.sarrawi.mynokat.databinding.ImgRowBinding
 import com.sarrawi.mynokat.model.ImgsNokatModel
 import com.sarrawi.mynokat.ui.frag.tabs.ImgFragmentDirections
 
-class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter<ImgsNokatModel, PagingAdapterImg.ViewHolder>(COMPARATOR) {
+class PagingAdapterFullImg(val con: Context, val frag: Fragment) : PagingDataAdapter<ImgsNokatModel, PagingAdapterFullImg.ViewHolder>(COMPARATOR) {
     var onItemClick: ((Unit) -> Unit)? = null
     private var isInternetConnected: Boolean = true
 
     private var isImageVisible = true
     private var rotationDirection = 1
-    inner class ViewHolder(private val binding: ImgRowBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ImageFullBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             setupListeners()
@@ -44,16 +45,16 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
                     .circleCrop()
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(binding.imageView)
+                    .into(binding.imageViewfull)
             } else {
                 Glide.with(con)
                     .load(R.drawable.nonet)
-                    .into(binding.imageView)
-                binding.imageView.visibility = View.GONE
-                binding.lyNoInternet.visibility = View.VISIBLE
+                    .into(binding.imageViewfull)
+                binding.imageViewfull.visibility = View.GONE
+                binding.lyNoInternetfull.visibility = View.VISIBLE
             }
 
-            binding.imageView.setOnClickListener {
+            binding.imageViewfull.setOnClickListener {
                 imgModel?.let {
                     val directions = ImgFragmentDirections.actionImgFragmentToImgFullFragment()
                     frag.findNavController().navigate(directions)
@@ -72,7 +73,7 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
                 }
                 true
             }
-            binding.imageView.setOnLongClickListener {
+            binding.imageViewfull.setOnLongClickListener {
                 val randomNumber = (1..2).random()
                 val imageUrl = getItem(bindingAdapterPosition)?.image_url
                 if (randomNumber == 1 && imageUrl != null) {
@@ -88,21 +89,21 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
             binding.root.animate().apply {
                 duration = 1000
                 rotationYBy(if (isImageVisible) 360f else -360f)
-                binding.imageView.isClickable = false
+                binding.imageViewfull.isClickable = false
             }.withEndAction {
                 if (isImageVisible) {
-                    binding.imageView.visibility = View.GONE
-                    binding.btncopy.visibility = View.VISIBLE
-                    binding.btncshare.visibility = View.VISIBLE
+                    binding.imageViewfull.visibility = View.GONE
+                    binding.btncopyfull.visibility = View.VISIBLE
+                    binding.btncsharefull.visibility = View.VISIBLE
                     isImageVisible = false
                 } else {
-                    binding.imageView.visibility = View.VISIBLE
-                    binding.btncopy.visibility = View.GONE
-                    binding.btncshare.visibility = View.GONE
+                    binding.imageViewfull.visibility = View.VISIBLE
+                    binding.btncopyfull.visibility = View.GONE
+                    binding.btncsharefull.visibility = View.GONE
                     isImageVisible = true
                 }
                 Toast.makeText(con, coinSide, Toast.LENGTH_SHORT).show()
-                binding.imageView.isClickable = true
+                binding.imageViewfull.isClickable = true
             }.start()
         }
     }
@@ -112,7 +113,7 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ImgRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ImageFullBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -127,5 +128,7 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
             }
         }
     }
+
+
 }
 

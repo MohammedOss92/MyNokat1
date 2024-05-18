@@ -5,10 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.navigation.fragment.findNavController
+import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.adapter.ViewPagerAdapter
 
 import com.sarrawi.mynokat.databinding.FragmentMainBinding
 import com.sarrawi.mynokat.ui.frag.tabs.ImgFragment
+import com.sarrawi.mynokat.ui.frag.tabs.ImgFragmentDirections
 import com.sarrawi.mynokat.ui.frag.tabs.NokatFragment
 
 
@@ -31,14 +35,27 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = ViewPagerAdapter(childFragmentManager)
+//        val adapter = ViewPagerAdapter(childFragmentManager)
+//
+//        adapter.addFragment(NokatFragment(), "الكلمات")
+//
+//        adapter.addFragment(ImgFragment(),"الصور")
+//
+//        binding.vpager.adapter=adapter
+//        binding.tblayout.setupWithViewPager(binding.vpager)
 
-        adapter.addFragment(NokatFragment(), "الكلمات")
+        val img:Button=view.findViewById(R.id.img)
+        val words:Button=view.findViewById(R.id.words)
 
-        adapter.addFragment(ImgFragment(),"الصور")
+        img.setOnClickListener {
+            val directions = MainFragmentDirections.actionMainFragment2ToImgFragment()
+            findNavController().navigate(directions)
+        }
 
-        binding.vpager.adapter=adapter
-        binding.tblayout.setupWithViewPager(binding.vpager)
+        words.setOnClickListener {
+            val directions = MainFragmentDirections.actionMainFragment2ToNokatFragment()
+            findNavController().navigate(directions)
+        }
 
     }
 

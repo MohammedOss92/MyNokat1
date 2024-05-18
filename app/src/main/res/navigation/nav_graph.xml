@@ -3,14 +3,47 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/mainFragment2">
+
     <fragment
-        android:id="@+id/mainFragment"
+        android:id="@+id/imgFullFragment"
+        android:name="com.sarrawi.mynokat.ui.frag.tabs.ImgFullFragment"
+        android:label="fragment_img_full"
+        tools:layout="@layout/fragment_img_full" >
+        <action
+            android:id="@+id/action_imgFullFragment_to_imgFragment"
+            app:destination="@id/imgFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/imgFragment"
+        android:name="com.sarrawi.mynokat.ui.frag.tabs.ImgFragment"
+        android:label="fragment_img"
+        tools:layout="@layout/fragment_img" >
+        <action
+            android:id="@+id/action_imgFragment_to_imgFullFragment"
+            app:destination="@id/imgFullFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nokatFragment"
+        android:name="com.sarrawi.mynokat.ui.frag.tabs.NokatFragment"
+        android:label="fragment_nokat"
+        tools:layout="@layout/fragment_nokat" />
+
+    <fragment
+        android:id="@+id/mainFragment2"
         android:name="com.sarrawi.mynokat.ui.frag.MainFragment"
-        android:label="MainFragment" />
-    <fragment
-        android:id="@+id/favFragment"
-        android:name="com.sarrawi.mynokat.ui.frag.FavFragment"
-        android:label="fragment_fav"
-        tools:layout="@layout/fragment_fav" />
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+
+        <action
+            android:id="@+id/action_mainFragment2_to_imgFragment"
+            app:destination="@id/imgFragment" />
+        <action
+            android:id="@+id/action_mainFragment2_to_nokatFragment"
+            app:destination="@id/nokatFragment" />
+    </fragment>
+
 </navigation>
