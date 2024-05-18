@@ -10,9 +10,12 @@
         android:name="com.sarrawi.mynokat.ui.frag.tabs.ImgFullFragment"
         android:label="fragment_img_full"
         tools:layout="@layout/fragment_img_full" >
-        <action
-            android:id="@+id/action_imgFullFragment_to_imgFragment"
-            app:destination="@id/imgFragment" />
+
+
+        <argument
+            android:name="id"
+            app:argType="integer"
+/>
     </fragment>
 
     <fragment

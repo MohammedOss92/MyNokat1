@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.api.ApiService
-import com.sarrawi.mynokat.databinding.FragmentImgBinding
 import com.sarrawi.mynokat.databinding.FragmentImgFullBinding
+
 import com.sarrawi.mynokat.paging.PagingAdapterFullImg
 import com.sarrawi.mynokat.paging.PagingAdapterImg
 import com.sarrawi.mynokat.repository.NokatRepo
@@ -37,7 +38,7 @@ class ImgFullFragment : Fragment() {
     private var ID = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        ID = ImgFullFragmentArgs.fromBundle(requireArguments()).id
+
     }
 
     override fun onCreateView(
@@ -51,24 +52,19 @@ class ImgFullFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        ID = ImgFullFragmentArgs.fromBundle(requireArguments()).id
+
         setup()
     }
 
     private fun setup() {
         if (isAdded) {
             binding.rcImgFull.layoutManager = LinearLayoutManager(requireContext())
-
-
             binding.rcImgFull.adapter = PagingAdapterImgfull
-
             nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
                 PagingAdapterImgfull.submitData(viewLifecycleOwner.lifecycle, pagingData)
             }
-
-
-
-
+            Toast.makeText(requireContext(), "Received ID: $id", Toast.LENGTH_SHORT).show()
         }
-
     }
 }

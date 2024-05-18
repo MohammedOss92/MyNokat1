@@ -54,12 +54,7 @@ class PagingAdapterFullImg(val con: Context, val frag: Fragment) : PagingDataAda
                 binding.lyNoInternetfull.visibility = View.VISIBLE
             }
 
-            binding.imageViewfull.setOnClickListener {
-                imgModel?.let {
-                    val directions = ImgFragmentDirections.actionImgFragmentToImgFullFragment()
-                    frag.findNavController().navigate(directions)
-                }
-            }
+
         }
 
         private fun setupListeners() {
