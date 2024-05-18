@@ -1,7 +1,6 @@
 package com.sarrawi.mynokat.paging
 
 import android.content.Context
-import android.os.Build.ID
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,10 +55,10 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
 
             binding.imageView.setOnClickListener {
                 val imgModel = getItem(bindingAdapterPosition)
-
+                imgModel?.let {
                     val directions = ImgFragmentDirections.actionImgFragmentToImgFullFragment(it.id)
                     frag.findNavController().navigate(directions)
-
+                }
             }
         }
 
