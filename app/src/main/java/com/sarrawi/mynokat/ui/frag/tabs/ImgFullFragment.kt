@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.databinding.FragmentImgFullBinding
+import com.sarrawi.mynokat.model.ImgsNokatModel
 
 import com.sarrawi.mynokat.paging.PagingAdapterFullImg
 import com.sarrawi.mynokat.paging.PagingAdapterImg
@@ -35,21 +36,13 @@ class ImgFullFragment : Fragment() {
     }
 
     private val PagingAdapterImgfull by lazy { PagingAdapterFullImg(requireActivity(),this) }
-
+    private lateinit var imgModel: ImgsNokatModel
     private var ID = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-// بعد استلام المعرف
-        ID = ImgFullFragmentArgs.fromBundle(requireArguments()).id
 
-// اعثر على موضع العنصر ضمن RecyclerView وقم بالتمرير إليه
-        val position = PagingAdapterImgfull.snapshot()?.indexOfFirst { it?.id == ID }
-        if (position != null && position != -1) {
-            binding.rcImgFull.layoutManager?.scrollToPosition(position)
-        } else {
-            // في حالة عدم العثور على المعرف في القائمة
-            Toast.makeText(requireContext(), "Item with ID $ID not found", Toast.LENGTH_SHORT).show()
-        }
+        imgModel = ImgFullFragmentArgs.fromBundle(requireArguments()).fullimg
 
     }
 
@@ -62,11 +55,34 @@ class ImgFullFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ID = ImgFullFragmentArgs.fromBundle(requireArguments()).id
+        setupRecyclerView()
+        scrollToSelectedImage()
+    }
 
-        setup()
+    private fun setupRecyclerView() {
+        binding.rcImgFull.layoutManager = LinearLayoutManager(requireContext())
+        binding.rcImgFull.adapter = PagingAdapterImgfull
+        nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
+            PagingAdapterImgfull.submitData(viewLifecycleOwner.lifecycle, pagingData)
+        }
+    }
+
+    private fun scrollToSelectedImage() {
+        // انتظر حتى يتم تحميل البيانات في RecyclerView
+        PagingAdapterImgfull.addLoadStateListener { loadStates ->
+            val snapshot = PagingAdapterImgfull.snapshot()
+            if (loadStates.source.append.endOfPaginationReached && snapshot.isNotEmpty()) {
+                val position = snapshot.indexOfFirst { it?.id == imgModel.id }
+                if (position != -1) {
+                    binding.rcImgFull.scrollToPosition(position)
+                } else {
+                    Toast.makeText(requireContext(), "Item not found", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun setup() {
@@ -76,25 +92,6 @@ class ImgFullFragment : Fragment() {
             nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
                 PagingAdapterImgfull.submitData(viewLifecycleOwner.lifecycle, pagingData)
             }
-            val snapshot = PagingAdapterImgfull.snapshot()
-            if (!snapshot.isEmpty()) {
-                // القائمة ليست فارغة، يمكنك استخدامها بأمان
-                val position = snapshot.indexOfFirst { it?.id == ID }
-                if (position != -1) {
-                    // تم العثور على العنصر، يمكنك التمرير إليه
-                    binding.rcImgFull.layoutManager?.scrollToPosition(position)
-                } else {
-                    // لم يتم العثور على العنصر، يمكنك التعامل مع هذه الحالة هنا
-                    Toast.makeText(requireContext(), "Item with ID $ID not found", Toast.LENGTH_SHORT).show()
-                    Log.d("aa$id", id.toString())
-                }
-            } else {
-                // القائمة فارغة
-                Toast.makeText(requireContext(), "List is empty", Toast.LENGTH_SHORT).show()
-            }
-
-            Toast.makeText(requireContext(), "Received ID: $id", Toast.LENGTH_SHORT).show()
-            Log.d("aa$id","aa$id.toString()")
         }
     }
 }

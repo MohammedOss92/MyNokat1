@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_img_full" >
 
 
+
         <argument
-            android:name="id"
-            app:argType="integer"
-/>
+            android:name="fullimg"
+            app:argType="com.sarrawi.mynokat.model.ImgsNokatModel" />
     </fragment>
 
     <fragment

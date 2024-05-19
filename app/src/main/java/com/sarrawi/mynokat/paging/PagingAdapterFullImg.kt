@@ -23,12 +23,11 @@ class PagingAdapterFullImg(val con: Context, val frag: Fragment) : PagingDataAda
     var onItemClick: ((Unit) -> Unit)? = null
     private var isInternetConnected: Boolean = true
 
-    private var isImageVisible = true
-    private var rotationDirection = 1
+
     inner class ViewHolder(private val binding: ImageFullBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            setupListeners()
+
         }
 
         fun bind(imgModel: ImgsNokatModel?, isInternetConnected: Boolean) {
@@ -57,50 +56,7 @@ class PagingAdapterFullImg(val con: Context, val frag: Fragment) : PagingDataAda
 
         }
 
-        private fun setupListeners() {
-            binding.root.setOnLongClickListener {
-                val randomNumber = (1..2).random()
-                val imageUrl = getItem(bindingAdapterPosition)?.image_url
-                if (randomNumber == 1 && imageUrl != null) {
-                    flipTheCoin(imageUrl, "gfgf")
-                } else {
-                    flipTheCoin("button", "gdfgdfg")
-                }
-                true
-            }
-            binding.imageViewfull.setOnLongClickListener {
-                val randomNumber = (1..2).random()
-                val imageUrl = getItem(bindingAdapterPosition)?.image_url
-                if (randomNumber == 1 && imageUrl != null) {
-                    flipTheCoin(imageUrl, "gfgf")
-                } else {
-                    flipTheCoin("button", "gdfgdfg")
-                }
-                true
-            }
-        }
 
-        fun flipTheCoin(imageId: String, coinSide: String) {
-            binding.root.animate().apply {
-                duration = 1000
-                rotationYBy(if (isImageVisible) 360f else -360f)
-                binding.imageViewfull.isClickable = false
-            }.withEndAction {
-                if (isImageVisible) {
-                    binding.imageViewfull.visibility = View.GONE
-                    binding.btncopyfull.visibility = View.VISIBLE
-                    binding.btncsharefull.visibility = View.VISIBLE
-                    isImageVisible = false
-                } else {
-                    binding.imageViewfull.visibility = View.VISIBLE
-                    binding.btncopyfull.visibility = View.GONE
-                    binding.btncsharefull.visibility = View.GONE
-                    isImageVisible = true
-                }
-                Toast.makeText(con, coinSide, Toast.LENGTH_SHORT).show()
-                binding.imageViewfull.isClickable = true
-            }.start()
-        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

@@ -56,7 +56,7 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
             binding.imageView.setOnClickListener {
                 val imgModel = getItem(bindingAdapterPosition)
                 imgModel?.let {
-                    val directions = ImgFragmentDirections.actionImgFragmentToImgFullFragment(it.id)
+                    val directions = ImgFragmentDirections.actionImgFragmentToImgFullFragment(it)
                     frag.findNavController().navigate(directions)
                 }
             }
