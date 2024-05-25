@@ -50,8 +50,8 @@ class ImgFullFragment : Fragment() {
 
     private fun setupRecyclerView() {
         binding.rcImgFull.layoutManager = LinearLayoutManager(requireContext()).apply {
-            reverseLayout = true // // نفعل هذا الخيار
-            stackFromEnd = true // مع هذا ليتم تحريك موقع العناصر
+//            reverseLayout = true // // نفعل هذا الخيار
+//            stackFromEnd = true // مع هذا ليتم تحريك موقع العناصر
         }
         binding.rcImgFull.adapter = pagingAdapterImgFull
         nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
