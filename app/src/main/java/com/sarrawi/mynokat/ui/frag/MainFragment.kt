@@ -8,12 +8,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
 import com.sarrawi.mynokat.R
-import com.sarrawi.mynokat.adapter.ViewPagerAdapter
 
 import com.sarrawi.mynokat.databinding.FragmentMainBinding
-import com.sarrawi.mynokat.ui.frag.tabs.ImgFragment
-import com.sarrawi.mynokat.ui.frag.tabs.ImgFragmentDirections
-import com.sarrawi.mynokat.ui.frag.tabs.NokatFragment
 
 
 class MainFragment : Fragment() {

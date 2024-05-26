@@ -1,4 +1,4 @@
-package com.sarrawi.mynokat.ui.frag.tabs
+package com.sarrawi.mynokat.ui.frag.img
 
 import android.os.Bundle
 import android.view.LayoutInflater

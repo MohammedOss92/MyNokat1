@@ -17,7 +17,6 @@ import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.databinding.ImageFullBinding
 import com.sarrawi.mynokat.databinding.ImgRowBinding
 import com.sarrawi.mynokat.model.ImgsNokatModel
-import com.sarrawi.mynokat.ui.frag.tabs.ImgFragmentDirections
 
 class PagingAdapterFullImg(val con: Context, val frag: Fragment) : PagingDataAdapter<ImgsNokatModel, PagingAdapterFullImg.ViewHolder>(COMPARATOR) {
     var onItemClick: ((Unit) -> Unit)? = null

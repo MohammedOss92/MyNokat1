@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         navController = findNavController(R.id.nav_host_fragment_content_main)
 
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.mainFragment, R.id.favFragment))
+//        appBarConfiguration = AppBarConfiguration(setOf(R.id.mainFragment, R.id.favFragment))
 
 //        bottomNav.setupWithNavController(navController)
 

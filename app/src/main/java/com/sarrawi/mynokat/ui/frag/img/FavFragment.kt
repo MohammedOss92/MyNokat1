@@ -1,10 +1,13 @@
-package com.sarrawi.mynokat.ui.frag
+package com.sarrawi.mynokat.ui.frag.img
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sarrawi.mynokat.databinding.FragmentFavBinding
 
 
@@ -27,7 +30,11 @@ class FavFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val navController = findNavController()
+        val bottomNav: BottomNavigationView = binding.bottomNavImg
 
+        // ربط BottomNavigationView مع NavController
+        bottomNav.setupWithNavController(navController)
 
     }
 

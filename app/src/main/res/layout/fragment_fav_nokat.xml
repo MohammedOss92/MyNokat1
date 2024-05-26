@@ -6,23 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".ui.frag.img.ImgFragment">
 
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rc_Img_Nok_fav"
+        android:id="@+id/rc_Nokat_fav"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bottomNavImg"
+        android:id="@+id/bottomNavNokat"
 
         app:elevation="10dp"
-        app:menu="@menu/bottom_menu"
+        app:menu="@menu/bottom_menu_nokat"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/imgFullFragment"
-        android:name="com.sarrawi.mynokat.ui.frag.tabs.ImgFullFragment"
+        android:name="com.sarrawi.mynokat.ui.frag.img.ImgFullFragment"
         android:label="fragment_img_full"
         tools:layout="@layout/fragment_img_full" >
 
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/imgFragment"
-        android:name="com.sarrawi.mynokat.ui.frag.tabs.ImgFragment"
+        android:name="com.sarrawi.mynokat.ui.frag.img.ImgFragment"
         android:label="fragment_img"
         tools:layout="@layout/fragment_img" >
         <action
@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/nokatFragment"
-        android:name="com.sarrawi.mynokat.ui.frag.tabs.NokatFragment"
+        android:name="com.sarrawi.mynokat.ui.frag.nokat.NokatFragment"
         android:label="fragment_nokat"
         tools:layout="@layout/fragment_nokat" />
 
@@ -48,5 +48,15 @@
             android:id="@+id/action_mainFragment2_to_nokatFragment"
             app:destination="@id/nokatFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/favFragment2"
+        android:name="com.sarrawi.mynokat.ui.frag.img.FavFragment"
+        android:label="fragment_fav"
+        tools:layout="@layout/fragment_fav" />
+    <fragment
+        android:id="@+id/favNokatFragment"
+        android:name="com.sarrawi.mynokat.ui.frag.nokat.FavNokatFragment"
+        android:label="fragment_fav_nokat"
+        tools:layout="@layout/fragment_fav_nokat" />
 
 </navigation>

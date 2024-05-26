@@ -16,7 +16,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.databinding.ImgRowBinding
 import com.sarrawi.mynokat.model.ImgsNokatModel
-import com.sarrawi.mynokat.ui.frag.tabs.ImgFragmentDirections
+import com.sarrawi.mynokat.ui.frag.img.ImgFragmentDirections
 
 class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter<ImgsNokatModel, PagingAdapterImg.ViewHolder>(COMPARATOR) {
     var onItemClick: ((Unit) -> Unit)? = null

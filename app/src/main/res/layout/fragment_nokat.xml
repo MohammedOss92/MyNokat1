@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.frag.tabs.ImgFragment">
+    tools:context=".ui.frag.img.ImgFragment">
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -20,7 +20,7 @@
         android:id="@+id/bottomNavNokat"
 
         app:elevation="10dp"
-        app:menu="@menu/bottom_menu"
+        app:menu="@menu/bottom_menu_nokat"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
