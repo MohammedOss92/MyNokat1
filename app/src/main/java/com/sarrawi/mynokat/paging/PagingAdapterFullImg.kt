@@ -11,6 +11,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.sarrawi.mynokat.R
@@ -34,8 +35,9 @@ class PagingAdapterFullImg(val con: Context, val frag: Fragment) : PagingDataAda
                 val requestOptions = RequestOptions()
                     .placeholder(R.drawable.ic_baseline_autorenew_24)
                     .error(R.drawable.error_a)
+                    .format(DecodeFormat.PREFER_RGB_565)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .skipMemoryCache(false)
+                    .skipMemoryCache(true)
 
                 Glide.with(con)
                     .load(imgModel?.image_url)
