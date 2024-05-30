@@ -15,6 +15,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.databinding.ActivityMainBinding
+import com.sarrawi.mynokat.db.LocaleSource
+import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
 import com.sarrawi.mynokat.viewModel.NokatViewModel
@@ -44,9 +46,9 @@ class MainActivity : AppCompatActivity() {
 //        bottomNav.setupWithNavController(navController)
 
         val retrofitService = ApiService.provideRetrofitInstance()
-        val mainRepository = NokatRepo(retrofitService)
+        val mainRepository = NokatRepo(retrofitService, LocaleSource(this), PostDatabase.getInstance(this))
         viewModel =
-            ViewModelProvider(this, MyViewModelFactory(mainRepository, this)).get(
+            ViewModelProvider(this, MyViewModelFactory(mainRepository, this, PostDatabase.getInstance(this))).get(
                 NokatViewModel::class.java
             )
 
@@ -61,7 +63,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         return when (item.itemId) {
-            R.id.action_settings -> true
+
             else -> super.onOptionsItemSelected(item)
         }
     }

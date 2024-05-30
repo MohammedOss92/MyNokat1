@@ -11,6 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.databinding.FragmentImgFullBinding
+import com.sarrawi.mynokat.db.LocaleSource
+import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.model.ImgsNokatModel
 import com.sarrawi.mynokat.paging.PagingAdapterFullImg
 import com.sarrawi.mynokat.repository.NokatRepo
@@ -22,9 +24,10 @@ class ImgFullFragment : Fragment() {
     private val binding get() = _binding
 
     private val retrofitService = ApiService.provideRetrofitInstance()
-    private val mainRepository by lazy { NokatRepo(retrofitService) }
+    private val mainRepository by lazy { NokatRepo(retrofitService, LocaleSource(requireContext()),
+        PostDatabase.getInstance(requireContext())) }
     private val nokatViewModel: NokatViewModel by viewModels {
-        MyViewModelFactory(mainRepository, requireContext())
+        MyViewModelFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext()))
     }
 
     private val pagingAdapterImgFull by lazy { PagingAdapterFullImg(requireActivity(), this) }
@@ -45,7 +48,21 @@ class ImgFullFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
+
+        nokatViewModel.isConnected.observe(requireActivity()) { isConnected ->
+            if (isConnected) {
+                setupRecyclerView()
+                pagingAdapterImgFull.updateInternetStatus(isConnected)
+                binding.lyNoInternet.visibility = View.GONE
+            } else {
+                binding.lyNoInternet.visibility = View.VISIBLE
+                binding.rcImgFull.visibility = View.GONE
+                pagingAdapterImgFull.updateInternetStatus(isConnected)
+            }
+        }
+
+
+        nokatViewModel.checkNetworkConnection(requireContext())
     }
 
     private fun setupRecyclerView() {

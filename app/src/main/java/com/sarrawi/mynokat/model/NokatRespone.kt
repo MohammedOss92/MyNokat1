@@ -9,4 +9,6 @@ data class NokatRespone(@SerializedName("count")
                         @SerializedName("current_page")
                         val current_page: Int,
                         @SerializedName("results")
-                        val results: Results)
+                        val results: Results,
+                        @SerializedName("NokatModel")
+                        val NokatModel: List<NokatModel>)

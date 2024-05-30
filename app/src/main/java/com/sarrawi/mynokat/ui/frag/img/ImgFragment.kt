@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -17,11 +18,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.databinding.FragmentImgBinding
+import com.sarrawi.mynokat.db.LocaleSource
+import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.paging.PagingAdapterImg
 import com.sarrawi.mynokat.paging.PagingAdapterNokat
 import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
 import com.sarrawi.mynokat.viewModel.NokatViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 class ImgFragment : Fragment() {
@@ -31,9 +36,10 @@ class ImgFragment : Fragment() {
     private val binding get() = _binding
 
     private val retrofitService = ApiService.provideRetrofitInstance()
-    private val mainRepository by lazy { NokatRepo(retrofitService) }
+    private val mainRepository by lazy { NokatRepo(retrofitService, LocaleSource(requireContext()),
+        PostDatabase.getInstance(requireContext())) }
     private val nokatViewModel: NokatViewModel by viewModels {
-        MyViewModelFactory(mainRepository, requireContext())
+        MyViewModelFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext()))
     }
 
     private val pagingAdapterImg by lazy { PagingAdapterImg(requireActivity(),this) }
@@ -58,7 +64,21 @@ class ImgFragment : Fragment() {
 
         // ربط BottomNavigationView مع NavController
         bottomNav.setupWithNavController(navController)
-        setup()
+
+        nokatViewModel.isConnected.observe(requireActivity()) { isConnected ->
+            if (isConnected) {
+                setup()
+                pagingAdapterImg.updateInternetStatus(isConnected)
+                binding.lyNoInternet.visibility = View.GONE
+            } else {
+                binding.lyNoInternet.visibility = View.VISIBLE
+                binding.rcImgNokat.visibility = View.GONE
+                pagingAdapterImg.updateInternetStatus(isConnected)
+            }
+        }
+
+
+        nokatViewModel.checkNetworkConnection(requireContext())
 
     }
 
@@ -66,7 +86,7 @@ class ImgFragment : Fragment() {
 
 
 
-    private fun setup() {
+    fun setup() {
         if (isAdded) {
             binding.rcImgNokat.layoutManager = StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL)
 
@@ -82,7 +102,20 @@ class ImgFragment : Fragment() {
 
         }
 
-
+//    private fun setup() {
+//        if (isAdded) {
+//            binding.rcImgNokat.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+//
+//            val pagingAdapter = PagingAdapterImg(requireContext(), this)
+//            binding.rcImgNokat.adapter = pagingAdapter
+//
+//            lifecycleScope.launch {
+//                nokatViewModel.ImageStream.collectLatest { pagingData ->
+//                    pagingAdapter.submitData(pagingData)
+//                }
+//            }
+//        }
+//    }
 
 
     override fun onDestroyView() {

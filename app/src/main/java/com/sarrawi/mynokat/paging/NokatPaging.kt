@@ -1,61 +1,49 @@
 package com.sarrawi.mynokat.paging
 
-import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import androidx.room.withTransaction
 import com.sarrawi.mynokat.api.ApiService
+import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.model.NokatModel
+import retrofit2.HttpException
+import java.io.IOException
 
-class NokatPaging(private val apiService: ApiService):
-    PagingSource<Int, NokatModel>() {
-    companion object {
-        private const val STARTING_PAGE_INDEX = 1
-    }
-
-    private var isLoading = false
-
+class NokatPaging(
+    private val apiService: ApiService,
+    private val database: PostDatabase
+) : PagingSource<Int, NokatModel>() {
+    @RequiresApi(34)
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, NokatModel> {
-        if (isLoading) {
-            // تجنب إعادة استدعاء load عندما تكون العملية قيد التحميل
-            return LoadResult.Error(Exception("Loading is already in progress"))
-        }
-
-        try {
-            isLoading = true
-
-            val currentPage = params.key ?: STARTING_PAGE_INDEX
-            val pageSize = params.loadSize
-
-            Log.d("NokatPaging", "Loading page $currentPage with pageSize $pageSize")
-
-            val response = apiService.getAllNokatPa( currentPage)
-            Log.i("hahahahahaha", "load: ${response.body()}")
+        val page = params.key ?: 1
+        return try {
+            val response = apiService.getAllNokatPa(page)
             if (response.isSuccessful) {
-                val data = response.body()?.results?.NokatModel?: emptyList()
+                val nokatList = response.body()?.results?.NokatModel ?: emptyList()
 
-                Log.d("NokatPaging", "Loaded data: $data")
+                // إدخال البيانات في قاعدة البيانات
+                database.withTransaction {
+                    if (page == 1) {
+                        database.nokatDao().clearAll()
+                    }
+                    database.nokatDao().insert_Nokat(nokatList)
+                }
 
-                return LoadResult.Page(
-                    data = data,
-                    prevKey = if (currentPage == STARTING_PAGE_INDEX) null else currentPage - 1,
-                    nextKey = if (data.isEmpty()) null else currentPage + 1
+                LoadResult.Page(
+                    data = nokatList,
+                    prevKey = if (page == 1) null else page - 1,
+                    nextKey = if (nokatList.isEmpty()) null else page + 1
                 )
             } else {
-                Log.e("NokatPaging", "Error loading data. Response: ${response.code()}, ${response.message()}")
-                return LoadResult.Error(Exception("Error loading data. Response: ${response.code()}, ${response.message()}"))
+                LoadResult.Error(Exception("Error loading data. Response: ${response.code()}, ${response.message()}"))
             }
-
-        } catch (e: Exception) {
-            Log.e("NokatPaging", "Exception during data loading: $e")
-            Log.e("NokatPaging", "Error loading data. Exception: ${e.message}")
-
-            return LoadResult.Error(e)
-        } finally {
-            isLoading = false
+        } catch (e: IOException) {
+            LoadResult.Error(e)
+        } catch (e: HttpException) {
+            LoadResult.Error(e)
         }
     }
-
-
 
 
 

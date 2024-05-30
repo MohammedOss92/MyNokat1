@@ -1,11 +1,14 @@
 package com.sarrawi.mynokat.ui.frag.nokat
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,10 +19,14 @@ import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.databinding.FragmentMainBinding
 import com.sarrawi.mynokat.databinding.FragmentNokatBinding
+import com.sarrawi.mynokat.db.LocaleSource
+import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.paging.PagingAdapterNokat
 import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
 import com.sarrawi.mynokat.viewModel.NokatViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 class NokatFragment : Fragment() {
@@ -29,9 +36,10 @@ class NokatFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val retrofitService = ApiService.provideRetrofitInstance()
-    private val mainRepository by lazy { NokatRepo(retrofitService) }
+    private val mainRepository by lazy { NokatRepo(retrofitService, LocaleSource(requireContext()),
+        PostDatabase.getInstance(requireContext())) }
     private val nokatViewModel: NokatViewModel by viewModels {
-        MyViewModelFactory(mainRepository, requireContext())
+        MyViewModelFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext()))
     }
 
     private val PagingAdapterNokat by lazy { PagingAdapterNokat(requireActivity()) }
@@ -57,6 +65,7 @@ class NokatFragment : Fragment() {
 
         // ربط BottomNavigationView مع NavController
         bottomNav.setupWithNavController(navController)
+        menu_item()
         setup()
     }
 
@@ -67,12 +76,19 @@ class NokatFragment : Fragment() {
             binding.rcNokat.adapter = PagingAdapterNokat
 
 
-            nokatViewModel.getAllNokat().observe(viewLifecycleOwner) {
+//            nokatViewModel.getAllNokat().observe(viewLifecycleOwner) {
+//
+//                PagingAdapterNokat.submitData(viewLifecycleOwner.lifecycle, it)
+//                PagingAdapterNokat.notifyDataSetChanged()
+//
+//
+//            }
 
-                PagingAdapterNokat.submitData(viewLifecycleOwner.lifecycle, it)
-                PagingAdapterNokat.notifyDataSetChanged()
-
-
+            lifecycleScope.launch {
+                nokatViewModel.itemss.collectLatest { pagingData ->
+                    PagingAdapterNokat.submitData(pagingData)
+                    PagingAdapterNokat.notifyDataSetChanged()
+                }
             }
             PagingAdapterNokat.stateRestorationPolicy =
             RecyclerView.Adapter.StateRestorationPolicy.ALLOW
@@ -80,6 +96,9 @@ class NokatFragment : Fragment() {
 
         }
 
+        /*viewModel.items.observe(this) { pagingData ->
+            adapter.submitData(lifecycle, pagingData)
+        }*/
 
     }
 
@@ -90,13 +109,50 @@ class NokatFragment : Fragment() {
             val pagingAdapter = PagingAdapterNokat(requireContext())
             binding.rcNokat.adapter = pagingAdapter
 
-            nokatViewModel.getAllNokat().observe(viewLifecycleOwner) { pagingData ->
-                pagingAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+//            nokatViewModel.getAllNokat().observe(viewLifecycleOwner) { pagingData ->
+//                pagingAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+//            }
+
+            lifecycleScope.launch {
+                nokatViewModel.nokatStream.collectLatest { pagingData ->
+                    pagingAdapter.submitData(pagingData)
+                    PagingAdapterNokat.notifyDataSetChanged()
+                }
             }
 
             PagingAdapterNokat.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
             // يمكنك وضع scrollToPosition(0) هنا أو في مكان مناسب بالنسبة لدورة حياة مشهد الفريق
         }
     }
+
+
+    private fun menu_item() {
+        // The usage of an interface lets you inject your own implementation
+
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                // Add menu items here
+                menuInflater.inflate(R.menu.menu_nokat, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+
+                when(menuItem.itemId){
+
+                    R.id.refresh ->{
+                       nokatViewModel.refreshNokats()
+                    }
+
+
+                }
+                return true
+            }
+
+        },viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    /*https://chatgpt.com/share/c05fc186-75e5-415b-99ec-ffb1a3435a14
+    * https://chatgpt.com/share/9851d59c-005c-4c8d-a15b-32a29d2df7c9*/
 
 }

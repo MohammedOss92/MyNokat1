@@ -2,8 +2,10 @@ package com.sarrawi.mynokat.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName ="ImgsNokat_tb")
 data class ImgsNokatModel(
                 @SerializedName("id")
                 var id:Int,

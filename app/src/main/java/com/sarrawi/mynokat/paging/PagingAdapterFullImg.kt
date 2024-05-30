@@ -67,6 +67,11 @@ class PagingAdapterFullImg(val con: Context, val frag: Fragment) : PagingDataAda
         return ViewHolder(binding)
     }
 
+    fun updateInternetStatus(isConnected: Boolean) {
+        isInternetConnected = isConnected
+        notifyDataSetChanged()
+    }
+
     companion object {
         private val COMPARATOR = object : DiffUtil.ItemCallback<ImgsNokatModel>() {
             override fun areItemsTheSame(oldItem: ImgsNokatModel, newItem: ImgsNokatModel): Boolean {
