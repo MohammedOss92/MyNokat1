@@ -7,6 +7,7 @@ import androidx.room.withTransaction
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.db.LocaleSource
 import com.sarrawi.mynokat.db.PostDatabase
+import com.sarrawi.mynokat.model.FavNokatModel
 import com.sarrawi.mynokat.model.ImgsNokatModel
 import com.sarrawi.mynokat.model.NokatModel
 import com.sarrawi.mynokat.paging.ImagePaging
@@ -122,6 +123,24 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
 
     
 
+    /////
+    suspend fun update_fav(id: Int,state:Boolean) {
+
+        localeSource.update_fav(id,state)
+    }
+
+    suspend fun add_fav(fav: FavNokatModel) {
+
+        localeSource.add_fav(fav)
+    }
+
+    fun getAllFav() = localeSource.getAllFav()
+
+    // delete favorite item from db
+    suspend fun deleteFav(fav: FavNokatModel) {
+
+        localeSource.delete_fav(fav)
+    }
 
 
 

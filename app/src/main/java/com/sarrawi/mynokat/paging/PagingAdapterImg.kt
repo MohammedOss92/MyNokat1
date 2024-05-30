@@ -173,6 +173,7 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
                     .skipMemoryCache(true)
 
                 Glide.with(con)
+                    .asBitmap()
                     .load(imgModel?.image_url)
                     .apply(requestOptions)
                     .circleCrop()

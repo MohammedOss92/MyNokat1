@@ -28,6 +28,9 @@ interface NokatDao {
     @Query("SELECT * FROM Nokat_tb ORDER BY createdAt")
     fun getAllNokatsPaging(): PagingSource<Int, NokatModel>
 
+    @Query("Update Nokat_tb SET is_fav = :state where id =:ID")
+    suspend fun update_fav(ID:Int,state:Boolean)
+
 //    @Query("SELECT e.*, c.MsgTypes AS typeTitle " +
 //            "FROM msg_table e " +
 //            "LEFT JOIN msg_types_table c ON c.id = e.ID_Type_id " +

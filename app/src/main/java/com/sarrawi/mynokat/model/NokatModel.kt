@@ -25,7 +25,11 @@ data class NokatModel(
     val NokatName: String,
 
     @ColumnInfo(name = "createdAt")
-    var createdAt: String? = null
+    var createdAt: String? = null,
+
+    @ColumnInfo("is_fav")
+    @SerializedName("is_fav")
+    var is_fav: Boolean = false,
 )
 
 

@@ -2,6 +2,7 @@ package com.sarrawi.mynokat.ui.frag.nokat
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -21,12 +22,16 @@ import com.sarrawi.mynokat.databinding.FragmentMainBinding
 import com.sarrawi.mynokat.databinding.FragmentNokatBinding
 import com.sarrawi.mynokat.db.LocaleSource
 import com.sarrawi.mynokat.db.PostDatabase
+import com.sarrawi.mynokat.model.FavNokatModel
+import com.sarrawi.mynokat.model.NokatModel
 import com.sarrawi.mynokat.paging.PagingAdapterNokat
 import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
 import com.sarrawi.mynokat.viewModel.NokatViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class NokatFragment : Fragment() {
@@ -67,6 +72,30 @@ class NokatFragment : Fragment() {
         bottomNav.setupWithNavController(navController)
         menu_item()
         setup()
+        adapterOnClick()
+    }
+
+    private fun adapterOnClick() {
+        val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+        PagingAdapterNokat.onItemClick ={ i:Int,it:NokatModel,ii:Int->
+            val fav = FavNokatModel(it.id,it.NokatTypes,it.new_nokat,it.NokatName,it.createdAt)
+            fav.createdAt=currentTime
+
+            if(it.is_fav){
+                nokatViewModel.update_fav(it.id,false) // update favorite item state
+                nokatViewModel.delete_fav(fav) //delete item from db
+                Toast.makeText(requireContext(),"تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
+                setUpRv()
+                PagingAdapterNokat.notifyDataSetChanged()
+            }
+            else{
+                nokatViewModel.update_fav(it.id,true)
+                nokatViewModel.add_fav(fav) // add item to db
+                Toast.makeText(requireContext(),"تم الاضافة الى المفضلة",Toast.LENGTH_SHORT).show()
+                setUpRv()
+                PagingAdapterNokat.notifyDataSetChanged()
+            }
+        }
     }
 
     private fun setUpRv() {

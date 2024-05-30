@@ -13,6 +13,9 @@ import com.sarrawi.mynokat.model.NokatModel
 
 class PagingAdapterNokat(val con: Context): PagingDataAdapter<NokatModel, PagingAdapterNokat.ViewHolder>(COMPARATOR) {
 
+    var onItemClick2: ((item:NokatModel,position:Int) -> Unit)? = null
+    var onItemClick: ((Int,NokatModel, Int) -> Unit)? = null
+
     inner class ViewHolder(private val binding: NokatDesignBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
 
@@ -29,8 +32,24 @@ class PagingAdapterNokat(val con: Context): PagingDataAdapter<NokatModel, Paging
                 } else {
                     newNokat.setVisibility(View.VISIBLE)
                 }
+
+                // check if the item is favorite or not
+                if (nokatModel.is_fav) {
+                    favBtn.setImageResource(R.drawable.baseline_favorite_true)
+                } else {
+                    favBtn.setImageResource(R.drawable.baseline_favorite_border_false)
+                }
             }
 
+            binding.favBtn.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    getItem(position)?.let { item ->
+                        onItemClick?.invoke(item.id ?: 0, item, position)
+
+                    }
+                }
+            }
         }
 
     }

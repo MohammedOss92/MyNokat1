@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.db.PostDatabase
+import com.sarrawi.mynokat.model.FavNokatModel
 import com.sarrawi.mynokat.model.ImgsNokatModel
 import com.sarrawi.mynokat.model.NokatModel
 import com.sarrawi.mynokat.repository.NokatRepo
@@ -96,6 +97,32 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
 
     val ImageStream: Flow<PagingData<ImgsNokatModel>> = nokatRepo.getAllImgsNokatSerPa()
         .cachedIn(viewModelScope)
+
+
+    /////////////
+
+    fun update_fav(id:Int,state:Boolean)=viewModelScope.launch {
+        nokatRepo.update_fav(id,state)
+    }
+
+    fun add_fav(fav: FavNokatModel)= viewModelScope.launch {
+        nokatRepo.add_fav(fav)
+    }
+
+
+
+    fun getFav(): LiveData<List<FavNokatModel>> {
+        Log.e("tessst","entred22")
+//        viewModelScope.launch {
+//          __response.postValue(msgsRepo.getAllFav())
+//        }
+        return nokatRepo.getAllFav()
+    }
+
+    // delete favorite item from db
+    fun delete_fav(fav: FavNokatModel)= viewModelScope.launch {
+        nokatRepo.deleteFav(fav)
+    }
 
 //    fun getAllNokat2(): LiveData<PagingData<NokatModel>> {
 //        val _response = MutableLiveData<PagingData<NokatModel>>()
