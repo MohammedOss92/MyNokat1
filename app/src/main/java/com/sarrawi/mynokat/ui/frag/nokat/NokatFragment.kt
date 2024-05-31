@@ -72,31 +72,76 @@ class NokatFragment : Fragment() {
         bottomNav.setupWithNavController(navController)
         menu_item()
         setup()
-        adapterOnClick()
+//        adapterOnClick()
     }
 
-    private fun adapterOnClick() {
-        val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-        PagingAdapterNokat.onItemClick ={ i:Int,it:NokatModel,ii:Int->
-            val fav = FavNokatModel(it.id,it.NokatTypes,it.new_nokat,it.NokatName,it.createdAt)
-            fav.createdAt=currentTime
+//    private fun adapterOnClick() {
+//        PagingAdapterNokat.onItemClick = { id, item, position ->
+//            val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+//            val fav = FavNokatModel(item.id, item.NokatTypes, item.new_nokat, item.NokatName, item.createdAt)
+//            fav.createdAt = currentTime
+//
+//            if (item.is_fav) {
+//                nokatViewModel.update_fav(item.id, false) // update favorite item state
+//                nokatViewModel.delete_fav(fav) // delete item from db
+//                Toast.makeText(requireContext(), "تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
+//            } else {
+//                nokatViewModel.update_fav(item.id, true)
+//                nokatViewModel.add_fav(fav) // add item to db
+//                Toast.makeText(requireContext(), "تم الاضافة الى المفضلة", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//
+//
+//    }
 
-            if(it.is_fav){
-                nokatViewModel.update_fav(it.id,false) // update favorite item state
-                nokatViewModel.delete_fav(fav) //delete item from db
-                Toast.makeText(requireContext(),"تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
-                setUpRv()
-                PagingAdapterNokat.notifyDataSetChanged()
+    private fun setup() {
+        if (isAdded) {
+            binding.rcNokat.layoutManager = LinearLayoutManager(requireContext())
+
+            val pagingAdapter = PagingAdapterNokat(requireContext())
+            binding.rcNokat.adapter = pagingAdapter
+
+            lifecycleScope.launch {
+                nokatViewModel.nokatStream.collectLatest {pagingData ->
+                pagingAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
             }
-            else{
-                nokatViewModel.update_fav(it.id,true)
-                nokatViewModel.add_fav(fav) // add item to db
-                Toast.makeText(requireContext(),"تم الاضافة الى المفضلة",Toast.LENGTH_SHORT).show()
-                setUpRv()
-                PagingAdapterNokat.notifyDataSetChanged()
             }
+
+            pagingAdapter.onItemClick = { id, item, position ->
+                val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+                val fav = FavNokatModel(item.id, item.NokatTypes, item.new_nokat, item.NokatName, item.createdAt).apply {
+                    createdAt = currentTime
+                }
+                if (!item.is_fav) {
+                    nokatViewModel.update_favs(item.id, false)
+
+                    nokatViewModel.delete_favs(fav)
+                    Toast.makeText(requireContext(), "تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
+
+                } else {
+
+                    nokatViewModel.add_favs(fav)
+                    nokatViewModel.update_favs(item.id, true)
+
+                    Toast.makeText(requireContext(), "تم الاضافة الى المفضلة", Toast.LENGTH_SHORT).show()
+                }
+                nokatViewModel.update_favs(item.id, !item.is_fav)
+//                if (item.is_fav) {
+//                    nokatViewModel.update_favs(item.id, false)
+//                    nokatViewModel.delete_favs(fav)
+//                    Toast.makeText(requireContext(), "تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
+//                } else {
+//                    nokatViewModel.update_favs(item.id, true)
+//                    nokatViewModel.add_favs(fav)
+//                    Toast.makeText(requireContext(), "تم الاضافة الى المفضلة", Toast.LENGTH_SHORT).show()
+//                }
+            }
+
+            pagingAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
     }
+
 
     private fun setUpRv() {
         if (isAdded) {
@@ -131,28 +176,28 @@ class NokatFragment : Fragment() {
 
     }
 
-    private fun setup() {
-        if (isAdded) {
-            binding.rcNokat.layoutManager = LinearLayoutManager(requireContext())
-
-            val pagingAdapter = PagingAdapterNokat(requireContext())
-            binding.rcNokat.adapter = pagingAdapter
-
-//            nokatViewModel.getAllNokat().observe(viewLifecycleOwner) { pagingData ->
-//                pagingAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+//    private fun setup() {
+//        if (isAdded) {
+//            binding.rcNokat.layoutManager = LinearLayoutManager(requireContext())
+//
+//            val pagingAdapter = PagingAdapterNokat(requireContext())
+//            binding.rcNokat.adapter = pagingAdapter
+//
+////            nokatViewModel.getAllNokat().observe(viewLifecycleOwner) { pagingData ->
+////                pagingAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+////            }
+//
+//            lifecycleScope.launch {
+//                nokatViewModel.nokatStream.collectLatest { pagingData ->
+//                    pagingAdapter.submitData(pagingData)
+//                    PagingAdapterNokat.notifyDataSetChanged()
+//                }
 //            }
-
-            lifecycleScope.launch {
-                nokatViewModel.nokatStream.collectLatest { pagingData ->
-                    pagingAdapter.submitData(pagingData)
-                    PagingAdapterNokat.notifyDataSetChanged()
-                }
-            }
-
-            PagingAdapterNokat.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
-            // يمكنك وضع scrollToPosition(0) هنا أو في مكان مناسب بالنسبة لدورة حياة مشهد الفريق
-        }
-    }
+//
+//            PagingAdapterNokat.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
+//            // يمكنك وضع scrollToPosition(0) هنا أو في مكان مناسب بالنسبة لدورة حياة مشهد الفريق
+//        }
+//    }
 
 
     private fun menu_item() {

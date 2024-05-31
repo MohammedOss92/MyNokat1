@@ -20,7 +20,7 @@ class LocaleSource(context: Context) {
     init {
         val dataBase = PostDatabase.getInstance(context.applicationContext)
         nokatDao = dataBase.nokatDao()
-        favoriteDao = dataBase.favNokatDat()
+        favoriteDao = dataBase.favNokatDao()
     }
 
     companion object {
@@ -50,7 +50,7 @@ class LocaleSource(context: Context) {
         favoriteDao?.add_fav(fav)
     }
 
-    fun getAllFav(): LiveData<List<FavNokatModel>> {
+    fun getAllFav(): PagingSource<Int, FavNokatModel> {
         Log.e("tessst","entred666")
         return favoriteDao?.getAllFav()!!
     }

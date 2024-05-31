@@ -111,7 +111,7 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
 
 
 
-    fun getFav(): LiveData<List<FavNokatModel>> {
+    fun getFav(): LiveData<PagingData<FavNokatModel>> {
         Log.e("tessst","entred22")
 //        viewModelScope.launch {
 //          __response.postValue(msgsRepo.getAllFav())
@@ -119,9 +119,26 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
         return nokatRepo.getAllFav()
     }
 
+    val favNokat: LiveData<PagingData<FavNokatModel>> = nokatRepo.getAllFav().cachedIn(viewModelScope)
+
+
     // delete favorite item from db
     fun delete_fav(fav: FavNokatModel)= viewModelScope.launch {
         nokatRepo.deleteFav(fav)
+    }
+    ////////
+    val favNokats: LiveData<PagingData<FavNokatModel>> = nokatRepo.getAllFav().cachedIn(viewModelScope)
+
+    fun update_favs(id: Int, state: Boolean) = viewModelScope.launch {
+        nokatRepo.update_favs(id, state)
+    }
+
+    fun add_favs(fav: FavNokatModel) = viewModelScope.launch {
+        nokatRepo.add_favs(fav)
+    }
+
+    fun delete_favs(fav: FavNokatModel) = viewModelScope.launch {
+        nokatRepo.delete_favs(fav)
     }
 
 //    fun getAllNokat2(): LiveData<PagingData<NokatModel>> {

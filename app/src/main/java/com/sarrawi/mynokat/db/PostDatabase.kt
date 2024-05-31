@@ -20,7 +20,7 @@ import com.sarrawi.mynokat.model.NokatModel
 abstract class PostDatabase: RoomDatabase() {
 
     abstract fun nokatDao():NokatDao
-    abstract fun favNokatDat():FavNokatDao
+    abstract fun favNokatDao():FavNokatDao
 
     companion object {
 

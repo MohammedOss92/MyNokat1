@@ -134,7 +134,6 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
         localeSource.add_fav(fav)
     }
 
-    fun getAllFav() = localeSource.getAllFav()
 
     // delete favorite item from db
     suspend fun deleteFav(fav: FavNokatModel) {
@@ -143,6 +142,30 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
     }
 
 
+    fun getAllFav(): LiveData<PagingData<FavNokatModel>> {
+        return Pager(
+            config = PagingConfig(pageSize = 12, enablePlaceholders = false),
+            pagingSourceFactory = { database.favNokatDao().getAllFav() }
+        ).liveData
+    }
 
+    ////
+    suspend fun update_favs(id: Int, state: Boolean) {
+        localeSource.favoriteDao?.update_favs(id, state)
+    }
 
+    suspend fun add_favs(fav: FavNokatModel) {
+        localeSource.favoriteDao?.add_fav(fav)
+    }
+
+    suspend fun delete_favs(fav: FavNokatModel) {
+        localeSource.favoriteDao?.deletefav(fav)
+    }
+
+    fun getAllFavs(): LiveData<PagingData<FavNokatModel>> {
+        return Pager(
+            config = PagingConfig(pageSize = 12, enablePlaceholders = false),
+            pagingSourceFactory = { localeSource.favoriteDao!!.getAllFav() }
+        ).liveData
+    }
 }
