@@ -7,6 +7,7 @@ import androidx.room.withTransaction
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.db.LocaleSource
 import com.sarrawi.mynokat.db.PostDatabase
+import com.sarrawi.mynokat.model.FavImgModel
 import com.sarrawi.mynokat.model.FavNokatModel
 import com.sarrawi.mynokat.model.ImgsNokatModel
 import com.sarrawi.mynokat.model.NokatModel
@@ -168,4 +169,26 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
             pagingSourceFactory = { localeSource.favoriteDao!!.getAllFav() }
         ).liveData
     }
+
+    ///////////////////////
+    suspend fun update_favs_img(id: Int, state: Boolean) {
+        localeSource.favImageDao.update_favimg(id, state)
+    }
+
+    suspend fun add_favs_img(fav: FavImgModel) {
+        localeSource.favImageDao.insertFavoriteImage(fav)
+    }
+
+    suspend fun delete_favs_img(fav: FavImgModel) {
+        localeSource.favImageDao.deleteFavoriteImage(fav)
+    }
+
+    fun getAllFavImg ():LiveData<PagingData<FavImgModel>> {
+
+        return Pager(
+            config = PagingConfig(pageSize = 12, enablePlaceholders = false),
+            pagingSourceFactory = { localeSource.favImageDao.getAllFavoriteImages() }
+        ).liveData
+    }
+
 }

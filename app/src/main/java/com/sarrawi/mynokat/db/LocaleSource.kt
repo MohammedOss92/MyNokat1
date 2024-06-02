@@ -3,13 +3,16 @@ package com.sarrawi.mynokat.db
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.paging.PagingData
 import androidx.paging.PagingSource
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.sarrawi.mynokat.db.Dao.FavImageDao
 import com.sarrawi.mynokat.db.Dao.FavNokatDao
-import com.sarrawi.mynokat.db.Dao.NokatDao
+import com.sarrawi.mynokat.model.FavImgModel
 import com.sarrawi.mynokat.model.FavNokatModel
 import com.sarrawi.mynokat.model.NokatModel
-import kotlinx.coroutines.flow.collectLatest
 
 class LocaleSource(context: Context) {
 
@@ -17,10 +20,13 @@ class LocaleSource(context: Context) {
     private val database = PostDatabase.getInstance(context)
     var nokatDao = database.nokatDao()
     var favoriteDao: FavNokatDao?
+    var favImageDao:FavImageDao
+
     init {
         val dataBase = PostDatabase.getInstance(context.applicationContext)
         nokatDao = dataBase.nokatDao()
         favoriteDao = dataBase.favNokatDao()
+        favImageDao = dataBase.favImageDao()
     }
 
     companion object {
@@ -66,6 +72,25 @@ class LocaleSource(context: Context) {
 
     fun getAllNokatsDao(): PagingSource<Int, NokatModel> {
         return nokatDao.getAllNokatsPaging()
+    }
+
+/////////////////
+    suspend fun insertFavoriteImage(favImgModel: FavImgModel){
+        return favImageDao.insertFavoriteImage(favImgModel)
+    }
+
+    suspend fun deleteFavoriteImage(favImgModel: FavImgModel){
+        return favImageDao.deleteFavoriteImage(favImgModel)
+    }
+
+
+    suspend fun getAllFavoriteImages(): PagingSource<Int, FavImgModel>{
+        return favImageDao.getAllFavoriteImages()
+    }
+
+
+    suspend fun update_favimg(ID:Int,state:Boolean){
+        return favImageDao.update_favimg(ID,state)
     }
 
 

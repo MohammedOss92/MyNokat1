@@ -5,14 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.sarrawi.mynokat.db.Dao.FavImageDao
 import com.sarrawi.mynokat.db.Dao.FavNokatDao
 import com.sarrawi.mynokat.db.Dao.NokatDao
+import com.sarrawi.mynokat.model.FavImgModel
 import com.sarrawi.mynokat.model.FavNokatModel
 import com.sarrawi.mynokat.model.LocalDateTimeConverter
 import com.sarrawi.mynokat.model.NokatModel
 
 @Database(
-    entities = [NokatModel::class,FavNokatModel::class],
+    entities = [NokatModel::class,FavNokatModel::class,FavImgModel::class],
     version = 1,
     exportSchema = false
 )
@@ -21,6 +23,7 @@ abstract class PostDatabase: RoomDatabase() {
 
     abstract fun nokatDao():NokatDao
     abstract fun favNokatDao():FavNokatDao
+    abstract fun favImageDao():FavImageDao
 
     companion object {
 
