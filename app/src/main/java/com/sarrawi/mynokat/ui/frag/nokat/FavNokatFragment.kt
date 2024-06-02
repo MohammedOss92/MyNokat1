@@ -72,33 +72,30 @@ class FavNokatFragment : Fragment() {
     private fun setup() {
         if (isAdded) {
             binding.rcNokatFav.layoutManager = LinearLayoutManager(requireContext())
-
-            val pagingAdapter = PagingAdapterNokatFav(requireContext())
-            binding.rcNokatFav.adapter = pagingAdapter
+            binding.rcNokatFav.adapter = pagingAdapterNokatFav
 
             nokatViewModel.favNokat.observe(viewLifecycleOwner) { pagingData ->
-                pagingAdapter.submitData(lifecycle, pagingData)
+                pagingAdapterNokatFav.submitData(lifecycle, pagingData)
             }
 
-
-
             pagingAdapterNokatFav.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
-            // يمكنك وضع scrollToPosition(0) هنا أو في مكان مناسب بالنسبة لدورة حياة مشهد الفريق
         }
     }
+
 
     private fun adapterOnClick() {
 
-        pagingAdapterNokatFav.onItemClick = {
+        pagingAdapterNokatFav.onItemClick = { favNokatModel ->
             nokatViewModel.viewModelScope.launch {
-                nokatViewModel.update_fav(it.id,false) // update item state
-                val result = mainRepository.deleteFav(it)   // delete favorite item from db
-                Toast.makeText(requireContext(),"تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
-                setup()
+                nokatViewModel.update_fav(favNokatModel.id, false)
+                val result = mainRepository.deleteFav(favNokatModel)
+                Toast.makeText(requireContext(), "تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
+                // يمكنك تحديث القائمة هنا إذا لزم الأمر
             }
-
         }
+
+
+    }
     }
 
 
-}

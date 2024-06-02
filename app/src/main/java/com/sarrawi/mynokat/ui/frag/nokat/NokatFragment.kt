@@ -103,9 +103,9 @@ class NokatFragment : Fragment() {
             binding.rcNokat.adapter = pagingAdapter
 
             lifecycleScope.launch {
-                nokatViewModel.nokatStream.collectLatest {pagingData ->
-                pagingAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
-            }
+                nokatViewModel.itemss.observe(viewLifecycleOwner) { pagingData ->
+                    pagingAdapter.submitData(lifecycle, pagingData)
+                }
             }
 
             pagingAdapter.onItemClick = { id, item, position ->
@@ -113,34 +113,29 @@ class NokatFragment : Fragment() {
                 val fav = FavNokatModel(item.id, item.NokatTypes, item.new_nokat, item.NokatName, item.createdAt).apply {
                     createdAt = currentTime
                 }
-                if (!item.is_fav) {
+
+                if (item.is_fav) {
                     nokatViewModel.update_favs(item.id, false)
-
                     nokatViewModel.delete_favs(fav)
-                    Toast.makeText(requireContext(), "تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
-
+                    lifecycleScope.launch {
+                        Toast.makeText(requireContext(), "تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
+                        pagingAdapter.notifyItemChanged(position) // Update UI after operation
+                    }
                 } else {
-
-                    nokatViewModel.add_favs(fav)
                     nokatViewModel.update_favs(item.id, true)
-
-                    Toast.makeText(requireContext(), "تم الاضافة الى المفضلة", Toast.LENGTH_SHORT).show()
+                    nokatViewModel.add_favs(fav)
+                    lifecycleScope.launch {
+                        Toast.makeText(requireContext(), "تم الاضافة الى المفضلة", Toast.LENGTH_SHORT).show()
+                        pagingAdapter.notifyItemChanged(position) // Update UI after operation
+                    }
                 }
-                nokatViewModel.update_favs(item.id, !item.is_fav)
-//                if (item.is_fav) {
-//                    nokatViewModel.update_favs(item.id, false)
-//                    nokatViewModel.delete_favs(fav)
-//                    Toast.makeText(requireContext(), "تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
-//                } else {
-//                    nokatViewModel.update_favs(item.id, true)
-//                    nokatViewModel.add_favs(fav)
-//                    Toast.makeText(requireContext(), "تم الاضافة الى المفضلة", Toast.LENGTH_SHORT).show()
-//                }
             }
 
             pagingAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
     }
+
+
 
 
     private fun setUpRv() {
@@ -159,8 +154,8 @@ class NokatFragment : Fragment() {
 //            }
 
             lifecycleScope.launch {
-                nokatViewModel.itemss.collectLatest { pagingData ->
-                    PagingAdapterNokat.submitData(pagingData)
+                nokatViewModel.itemss.observe(viewLifecycleOwner) { pagingData ->
+                    PagingAdapterNokat.submitData(viewLifecycleOwner.lifecycle,pagingData)
                     PagingAdapterNokat.notifyDataSetChanged()
                 }
             }

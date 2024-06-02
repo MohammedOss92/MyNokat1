@@ -39,7 +39,10 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
         }
     }
 
-    val itemss: Flow<PagingData<NokatModel>> = nokatRepo.getAllNokats()
+//    val itemss: Flow<PagingData<NokatModel>> = nokatRepo.getAllNokats()
+    val itemss: LiveData<PagingData<NokatModel>> = nokatRepo.getAllNokats().cachedIn(viewModelScope)
+    val nokatStream: Flow<PagingData<NokatModel>> = nokatRepo.getNokatStream()
+        .cachedIn(viewModelScope)
 
     fun refreshNokats() {
         viewModelScope.launch {
@@ -51,33 +54,16 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
         }
     }
 
-    val nokatStream: Flow<PagingData<NokatModel>> = nokatRepo.getNokatStream()
-        .cachedIn(viewModelScope)
 
-
-//    @OptIn(ExperimentalPagingApi::class)
-//    val items: Flow<PagingData<NokatModel>> = Pager(
-//        config = PagingConfig(pageSize = 20),
-//        remoteMediator = NokatRemoteMediator(nokatRepo.apiService, database),
-//        pagingSourceFactory = { database.nokatDao().getAllNokatsPaging() }
-//    ).flow.cachedIn(viewModelScope)
-
-//    fun getAllNokat(): LiveData<PagingData<NokatModel>> {
-//
-//        var _response = MutableLiveData<PagingData<NokatModel>>()
+    fun getAllNokat(): LiveData<PagingData<FavNokatModel>> {
+        Log.e("tessst","entred22")
 //        viewModelScope.launch {
-//            try {
-//                val response = nokatRepo.getAllNokatSerpa()
-//                _response = response as MutableLiveData<PagingData<NokatModel>>
-//
-//
-//            } catch (e: Exception) {
-//                Log.e("Test", "getAllNokat: Error: ${e.message}")
-//            }
+//          __response.postValue(msgsRepo.getAllFav())
 //        }
-//
-//        return _response
-//    }
+        return nokatRepo.getAllFav()
+    }
+
+
 
 
     fun getAllImage(): LiveData<PagingData<ImgsNokatModel>> {

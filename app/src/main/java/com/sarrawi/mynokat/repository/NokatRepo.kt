@@ -41,14 +41,14 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
         ).flow
     }
 
-    fun getAllNokats(): Flow<PagingData<NokatModel>> {
+    fun getAllNokats(): LiveData<PagingData<NokatModel>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
                     enablePlaceholders =  false
             ),
             pagingSourceFactory = { database.nokatDao().getAllNokatsPaging() }
-        ).flow
+        ).liveData
     }
 
     suspend fun refreshNokats() {

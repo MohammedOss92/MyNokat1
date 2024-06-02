@@ -22,8 +22,6 @@ class PagingAdapterNokat(val con: Context): PagingDataAdapter<NokatModel, Paging
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     getItem(position)?.let { item ->
-                        item.is_fav = !item.is_fav // تحديث حالة المفضلة
-                        notifyItemChanged(position) // تحديث العنصر في القائمة
                         onItemClick?.invoke(item.id ?: 0, item, position)
                     }
                 }

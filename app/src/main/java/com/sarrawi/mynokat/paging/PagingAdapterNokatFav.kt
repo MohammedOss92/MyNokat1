@@ -15,7 +15,6 @@ import com.sarrawi.mynokat.model.NokatModel
 
 class PagingAdapterNokatFav (val con: Context): PagingDataAdapter<FavNokatModel, PagingAdapterNokatFav.ViewHolder>(COMPARATOR) {
 
-    var onItemClick2: ((item:NokatModel,position:Int) -> Unit)? = null
     var onItemClick: ((fav:FavNokatModel) -> Unit)? = null
 
     inner class ViewHolder(private val binding: NokatdesignfavBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -25,9 +24,7 @@ class PagingAdapterNokatFav (val con: Context): PagingDataAdapter<FavNokatModel,
                 if (position != RecyclerView.NO_POSITION) {
                     getItem(position)?.let { item ->
                          // تحديث حالة المفضلة
-                        notifyItemChanged(position) // تحديث العنصر في القائمة
                         onItemClick?.invoke(item)
-                        //onItemClick?.invoke(item.id ?: 0, item, position)
                     }
                 }
             }
