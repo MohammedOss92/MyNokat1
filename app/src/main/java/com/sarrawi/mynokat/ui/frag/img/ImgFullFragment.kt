@@ -14,7 +14,9 @@ import com.sarrawi.mynokat.databinding.FragmentImgFullBinding
 import com.sarrawi.mynokat.db.LocaleSource
 import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.model.ImgsNokatModel
+import com.sarrawi.mynokat.model.ItemModel
 import com.sarrawi.mynokat.paging.PagingAdapterFullImg
+import com.sarrawi.mynokat.paging.PagingAdapterImg
 import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
 import com.sarrawi.mynokat.viewModel.NokatViewModel
@@ -31,6 +33,7 @@ class ImgFullFragment : Fragment() {
     }
 
     private val pagingAdapterImgFull by lazy { PagingAdapterFullImg(requireActivity(), this) }
+    private val pagingAdapterImg by lazy { PagingAdapterImg(requireActivity(), this) }
     private lateinit var imgModel: ImgsNokatModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,9 +73,9 @@ class ImgFullFragment : Fragment() {
 //            reverseLayout = true // // نفعل هذا الخيار
 //            stackFromEnd = true // مع هذا ليتم تحريك موقع العناصر
         }
-        binding.rcImgFull.adapter = pagingAdapterImgFull
+        binding.rcImgFull.adapter = pagingAdapterImg
         nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
-            pagingAdapterImgFull.submitData(viewLifecycleOwner.lifecycle, pagingData)
+            pagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
             scrollToSelectedImage()
         }
     }
@@ -84,22 +87,39 @@ class ImgFullFragment : Fragment() {
         binding.rcImgFull.viewTreeObserver.addOnPreDrawListener(
             object : ViewTreeObserver.OnPreDrawListener {
 
-
                 override fun onPreDraw(): Boolean {
-                    if (pagingAdapterImgFull.itemCount > 0) {
-                        val snapshot = pagingAdapterImgFull.snapshot()
-                        val position = snapshot.indexOfFirst { it?.id == imgModel.id }
+                    if (pagingAdapterImg.itemCount > 0) {
+                        val snapshot = pagingAdapterImg.snapshot()
+                        val position = snapshot.indexOfFirst { item ->
+                            (item is ItemModel.ImgsItem) && (item.imgsNokatModel.id == imgModel?.id)
+                        }
                         if (position != -1) {
                             binding.rcImgFull.scrollToPosition(position)
                             Toast.makeText(requireContext(), "Item found", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(requireContext(), "Item not found", Toast.LENGTH_SHORT).show()
                         }
-                        binding.rcImgFull.viewTreeObserver.removeOnPreDrawListener(this) ///
+                        binding.rcImgFull.viewTreeObserver.removeOnPreDrawListener(this)
                         return true
                     }
                     return false
                 }
+
+//                override fun onPreDraw(): Boolean {
+//                    if (pagingAdapterImg.itemCount > 0) {
+//                        val snapshot = pagingAdapterImg.snapshot()
+//                        val position = snapshot.indexOfFirst { it?.id == imgModel.id }
+//                        if (position != -1) {
+//                            binding.rcImgFull.scrollToPosition(position)
+//                            Toast.makeText(requireContext(), "Item found", Toast.LENGTH_SHORT).show()
+//                        } else {
+//                            Toast.makeText(requireContext(), "Item not found", Toast.LENGTH_SHORT).show()
+//                        }
+//                        binding.rcImgFull.viewTreeObserver.removeOnPreDrawListener(this) ///
+//                        return true
+//                    }
+//                    return false
+//                }
             }
         )
     }

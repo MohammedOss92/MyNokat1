@@ -5,10 +5,9 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.model.ImgsNokatModel
-import com.sarrawi.mynokat.model.NokatModel
+import com.sarrawi.mynokat.model.ItemModel
 
-class ImagePaging(private val apiService: ApiService):
-    PagingSource<Int, ImgsNokatModel>()  {
+class ImagePaging(private val apiService: ApiService) : PagingSource<Int, ItemModel>() {
 
     companion object {
         private const val STARTING_PAGE_INDEX = 1
@@ -16,14 +15,14 @@ class ImagePaging(private val apiService: ApiService):
 
     private var isLoading = false
 
-    override fun getRefreshKey(state: PagingState<Int, ImgsNokatModel>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, ItemModel>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ImgsNokatModel> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ItemModel> {
         if (isLoading) {
             // تجنب إعادة استدعاء load عندما تكون العملية قيد التحميل
             return LoadResult.Error(Exception("Loading is already in progress"))
@@ -36,15 +35,18 @@ class ImagePaging(private val apiService: ApiService):
             val pageSize = params.loadSize
 
             Log.d("ImageNokatPaging", "Loading page $currentPage with pageSize $pageSize")
-            val response = apiService.getAllImgNokatPa( currentPage)
+            val response = apiService.getAllImgNokatPa(currentPage)
             Log.i("hahahahahaha", "load: ${response.body()}")
             if (response.isSuccessful) {
-                val data = response.body()?.results?.ImgsNokatModel?: emptyList()
+                val data = response.body()?.results?.ImgsNokatModel ?: emptyList()
 
-                Log.d("ImageNokatPaging", "Loaded data: $data")
+                // تحويل البيانات إلى ItemModel
+                val itemModels = data.map { ItemModel.ImgsItem(it) }
+
+                Log.d("ImageNokatPaging", "Loaded data: $itemModels")
 
                 return LoadResult.Page(
-                    data = data,
+                    data = itemModels,
                     prevKey = if (currentPage == STARTING_PAGE_INDEX) null else currentPage - 1,
                     nextKey = if (data.isEmpty()) null else currentPage + 1
                 )

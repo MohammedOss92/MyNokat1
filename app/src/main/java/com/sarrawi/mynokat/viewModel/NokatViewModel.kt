@@ -9,10 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.db.PostDatabase
-import com.sarrawi.mynokat.model.FavImgModel
-import com.sarrawi.mynokat.model.FavNokatModel
-import com.sarrawi.mynokat.model.ImgsNokatModel
-import com.sarrawi.mynokat.model.NokatModel
+import com.sarrawi.mynokat.model.*
 import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.ui.MainActivity
 import com.sarrawi.mynokat.utils.NetworkConnection
@@ -67,13 +64,13 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
 
 
 
-    fun getAllImage(): LiveData<PagingData<ImgsNokatModel>> {
+    fun getAllImage(): LiveData<PagingData<ItemModel>> {
 
-        var _response = MutableLiveData<PagingData<ImgsNokatModel>>()
+        var _response = MutableLiveData<PagingData<ItemModel>>()
         viewModelScope.launch {
             try {
                 val response = nokatRepo.getAllImgsNokatSerPag()
-                _response = response as MutableLiveData<PagingData<ImgsNokatModel>>
+                _response = response as MutableLiveData<PagingData<ItemModel>>
             } catch (e: Exception) {
                 Log.e("Test", "getAllNokat: Error: ${e.message}")
             }
@@ -82,7 +79,7 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
         return _response
     }
 
-    val ImageStream: Flow<PagingData<ImgsNokatModel>> = nokatRepo.getAllImgsNokatSerPa()
+    val ImageStream: Flow<PagingData<ItemModel>> = nokatRepo.getAllImgsNokatSerPa()
         .cachedIn(viewModelScope)
 
 

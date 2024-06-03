@@ -7,10 +7,7 @@ import androidx.room.withTransaction
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.db.LocaleSource
 import com.sarrawi.mynokat.db.PostDatabase
-import com.sarrawi.mynokat.model.FavImgModel
-import com.sarrawi.mynokat.model.FavNokatModel
-import com.sarrawi.mynokat.model.ImgsNokatModel
-import com.sarrawi.mynokat.model.NokatModel
+import com.sarrawi.mynokat.model.*
 import com.sarrawi.mynokat.paging.ImagePaging
 import com.sarrawi.mynokat.paging.NokatPaging
 import kotlinx.coroutines.flow.Flow
@@ -76,7 +73,7 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
         ).liveData
     }
 
-    fun getAllImgsNokatSerPag():LiveData<PagingData<ImgsNokatModel>>{
+    fun getAllImgsNokatSerPag():LiveData<PagingData<ItemModel>>{
 
             return  Pager(
                 config = PagingConfig(pageSize = 12,
@@ -86,7 +83,7 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
                 pagingSourceFactory = { ImagePaging(apiService) }
             ).liveData
         }
-    fun getAllImgsNokatSerPa():Flow<PagingData<ImgsNokatModel>>{
+    fun getAllImgsNokatSerPa():Flow<PagingData<ItemModel>>{
         return  Pager(
             config = PagingConfig(pageSize = 12,
             enablePlaceholders =  false
