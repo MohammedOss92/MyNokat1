@@ -31,7 +31,7 @@ class ImgFullFragment : Fragment() {
     private val mainRepository by lazy { NokatRepo(retrofitService, LocaleSource(requireContext()), PostDatabase.getInstance(requireContext())) }
     private val nokatViewModel: NokatViewModel by viewModels { MyViewModelFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext())) }
 
-    private val pagingAdapterImg by lazy { PagingAdapterImg(requireActivity(), this) }
+    private val pagingAdapterfullImg by lazy { PagingAdapterFullImg(requireActivity(), this) }
     private lateinit var imgModel: ImgsNokatModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,12 +50,12 @@ class ImgFullFragment : Fragment() {
         nokatViewModel.isConnected.observe(requireActivity()) { isConnected ->
             if (isConnected) {
                 setupRecyclerView()
-                pagingAdapterImg.updateInternetStatus(isConnected)
+                pagingAdapterfullImg.updateInternetStatus(isConnected)
                 binding.lyNoInternet.visibility = View.GONE
             } else {
                 binding.lyNoInternet.visibility = View.VISIBLE
                 binding.rcImgFull.visibility = View.GONE
-                pagingAdapterImg.updateInternetStatus(isConnected)
+                pagingAdapterfullImg.updateInternetStatus(isConnected)
             }
         }
 
@@ -64,9 +64,9 @@ class ImgFullFragment : Fragment() {
 
     private fun setupRecyclerView() {
         binding.rcImgFull.layoutManager = LinearLayoutManager(requireContext())
-        binding.rcImgFull.adapter = pagingAdapterImg
+        binding.rcImgFull.adapter = pagingAdapterfullImg
         nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
-            pagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
+            pagingAdapterfullImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
             scrollToSelectedImage()
         }
     }
@@ -74,42 +74,42 @@ class ImgFullFragment : Fragment() {
     private fun scrollToSelectedImage() {
         binding.rcImgFull.viewTreeObserver.addOnPreDrawListener(
             object : ViewTreeObserver.OnPreDrawListener {
-                override fun onPreDraw(): Boolean {
-                    if (pagingAdapterImg.itemCount > 0) {
-                        val snapshot = pagingAdapterImg.snapshot()
-                        val position = snapshot.indexOfFirst { item ->
-                            (item is ItemModel.ImgsItem) && (item.imgsNokatModel.id == imgModel?.id)
-                        }
-                        if (position != -1) {
-                            binding.rcImgFull.scrollToPosition(position)
-                            Toast.makeText(requireContext(), "Item found", Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(requireContext(), "Item not found", Toast.LENGTH_SHORT).show()
-                        }
-                        binding.rcImgFull.viewTreeObserver.removeOnPreDrawListener(this)
-                        return true
-                    }
-                    return false
-                }
-
-
-
-
 //                override fun onPreDraw(): Boolean {
 //                    if (pagingAdapterImg.itemCount > 0) {
 //                        val snapshot = pagingAdapterImg.snapshot()
-//                        val position = snapshot.indexOfFirst { it?.id == imgModel.id }
+//                        val position = snapshot.indexOfFirst { item ->
+//                            (item is ItemModel.ImgsItem) && (item.imgsNokatModel.id == imgModel?.id)
+//                        }
 //                        if (position != -1) {
 //                            binding.rcImgFull.scrollToPosition(position)
 //                            Toast.makeText(requireContext(), "Item found", Toast.LENGTH_SHORT).show()
 //                        } else {
 //                            Toast.makeText(requireContext(), "Item not found", Toast.LENGTH_SHORT).show()
 //                        }
-//                        binding.rcImgFull.viewTreeObserver.removeOnPreDrawListener(this) ///
+//                        binding.rcImgFull.viewTreeObserver.removeOnPreDrawListener(this)
 //                        return true
 //                    }
 //                    return false
 //                }
+
+
+
+
+                override fun onPreDraw(): Boolean {
+                    if (pagingAdapterfullImg.itemCount > 0) {
+                        val snapshot = pagingAdapterfullImg.snapshot()
+                        val position = snapshot.indexOfFirst { it?.id == imgModel.id }
+                        if (position != -1) {
+                            binding.rcImgFull.scrollToPosition(position)
+                            Toast.makeText(requireContext(), "Item found", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(requireContext(), "Item not found", Toast.LENGTH_SHORT).show()
+                        }
+                        binding.rcImgFull.viewTreeObserver.removeOnPreDrawListener(this) ///
+                        return true
+                    }
+                    return false
+                }
             }
         )
     }

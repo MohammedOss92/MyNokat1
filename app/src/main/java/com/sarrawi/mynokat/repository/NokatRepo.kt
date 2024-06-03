@@ -73,7 +73,8 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
         ).liveData
     }
 
-    fun getAllImgsNokatSerPag():LiveData<PagingData<ItemModel>>{
+//    fun getAllImgsNokatSerPag():LiveData<PagingData<ItemModel>>{
+    fun getAllImgsNokatSerPag():LiveData<PagingData<ImgsNokatModel>>{
 
             return  Pager(
                 config = PagingConfig(pageSize = 12,
@@ -83,7 +84,7 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
                 pagingSourceFactory = { ImagePaging(apiService) }
             ).liveData
         }
-    fun getAllImgsNokatSerPa():Flow<PagingData<ItemModel>>{
+    fun getAllImgsNokatSerPa():Flow<PagingData<ImgsNokatModel>>{
         return  Pager(
             config = PagingConfig(pageSize = 12,
             enablePlaceholders =  false

@@ -7,7 +7,7 @@ import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.model.ImgsNokatModel
 import com.sarrawi.mynokat.model.ItemModel
 
-class ImagePaging(private val apiService: ApiService) : PagingSource<Int, ItemModel>() {
+class ImagePaging(private val apiService: ApiService) : PagingSource<Int, ImgsNokatModel>() {
 
     companion object {
         private const val STARTING_PAGE_INDEX = 1
@@ -15,14 +15,14 @@ class ImagePaging(private val apiService: ApiService) : PagingSource<Int, ItemMo
 
     private var isLoading = false
 
-    override fun getRefreshKey(state: PagingState<Int, ItemModel>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, ImgsNokatModel>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ItemModel> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ImgsNokatModel> {
         if (isLoading) {
             // تجنب إعادة استدعاء load عندما تكون العملية قيد التحميل
             return LoadResult.Error(Exception("Loading is already in progress"))
@@ -46,10 +46,16 @@ class ImagePaging(private val apiService: ApiService) : PagingSource<Int, ItemMo
                 Log.d("ImageNokatPaging", "Loaded data: $itemModels")
 
                 return LoadResult.Page(
-                    data = itemModels,
+                    data = data,
                     prevKey = if (currentPage == STARTING_PAGE_INDEX) null else currentPage - 1,
                     nextKey = if (data.isEmpty()) null else currentPage + 1
                 )
+
+//                return LoadResult.Page(
+//                    data = itemModels,
+//                    prevKey = if (currentPage == STARTING_PAGE_INDEX) null else currentPage - 1,
+//                    nextKey = if (data.isEmpty()) null else currentPage + 1
+//                )
             } else {
                 Log.e("ImageNokatPaging", "Error loading data. Response: ${response.code()}, ${response.message()}")
                 return LoadResult.Error(Exception("Error loading data. Response: ${response.code()}, ${response.message()}"))
