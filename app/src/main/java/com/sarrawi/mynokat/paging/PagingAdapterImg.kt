@@ -272,7 +272,7 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
     private var isInternetConnected: Boolean = true
     private var isImageVisible = true
     private var currentFlippedPosition: Int? = null
-    var onItemClick: ((Int, ImgsNokatModel, Int) -> Unit)? = null
+    var onItemClick: (( ImgsNokatModel, Int) -> Unit)? = null
 
     inner class ViewHolder(private val binding: ImgRowBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -282,10 +282,17 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     getItem(position)?.let { item ->
-                        onItemClick?.invoke(item.id ?: 0, item, position)
+                        onItemClick?.invoke(item, position)
+                        // تحديث حالة الزر بعد النقر
+                        if (item.is_fav) {
+                            binding.favBtn.setImageResource(R.drawable.baseline_favorite_true)
+                        } else {
+                            binding.favBtn.setImageResource(R.drawable.baseline_favorite_border_false)
+                        }
                     }
                 }
             }
+
         }
 
         fun bind(imgModel: ImgsNokatModel?, isInternetConnected: Boolean) {

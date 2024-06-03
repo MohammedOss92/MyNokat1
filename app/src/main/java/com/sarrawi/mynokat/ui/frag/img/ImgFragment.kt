@@ -1,6 +1,7 @@
 package com.sarrawi.mynokat.ui.frag.img
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -93,19 +94,20 @@ class ImgFragment : Fragment() {
 
     fun setup() {
         if (isAdded) {
-            binding.rcImgNokat.layoutManager = StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL)
+            // تعيين إعدادات RecyclerView
+            binding.rcImgNokat.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
 
-
+            // تعيين Adapter لـ RecyclerView
             binding.rcImgNokat.adapter = pagingAdapterImg
 
+            // مراقبة تغييرات البيانات في ViewModel وتقديم البيانات إلى ال Adapter
             nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
                 pagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
             }
 
-            pagingAdapterImg.onItemClick = { id, item, position ->
-                val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(
-                    Date()
-                )
+            // تحديد الإجراء الذي يتم تنفيذه عند النقر على عنصر في RecyclerView
+            pagingAdapterImg.onItemClick = {  item, position ->
+                val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
                 val fav = FavImgModel(item.id, item.new_img, item.pic, item.image_url).apply {
                     createdAt = currentTime
                 }
@@ -115,22 +117,31 @@ class ImgFragment : Fragment() {
                     nokatViewModel.delete_favs_img(fav)
                     lifecycleScope.launch {
                         Toast.makeText(requireContext(), "تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
-                        pagingAdapterImg.notifyItemChanged(position) // Update UI after operation
+                        pagingAdapterImg.notifyItemChanged(position) // تحديث واجهة المستخدم بعد العملية
                     }
                 } else {
                     nokatViewModel.update_favs_img(item.id, true)
                     nokatViewModel.add_favs_img(fav)
                     lifecycleScope.launch {
                         Toast.makeText(requireContext(), "تم الاضافة الى المفضلة", Toast.LENGTH_SHORT).show()
-                        pagingAdapterImg.notifyItemChanged(position) // Update UI after operation
+                        pagingAdapterImg.notifyItemChanged(position) // تحديث واجهة المستخدم بعد العملية
                     }
                 }
+                lifecycleScope.launch {
+                    pagingAdapterImg.notifyItemChanged(position)
+                }
+                // في دالة onItemClick داخل setup()
+                if (item.is_fav) {
+                    Log.d("TAG", "Item is now favorite")
+                } else {
+                    Log.d("TAG", "Item is not favorite")
+                }
+
             }
 
-
         }
+    }
 
-        }
 
 //    private fun setup() {
 //        if (isAdded) {
@@ -146,6 +157,20 @@ class ImgFragment : Fragment() {
 //            }
 //        }
 //    }
+
+    /*private fun setupInitialData() {
+        // هنا يمكنك الحصول على البيانات مباشرة من الـ Adapter وعرضها في الـ Fragment
+        val initialData = adapter.snapshot() // استخدام snapshot للحصول على البيانات الحالية في الـ Adapter
+
+        // التحقق من البيانات وعرضها في الـ Fragment
+        initialData.forEach { item ->
+            if (item is ItemModel.ImgsItem) {
+                val imgModel = item.imgsNokatModel
+                // هنا يمكنك استخدام imgModel لعرض البيانات في الـ Fragment
+                // مثلاً:
+                // imageView.setImageURI(Uri.parse(imgModel.image_url))
+            }
+        }*/
 
 
     override fun onDestroyView() {

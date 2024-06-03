@@ -113,4 +113,21 @@ class ImgFullFragment : Fragment() {
             }
         )
     }
+
+//    private fun setupInitialData(view: View) {
+//        // هنا يمكنك الحصول على البيانات مباشرة من الـ Adapter وعرضها في الـ Fragment
+//        val initialData = pagingAdapterfullImg.snapshot().items
+//
+//        // التحقق من البيانات وعرضها في الـ Fragment
+//        initialData.forEach { item ->
+//            if (item is ItemModel.AnotherItem) {
+//                val favImgModel = item.favImgModel
+//                // هنا يمكنك استخدام favImgModelلعرض البيانات في الـ Fragment
+//                // مثلاً:
+//                val imageView = view.findViewById<ImageView>(R.id.fullImageView)
+//                Glide.with(this).load(favImgModel.imageUrl).into(imageView)
+//                // قم بعرض البيانات الأخرى حسب الحاجة
+//            }
+//        }
+//    }
 }
