@@ -21,18 +21,16 @@ import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
 import com.sarrawi.mynokat.viewModel.NokatViewModel
 
+
+
 class ImgFullFragment : Fragment() {
     private lateinit var _binding: FragmentImgFullBinding
     private val binding get() = _binding
 
     private val retrofitService = ApiService.provideRetrofitInstance()
-    private val mainRepository by lazy { NokatRepo(retrofitService, LocaleSource(requireContext()),
-        PostDatabase.getInstance(requireContext())) }
-    private val nokatViewModel: NokatViewModel by viewModels {
-        MyViewModelFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext()))
-    }
+    private val mainRepository by lazy { NokatRepo(retrofitService, LocaleSource(requireContext()), PostDatabase.getInstance(requireContext())) }
+    private val nokatViewModel: NokatViewModel by viewModels { MyViewModelFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext())) }
 
-    private val pagingAdapterImgFull by lazy { PagingAdapterFullImg(requireActivity(), this) }
     private val pagingAdapterImg by lazy { PagingAdapterImg(requireActivity(), this) }
     private lateinit var imgModel: ImgsNokatModel
 
@@ -41,10 +39,7 @@ class ImgFullFragment : Fragment() {
         imgModel = ImgFullFragmentArgs.fromBundle(requireArguments()).fullimg
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentImgFullBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -55,24 +50,20 @@ class ImgFullFragment : Fragment() {
         nokatViewModel.isConnected.observe(requireActivity()) { isConnected ->
             if (isConnected) {
                 setupRecyclerView()
-                pagingAdapterImgFull.updateInternetStatus(isConnected)
+                pagingAdapterImg.updateInternetStatus(isConnected)
                 binding.lyNoInternet.visibility = View.GONE
             } else {
                 binding.lyNoInternet.visibility = View.VISIBLE
                 binding.rcImgFull.visibility = View.GONE
-                pagingAdapterImgFull.updateInternetStatus(isConnected)
+                pagingAdapterImg.updateInternetStatus(isConnected)
             }
         }
-
 
         nokatViewModel.checkNetworkConnection(requireContext())
     }
 
     private fun setupRecyclerView() {
-        binding.rcImgFull.layoutManager = LinearLayoutManager(requireContext()).apply {
-//            reverseLayout = true // // نفعل هذا الخيار
-//            stackFromEnd = true // مع هذا ليتم تحريك موقع العناصر
-        }
+        binding.rcImgFull.layoutManager = LinearLayoutManager(requireContext())
         binding.rcImgFull.adapter = pagingAdapterImg
         nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
             pagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
@@ -80,13 +71,9 @@ class ImgFullFragment : Fragment() {
         }
     }
 
-    /// لازم ننتظر تتحمل البيانات بشكل كامل ويتم اظهارها على الشاشه
-
     private fun scrollToSelectedImage() {
-        // اضفت viewTreeObserver  للتحقق من أن البيانات قد تم تحميلها بالكامل والعرض
         binding.rcImgFull.viewTreeObserver.addOnPreDrawListener(
             object : ViewTreeObserver.OnPreDrawListener {
-
                 override fun onPreDraw(): Boolean {
                     if (pagingAdapterImg.itemCount > 0) {
                         val snapshot = pagingAdapterImg.snapshot()
@@ -104,6 +91,9 @@ class ImgFullFragment : Fragment() {
                     }
                     return false
                 }
+
+
+
 
 //                override fun onPreDraw(): Boolean {
 //                    if (pagingAdapterImg.itemCount > 0) {
