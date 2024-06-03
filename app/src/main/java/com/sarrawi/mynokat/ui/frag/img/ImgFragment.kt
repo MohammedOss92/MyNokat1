@@ -106,8 +106,9 @@ class ImgFragment : Fragment() {
             }
 
             // تحديد الإجراء الذي يتم تنفيذه عند النقر على عنصر في RecyclerView
-            pagingAdapterImg.onItemClick = {  item, position ->
-                val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+            pagingAdapterImg.onItemClick = { item, position ->
+                val currentTime =
+                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
                 val fav = FavImgModel(item.id, item.new_img, item.pic, item.image_url).apply {
                     createdAt = currentTime
                 }
@@ -116,14 +117,19 @@ class ImgFragment : Fragment() {
                     nokatViewModel.update_favs_img(item.id, false)
                     nokatViewModel.delete_favs_img(fav)
                     lifecycleScope.launch {
-                        Toast.makeText(requireContext(), "تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "تم الحذف من المفضلة", Toast.LENGTH_SHORT)
+                            .show()
                         pagingAdapterImg.notifyItemChanged(position) // تحديث واجهة المستخدم بعد العملية
                     }
                 } else {
                     nokatViewModel.update_favs_img(item.id, true)
                     nokatViewModel.add_favs_img(fav)
                     lifecycleScope.launch {
-                        Toast.makeText(requireContext(), "تم الاضافة الى المفضلة", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "تم الاضافة الى المفضلة",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         pagingAdapterImg.notifyItemChanged(position) // تحديث واجهة المستخدم بعد العملية
                     }
                 }
@@ -137,8 +143,9 @@ class ImgFragment : Fragment() {
                     Log.d("TAG", "Item is not favorite")
                 }
 
+//
+                //            }
             }
-
         }
     }
 
