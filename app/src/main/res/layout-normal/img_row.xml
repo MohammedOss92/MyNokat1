@@ -21,6 +21,13 @@
             android:layout_height="100dp"
             android:layout_gravity="center"
             />
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="28dp"
+            android:id="@+id/fav_btn"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/new_Msg_m"
+            android:src="@drawable/baseline_favorite_border_false"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"

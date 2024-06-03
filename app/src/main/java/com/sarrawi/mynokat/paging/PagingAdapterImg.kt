@@ -20,6 +20,7 @@ import com.sarrawi.mynokat.databinding.ImgRowBinding
 import com.sarrawi.mynokat.model.FavImgModel
 import com.sarrawi.mynokat.model.ImgsNokatModel
 import com.sarrawi.mynokat.model.ItemModel
+import com.sarrawi.mynokat.model.NokatModel
 import com.sarrawi.mynokat.model.bind.ITEM_TYPE_ANOTHER
 import com.sarrawi.mynokat.model.bind.ITEM_TYPE_IMG
 import com.sarrawi.mynokat.ui.frag.img.ImgFragmentDirections
@@ -271,14 +272,36 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
     private var isInternetConnected: Boolean = true
     private var isImageVisible = true
     private var currentFlippedPosition: Int? = null
+    var onItemClick: ((Int, ImgsNokatModel, Int) -> Unit)? = null
 
     inner class ViewHolder(private val binding: ImgRowBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             setupListeners()
+            binding.favBtn.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    getItem(position)?.let { item ->
+                        onItemClick?.invoke(item.id ?: 0, item, position)
+                    }
+                }
+            }
         }
 
         fun bind(imgModel: ImgsNokatModel?, isInternetConnected: Boolean) {
+
+            binding.apply {
+                if(imgModel!!.is_fav){
+                    favBtn.setImageResource(R.drawable.baseline_favorite_true)
+                }
+
+                else{
+                    favBtn.setImageResource(R.drawable.baseline_favorite_border_false)
+                }
+
+
+
+            }
 
             binding.imageView.setOnClickListener {
                 val imgModel = getItem(bindingAdapterPosition)

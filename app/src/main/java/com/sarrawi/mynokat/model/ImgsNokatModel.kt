@@ -14,7 +14,8 @@ data class ImgsNokatModel(
                 @SerializedName("pic")
                 var pic:String?,
                 @SerializedName("image_url")
-                var image_url:String?
+                var image_url:String?,
+                var is_fav:Boolean = false,
 ):Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),

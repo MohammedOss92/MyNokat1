@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -20,6 +21,8 @@ import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.databinding.FragmentImgBinding
 import com.sarrawi.mynokat.db.LocaleSource
 import com.sarrawi.mynokat.db.PostDatabase
+import com.sarrawi.mynokat.model.FavImgModel
+import com.sarrawi.mynokat.model.FavNokatModel
 import com.sarrawi.mynokat.paging.PagingAdapterImg
 import com.sarrawi.mynokat.paging.PagingAdapterNokat
 import com.sarrawi.mynokat.repository.NokatRepo
@@ -27,6 +30,8 @@ import com.sarrawi.mynokat.viewModel.MyViewModelFactory
 import com.sarrawi.mynokat.viewModel.NokatViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class ImgFragment : Fragment() {
@@ -95,6 +100,31 @@ class ImgFragment : Fragment() {
 
             nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
                 pagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
+            }
+
+            pagingAdapterImg.onItemClick = { id, item, position ->
+                val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(
+                    Date()
+                )
+                val fav = FavImgModel(item.id, item.new_img, item.pic, item.image_url).apply {
+                    createdAt = currentTime
+                }
+
+                if (item.is_fav) {
+                    nokatViewModel.update_favs_img(item.id, false)
+                    nokatViewModel.delete_favs_img(fav)
+                    lifecycleScope.launch {
+                        Toast.makeText(requireContext(), "تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
+                        pagingAdapterImg.notifyItemChanged(position) // Update UI after operation
+                    }
+                } else {
+                    nokatViewModel.update_favs_img(item.id, true)
+                    nokatViewModel.add_favs_img(fav)
+                    lifecycleScope.launch {
+                        Toast.makeText(requireContext(), "تم الاضافة الى المفضلة", Toast.LENGTH_SHORT).show()
+                        pagingAdapterImg.notifyItemChanged(position) // Update UI after operation
+                    }
+                }
             }
 
 
