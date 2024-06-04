@@ -29,6 +29,9 @@ import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.model.FavImgModel
 import com.sarrawi.mynokat.model.FavNokatModel
 import com.sarrawi.mynokat.model.ImgsNokatModel
+import com.sarrawi.mynokat.model.bind
+import com.sarrawi.mynokat.model.bind.ITEM_TYPE_IMG
+import com.sarrawi.mynokat.paging.Adapter
 import com.sarrawi.mynokat.paging.PagingAdapterImg
 import com.sarrawi.mynokat.paging.PagingAdapterNokat
 import com.sarrawi.mynokat.repository.NokatRepo
@@ -72,6 +75,8 @@ class ImgFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val navController = findNavController()
         val bottomNav: BottomNavigationView = binding.bottomNavImg
+//        val adapter = Adapter(requireContext(), this, ITEM_TYPE_IMG)
+//        val adapter = Adapter(requireContext(), this, bind.ITEM_TYPE_ANOTHER)
 
         // ربط BottomNavigationView مع NavController
         bottomNav.setupWithNavController(navController)

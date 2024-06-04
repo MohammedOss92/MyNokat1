@@ -24,11 +24,14 @@ import com.sarrawi.mynokat.model.bind.ITEM_TYPE_ANOTHER
 import com.sarrawi.mynokat.model.bind.ITEM_TYPE_IMG
 import com.sarrawi.mynokat.ui.frag.img.ImgFragmentDirections
 
-class Adapter(val con: Context, val frag: Fragment, val viewHolderType: Int) : PagingDataAdapter<ItemModel, RecyclerView.ViewHolder>(COMPARATOR) {
+class Adapter(
+    val con: Context,
+    val frag: Fragment,
+    private val viewHolderType: Int // إضافة المعامل هنا
+) : PagingDataAdapter<ItemModel, RecyclerView.ViewHolder>(COMPARATOR) {
     private var isInternetConnected: Boolean = true
     private var isImageVisible = true
     private var currentFlippedPosition: Int? = null
-
 
     companion object {
         private val COMPARATOR = object : DiffUtil.ItemCallback<ItemModel>() {
@@ -51,11 +54,7 @@ class Adapter(val con: Context, val frag: Fragment, val viewHolderType: Int) : P
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
-            is ItemModel.ImgsItem -> ITEM_TYPE_IMG
-            is ItemModel.AnotherItem -> ITEM_TYPE_ANOTHER
-            else -> throw IllegalArgumentException("Invalid item type")
-        }
+        return viewHolderType // استخدام المعامل لتحديد نوع الـ ViewHolder
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -92,53 +91,31 @@ class Adapter(val con: Context, val frag: Fragment, val viewHolderType: Int) : P
 
     inner class ImgViewHolder(private val binding: ImgRowBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-
             setupListeners()
-
         }
 
         fun bind(imgModel: ImgsNokatModel?, isInternetConnected: Boolean) {
-
             if (isInternetConnected) {
-
                 val requestOptions = RequestOptions()
-
                     .placeholder(R.drawable.ic_baseline_autorenew_24)
-
                     .error(R.drawable.error_a)
-
                     .format(DecodeFormat.PREFER_RGB_565)
-
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-
                     .skipMemoryCache(true)
 
                 Glide.with(con)
-
                     .asBitmap()
-
                     .load(imgModel?.image_url)
-
                     .apply(requestOptions)
-
                     .circleCrop()
-
                     .centerCrop()
-
                     .into(binding.imageView)
-
             } else {
-
                 Glide.with(con)
-
                     .load(R.drawable.nonet)
-
                     .into(binding.imageView)
-
                 binding.imageView.visibility = View.GONE
-
                 binding.lyNoInternet.visibility = View.VISIBLE
-
             }
             binding.imageView.setOnClickListener {
                 val itemModel = getItem(bindingAdapterPosition)
@@ -148,49 +125,33 @@ class Adapter(val con: Context, val frag: Fragment, val viewHolderType: Int) : P
                     frag.findNavController().navigate(directions)
                 }
             }
-
         }
 
         private fun setupListeners() {
-
             binding.root.setOnLongClickListener {
-
                 handleItemClick(bindingAdapterPosition)
-
                 true
-
             }
 
             binding.imageView.setOnLongClickListener {
-
                 handleItemClick(bindingAdapterPosition)
-
                 true
-
             }
-
         }
 
         private fun handleItemClick(position: Int) {
-
             val previousPosition = currentFlippedPosition
-
             if (previousPosition != null && previousPosition != position) {
-
                 resetItemState(previousPosition)
-
             }
 
             currentFlippedPosition = position
 
             val randomNumber = (1..2).random()
-
             val item = getItem(position)
             val imageUrl = if (item is ItemModel.ImgsItem) item.imgsNokatModel.image_url else null
 
-
             flipTheCoin(imageUrl ?: "button", if (randomNumber == 1) "gfgf" else "gdfgdfg")
-
         }
 
         private fun resetItemState(position: Int) {
@@ -199,57 +160,32 @@ class Adapter(val con: Context, val frag: Fragment, val viewHolderType: Int) : P
             viewHolder?.resetView()
         }
 
-
-
-
         fun flipTheCoin(imageId: String, coinSide: String) {
-
             binding.root.animate().apply {
-
                 duration = 1000
-
                 rotationYBy(360f)
-
                 binding.imageView.isClickable = false
-
             }.withEndAction {
-
                 if (binding.imageView.visibility == View.VISIBLE) {
-
                     binding.imageView.visibility = View.GONE
-
                     binding.btncopy.visibility = View.VISIBLE
-
                     binding.btncshare.visibility = View.VISIBLE
-
                 } else {
-
                     binding.imageView.visibility = View.VISIBLE
-
                     binding.btncopy.visibility = View.GONE
-
                     binding.btncshare.visibility = View.GONE
-
                 }
 
                 Toast.makeText(con, coinSide, Toast.LENGTH_SHORT).show()
-
                 binding.imageView.isClickable = true
-
             }.start()
-
         }
 
         fun resetView() {
-
             binding.root.clearAnimation()
-
             binding.imageView.visibility = View.VISIBLE
-
             binding.btncopy.visibility = View.GONE
-
             binding.btncshare.visibility = View.GONE
-
         }
     }
 
@@ -263,5 +199,4 @@ class Adapter(val con: Context, val frag: Fragment, val viewHolderType: Int) : P
         isInternetConnected = isConnected
         notifyDataSetChanged()
     }
-
 }
