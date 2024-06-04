@@ -24,7 +24,7 @@ import com.sarrawi.mynokat.model.bind.ITEM_TYPE_ANOTHER
 import com.sarrawi.mynokat.model.bind.ITEM_TYPE_IMG
 import com.sarrawi.mynokat.ui.frag.img.ImgFragmentDirections
 
-class Adapter(val con: Context, val frag: Fragment) : PagingDataAdapter<ItemModel, RecyclerView.ViewHolder>(COMPARATOR) {
+class Adapter(val con: Context, val frag: Fragment,private val viewHolderType: RecyclerView.ViewHolder) : PagingDataAdapter<ItemModel, RecyclerView.ViewHolder>(COMPARATOR) {
     private var isInternetConnected: Boolean = true
     private var isImageVisible = true
     private var currentFlippedPosition: Int? = null

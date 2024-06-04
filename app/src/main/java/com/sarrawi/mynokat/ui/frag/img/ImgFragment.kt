@@ -12,6 +12,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.map
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +27,7 @@ import com.sarrawi.mynokat.db.LocaleSource
 import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.model.FavImgModel
 import com.sarrawi.mynokat.model.FavNokatModel
+import com.sarrawi.mynokat.model.ImgsNokatModel
 import com.sarrawi.mynokat.paging.PagingAdapterImg
 import com.sarrawi.mynokat.paging.PagingAdapterNokat
 import com.sarrawi.mynokat.repository.NokatRepo
@@ -102,8 +106,41 @@ class ImgFragment : Fragment() {
 
             // مراقبة تغييرات البيانات في ViewModel وتقديم البيانات إلى ال Adapter
             nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
-                pagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
+                lifecycleScope.launch {
+                    pagingAdapterImg.submitData(pagingData)
+                }
+
+                nokatViewModel.favImg.observe(viewLifecycleOwner) { favoriteImages ->
+                    // تحويل قائمة الصور المفضلة إلى قائمة من IDs
+                    val favoriteImageIds = favoriteImages.map { it.id }
+
+                    lifecycleScope.launch {
+                        pagingAdapterImg.loadStateFlow.collect { loadStates ->
+                            if (loadStates.refresh is LoadState.NotLoading) {
+                                // التحقق من الصور المفضلة وتحديث حالة الصور في PagingData
+                                pagingAdapterImg.snapshot().items.forEach { image ->
+                                    image?.let {
+                                        it.is_fav = favoriteImageIds.contains(it.id as? Int ?: 0)
+// تحقق مما إذا كانت الصورة مفضلة
+                                    }
+                                }
+
+                                // تحديث واجهة المستخدم بعد تحديث البيانات
+                                pagingAdapterImg.notifyDataSetChanged()
+                            }
+                        }
+                    }
+                }
             }
+
+
+
+
+        }
+
+
+
+
 
             // تحديد الإجراء الذي يتم تنفيذه عند النقر على عنصر في RecyclerView
             pagingAdapterImg.onItemClick = { item, position ->
@@ -147,7 +184,7 @@ class ImgFragment : Fragment() {
                 //            }
             }
         }
-    }
+
 
 
 //    private fun setup() {

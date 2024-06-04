@@ -84,7 +84,8 @@ class LocaleSource(context: Context) {
     }
 
 
-    suspend fun getAllFavoriteImages(): PagingSource<Int, FavImgModel>{
+//    suspend fun getAllFavoriteImages(): PagingSource<Int, FavImgModel>{
+    suspend fun getAllFavoriteImages(): LiveData<List< FavImgModel>>{
         return favImageDao.getAllFavoriteImages()
     }
 

@@ -82,10 +82,10 @@ class FavFragment : Fragment() {
                 StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
 
             // تحميل البيانات باستخدام Paging
-            nokatViewModel.favImg.observe(viewLifecycleOwner) { pagingData ->
-                // قم بتقديم البيانات إلى ال Adapter
-                favPagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
-            }
+//            nokatViewModel.favImg.observe(viewLifecycleOwner) { pagingData ->
+//                // قم بتقديم البيانات إلى ال Adapter
+//                favPagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
+//            }
 
             // تحديث RecyclerView عندما تأتي بيانات جديدة
             favPagingAdapterImg.addLoadStateListener { loadState ->

@@ -15,7 +15,8 @@ interface FavImageDao {
     suspend fun deleteFavoriteImage(favImgModel: FavImgModel)
 
     @Query("SELECT * FROM fav_tb order by createdAt desc ")
-     fun getAllFavoriteImages(): PagingSource<Int,FavImgModel>
+//     fun getAllFavoriteImages(): PagingSource<Int,FavImgModel>
+     fun getAllFavoriteImages(): LiveData<List<FavImgModel>>
 
     @Query("Update fav_tb SET is_fav = :state where id =:ID")
     suspend fun update_favimg(ID:Int,state:Boolean)

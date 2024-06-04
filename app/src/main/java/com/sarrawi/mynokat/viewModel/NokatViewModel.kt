@@ -61,6 +61,9 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
         return nokatRepo.getAllFav()
     }
 
+    fun getAllImagea(): LiveData<PagingData<ImgsNokatModel>> {
+        return nokatRepo.getAllImgsNokatSerPag()
+    }
 
 
 
@@ -105,6 +108,8 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
         return nokatRepo.getAllFav()
     }
 
+
+
     val favNokat: LiveData<PagingData<FavNokatModel>> = nokatRepo.getAllFav().cachedIn(viewModelScope)
 
 
@@ -139,7 +144,7 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
         nokatRepo.delete_favs_img(fav)
     }
 
-    val favImg: LiveData<PagingData<FavImgModel>> = nokatRepo.getAllFavImg().cachedIn(viewModelScope)
+    val favImg: LiveData<List<FavImgModel>> = nokatRepo.getAllFavImg()
 
 
 //    fun getAllNokat2(): LiveData<PagingData<NokatModel>> {
