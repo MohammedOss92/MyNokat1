@@ -181,14 +181,16 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
         localeSource.favImageDao.deleteFavoriteImage(fav)
     }
 
-//    fun getAllFavImg ():LiveData<PagingData<FavImgModel>> {
+    fun getAllFavImge ():LiveData<PagingData<FavImgModel>> {
+        return Pager(
+            config = PagingConfig(pageSize = 12, enablePlaceholders = false),
+            pagingSourceFactory = { localeSource.favImageDao.getAllFavoritea() }
+        ).liveData
+    }
     fun getAllFavImg ():LiveData<List<FavImgModel>> {
 
         return localeSource.favImageDao.getAllFavoriteImages()
-//        return Pager(
-//            config = PagingConfig(pageSize = 12, enablePlaceholders = false),
-//            pagingSourceFactory = { localeSource.favImageDao.getAllFavoriteImages() }
-//        ).liveData
+
     }
 
 }

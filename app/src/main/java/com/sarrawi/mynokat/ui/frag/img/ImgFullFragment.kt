@@ -1,6 +1,7 @@
 package com.sarrawi.mynokat.ui.frag.img
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,11 +9,16 @@ import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.databinding.FragmentImgFullBinding
 import com.sarrawi.mynokat.db.LocaleSource
 import com.sarrawi.mynokat.db.PostDatabase
+import com.sarrawi.mynokat.model.FavImgModel
 import com.sarrawi.mynokat.model.ImgsNokatModel
 import com.sarrawi.mynokat.model.ItemModel
 import com.sarrawi.mynokat.paging.PagingAdapterFullImg
@@ -20,7 +26,9 @@ import com.sarrawi.mynokat.paging.PagingAdapterImg
 import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
 import com.sarrawi.mynokat.viewModel.NokatViewModel
-
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class ImgFullFragment : Fragment() {
@@ -49,7 +57,7 @@ class ImgFullFragment : Fragment() {
 
         nokatViewModel.isConnected.observe(requireActivity()) { isConnected ->
             if (isConnected) {
-                setupRecyclerView()
+                setup()
                 pagingAdapterfullImg.updateInternetStatus(isConnected)
                 binding.lyNoInternet.visibility = View.GONE
             } else {
@@ -61,6 +69,96 @@ class ImgFullFragment : Fragment() {
 
         nokatViewModel.checkNetworkConnection(requireContext())
     }
+
+    fun setup() {
+        if (isAdded) {
+            // تعيين إعدادات RecyclerView
+            binding.rcImgFull.layoutManager = LinearLayoutManager(requireContext())
+
+            // تعيين Adapter لـ RecyclerView
+            binding.rcImgFull.adapter = pagingAdapterfullImg
+
+            // مراقبة تغييرات البيانات في ViewModel وتقديم البيانات إلى ال Adapter
+            nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
+
+                    pagingAdapterfullImg.submitData(viewLifecycleOwner.lifecycle,pagingData)
+                    scrollToSelectedImage()
+
+
+                nokatViewModel.favImg.observe(viewLifecycleOwner) { favoriteImages ->
+                    // تحويل قائمة الصور المفضلة إلى قائمة من IDs
+                    val favoriteImageIds = favoriteImages.map { it.id }
+
+                    lifecycleScope.launch {
+                        pagingAdapterfullImg.loadStateFlow.collect { loadStates ->
+                            if (loadStates.refresh is LoadState.NotLoading) {
+                                // التحقق من الصور المفضلة وتحديث حالة الصور في PagingData
+                                pagingAdapterfullImg.snapshot().items.forEach { image ->
+                                    image?.let {
+                                        it.is_fav = favoriteImageIds.contains(it.id as? Int ?: 0)
+// تحقق مما إذا كانت الصورة مفضلة
+                                    }
+                                }
+
+                                // تحديث واجهة المستخدم بعد تحديث البيانات
+                                pagingAdapterfullImg.notifyDataSetChanged()
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+
+        }
+
+
+
+
+
+        // تحديد الإجراء الذي يتم تنفيذه عند النقر على عنصر في RecyclerView
+        pagingAdapterfullImg.onItemClick = { item, position ->
+            val currentTime =
+                SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+            val fav = FavImgModel(item.id, item.new_img, item.pic, item.image_url).apply {
+                createdAt = currentTime
+            }
+
+            if (item.is_fav) {
+                nokatViewModel.update_favs_img(item.id, false)
+                nokatViewModel.delete_favs_img(fav)
+                lifecycleScope.launch {
+                    val snackbar = Snackbar.make(requireView(), "تم الحذف من المفضلة", Snackbar.LENGTH_SHORT)
+                    snackbar.show()
+                    pagingAdapterfullImg.notifyItemChanged(position) // تحديث واجهة المستخدم بعد العملية
+                }
+            } else {
+                nokatViewModel.update_favs_img(item.id, true)
+                nokatViewModel.add_favs_img(fav)
+                lifecycleScope.launch {
+                    val snackbar = Snackbar.make(requireView(), "تم الاضافة الى المفضلة", Snackbar.LENGTH_SHORT)
+                    snackbar.show()
+
+                    pagingAdapterfullImg.notifyItemChanged(position) // تحديث واجهة المستخدم بعد العملية
+                }
+            }
+            lifecycleScope.launch {
+                pagingAdapterfullImg.notifyItemChanged(position)
+            }
+            // في دالة onItemClick داخل setup()
+            if (item.is_fav) {
+                Log.d("TAG", "Item is now favorite")
+            } else {
+                Log.d("TAG", "Item is not favorite")
+            }
+
+//
+            //            }
+        }
+    }
+
+
 
     private fun setupRecyclerView() {
         binding.rcImgFull.layoutManager = LinearLayoutManager(requireContext())

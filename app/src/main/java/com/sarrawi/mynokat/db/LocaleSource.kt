@@ -89,6 +89,9 @@ class LocaleSource(context: Context) {
         return favImageDao.getAllFavoriteImages()
     }
 
+    suspend fun getAllFavoriteImagesa(): PagingSource<Int, FavImgModel>{
+        return favImageDao.getAllFavoritea()
+    }
 
     suspend fun update_favimg(ID:Int,state:Boolean){
         return favImageDao.update_favimg(ID,state)

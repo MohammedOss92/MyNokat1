@@ -145,7 +145,7 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
     }
 
     val favImg: LiveData<List<FavImgModel>> = nokatRepo.getAllFavImg()
-
+    val favImg2: LiveData<PagingData<FavImgModel>> = nokatRepo.getAllFavImge().cachedIn(viewModelScope)
 
 //    fun getAllNokat2(): LiveData<PagingData<NokatModel>> {
 //        val _response = MutableLiveData<PagingData<NokatModel>>()

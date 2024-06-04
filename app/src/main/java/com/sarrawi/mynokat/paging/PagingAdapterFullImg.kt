@@ -20,17 +20,43 @@ import com.sarrawi.mynokat.databinding.ImgRowBinding
 import com.sarrawi.mynokat.model.ImgsNokatModel
 
 class PagingAdapterFullImg(val con: Context, val frag: Fragment) : PagingDataAdapter<ImgsNokatModel, PagingAdapterFullImg.ViewHolder>(COMPARATOR) {
-    var onItemClick: ((Unit) -> Unit)? = null
     private var isInternetConnected: Boolean = true
-
+    var onItemClick: (( ImgsNokatModel, Int) -> Unit)? = null
 
     inner class ViewHolder(private val binding: ImageFullBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-
+            binding.favBtn.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    getItem(position)?.let { item ->
+                        onItemClick?.invoke(item, position)
+                        // تحديث حالة الزر بعد النقر
+                        if (item.is_fav) {
+                            binding.favBtn.setImageResource(R.drawable.baseline_favorite_true)
+                        } else {
+                            binding.favBtn.setImageResource(R.drawable.baseline_favorite_border_false)
+                        }
+                    }
+                }
+            }
         }
 
         fun bind(imgModel: ImgsNokatModel?, isInternetConnected: Boolean) {
+
+            binding.apply {
+                if(imgModel!!.is_fav){
+                    favBtn.setImageResource(R.drawable.baseline_favorite_true)
+                }
+
+                else{
+                    favBtn.setImageResource(R.drawable.baseline_favorite_border_false)
+                }
+
+
+
+            }
+
             if (isInternetConnected) {
                 val requestOptions = RequestOptions()
                     .placeholder(R.drawable.ic_baseline_autorenew_24)
