@@ -329,8 +329,6 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
                     .asBitmap()
                     .load(imgModel?.image_url)
                     .apply(requestOptions)
-                    .circleCrop()
-                    .centerCrop()
                     .into(binding.imageView)
             } else {
                 Glide.with(con)

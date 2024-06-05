@@ -68,8 +68,6 @@ class PagingAdapterFullImg(val con: Context, val frag: Fragment) : PagingDataAda
                 Glide.with(con)
                     .load(imgModel?.image_url)
                     .apply(requestOptions)
-                    .circleCrop()
-                    .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(binding.imageViewfull)
             } else {

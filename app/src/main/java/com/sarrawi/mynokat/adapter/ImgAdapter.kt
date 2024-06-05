@@ -165,7 +165,7 @@ class ImgAdapter(val con: Context): RecyclerView.Adapter<ImgAdapter.ViewHolder>(
             } else {
                 // عند عدم وجود اتصال بالإنترنت، قم بعرض الـ lyNoInternet بدلاً من الصورة
                 Glide.with(con)
-                    .load(R.drawable.nonet) // تحميل صورة nonet.jpg
+                    .load(R.drawable.new_msg) // تحميل صورة nonet.jpg
                     .into(binding.imageView)
                 binding.imageView.visibility = View.GONE
                 binding.lyNoInternet.visibility = View.VISIBLE
@@ -268,7 +268,7 @@ class ImgAdapter(val con: Context): RecyclerView.Adapter<ImgAdapter.ViewHolder>(
 
         // إعداد محتوى الإشعار باستخدام الصورة المحفوظة
         val builder = NotificationCompat.Builder(con, channelId)
-            .setSmallIcon(R.drawable.nonet)
+            .setSmallIcon(R.drawable.new_msg)
             .setContentTitle(title)
             .setContentText("تم تحميل الصورة بنجاح")
             .setLargeIcon(BitmapFactory.decodeFile(imageFile.absolutePath))

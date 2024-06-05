@@ -24,9 +24,9 @@ class NokatPaging(
 
                 // إدخال البيانات في قاعدة البيانات
                 database.withTransaction {
-                    if (page == 1) {
-                        database.nokatDao().clearAll()
-                    }
+//                    if (page == 1) {
+//                        database.nokatDao().clearAll()
+//                    }
                     database.nokatDao().insert_Nokat(nokatList)
                 }
 
