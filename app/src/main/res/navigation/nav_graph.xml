@@ -52,11 +52,25 @@
         android:id="@+id/favFragment2"
         android:name="com.sarrawi.mynokat.ui.frag.img.FavFragment"
         android:label="fragment_fav"
-        tools:layout="@layout/fragment_fav" />
+        tools:layout="@layout/fragment_fav" >
+        <action
+            android:id="@+id/action_favFragment2_to_favFragmentFull"
+            app:destination="@id/favFragmentFull" />
+    </fragment>
     <fragment
         android:id="@+id/favNokatFragment"
         android:name="com.sarrawi.mynokat.ui.frag.nokat.FavNokatFragment"
         android:label="fragment_fav_nokat"
         tools:layout="@layout/fragment_fav_nokat" />
+    <fragment
+        android:id="@+id/favFragmentFull"
+        android:name="com.sarrawi.mynokat.ui.frag.img.FavFragmentFull"
+        android:label="FavFragmentFull" >
+
+
+        <argument
+            android:name="full"
+            app:argType="com.sarrawi.mynokat.model.FavImgModel" />
+    </fragment>
 
 </navigation>

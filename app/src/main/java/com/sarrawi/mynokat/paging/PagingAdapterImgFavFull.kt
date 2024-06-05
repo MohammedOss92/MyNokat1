@@ -2,10 +2,8 @@ package com.sarrawi.mynokat.paging
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -14,17 +12,15 @@ import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.sarrawi.mynokat.R
+import com.sarrawi.mynokat.databinding.ImageFullBinding
 import com.sarrawi.mynokat.databinding.ImgRowBinding
 import com.sarrawi.mynokat.model.FavImgModel
-import com.sarrawi.mynokat.ui.frag.img.FavFragmentDirections
-import com.sarrawi.mynokat.ui.frag.img.ImgFragmentDirections
 
+class PagingAdapterImgFavFull (val con: Context, val frag: Fragment) : PagingDataAdapter<FavImgModel, PagingAdapterImgFavFull.ViewHolder>(COMPARATOR) {
 
-class PagingAdapterImgFav (val con: Context, val frag: Fragment) : PagingDataAdapter<FavImgModel, PagingAdapterImgFav.ViewHolder>(COMPARATOR) {
+    var onbtnclick: ((Int, item: FavImgModel, Int) -> Unit)? = null
 
-    var onbtnclick: ((Int,item:FavImgModel,Int) -> Unit)? = null
-
-    inner class ViewHolder(private val binding: ImgRowBinding):RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ImageFullBinding): RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.favBtn.setOnClickListener {
@@ -52,14 +48,6 @@ class PagingAdapterImgFav (val con: Context, val frag: Fragment) : PagingDataAda
 
             }
 
-            binding.imageView.setOnClickListener {
-                val imgModel = getItem(bindingAdapterPosition)
-                imgModel?.let {
-                    val directions = FavFragmentDirections.actionFavFragment2ToFavFragmentFull(it)
-                    frag.findNavController().navigate(directions)
-                }
-            }
-
             val requestOptions = RequestOptions()
                 .placeholder(R.drawable.ic_baseline_autorenew_24)
                 .error(R.drawable.error_a)
@@ -71,7 +59,7 @@ class PagingAdapterImgFav (val con: Context, val frag: Fragment) : PagingDataAda
                 .asBitmap()
                 .load(favImgModel?.image_url)
                 .apply(requestOptions)
-                .into(binding.imageView)
+                .into(binding.imageViewfull)
         }
 
 
@@ -82,7 +70,7 @@ class PagingAdapterImgFav (val con: Context, val frag: Fragment) : PagingDataAda
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ImgRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ImageFullBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
