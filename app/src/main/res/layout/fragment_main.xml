@@ -41,6 +41,7 @@
         app:layout_constraintEnd_toStartOf="@id/words"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/custom_btn"
         app:layout_constraintHorizontal_bias="0.3" />
 
     <Button
@@ -52,6 +53,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/custom_btn"
         app:layout_constraintHorizontal_bias="0.7" />
 
 

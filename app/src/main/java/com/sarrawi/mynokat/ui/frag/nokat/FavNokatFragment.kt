@@ -15,6 +15,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.databinding.FragmentFavNokatBinding
@@ -89,8 +90,8 @@ class FavNokatFragment : Fragment() {
             nokatViewModel.viewModelScope.launch {
                 nokatViewModel.update_fav(favNokatModel.id, false)
                 val result = mainRepository.deleteFav(favNokatModel)
-                Toast.makeText(requireContext(), "تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
-                // يمكنك تحديث القائمة هنا إذا لزم الأمر
+                val snackbar = Snackbar.make(requireView(), "تم الحذف من المفضلة", Snackbar.LENGTH_SHORT)
+                snackbar.show()
             }
         }
 
