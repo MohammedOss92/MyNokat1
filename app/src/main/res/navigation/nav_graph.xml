@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment2">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/imgFullFragment"
@@ -71,6 +71,15 @@
         <argument
             android:name="full"
             app:argType="com.sarrawi.mynokat.model.FavImgModel" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.sarrawi.mynokat.ui.frag.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_mainFragment2"
+            app:destination="@id/mainFragment2" />
     </fragment>
 
 </navigation>

@@ -190,35 +190,36 @@ class ImgFragment : Fragment() {
         }
 
 
+    fun setupre() {
+        if (isAdded) {
+            // تعيين إعدادات RecyclerView
+            binding.rcImgNokat.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
 
-//    private fun setup() {
-//        if (isAdded) {
-//            binding.rcImgNokat.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
-//
-//            val pagingAdapter = PagingAdapterImg(requireContext(), this)
-//            binding.rcImgNokat.adapter = pagingAdapter
-//
-//            lifecycleScope.launch {
-//                nokatViewModel.ImageStream.collectLatest { pagingData ->
-//                    pagingAdapter.submitData(pagingData)
-//                }
-//            }
-//        }
-//    }
+            // تعيين Adapter لـ RecyclerView
+            binding.rcImgNokat.adapter = pagingAdapterImg
 
-    /*private fun setupInitialData() {
-        // هنا يمكنك الحصول على البيانات مباشرة من الـ Adapter وعرضها في الـ Fragment
-        val initialData = adapter.snapshot() // استخدام snapshot للحصول على البيانات الحالية في الـ Adapter
-
-        // التحقق من البيانات وعرضها في الـ Fragment
-        initialData.forEach { item ->
-            if (item is ItemModel.ImgsItem) {
-                val imgModel = item.imgsNokatModel
-                // هنا يمكنك استخدام imgModel لعرض البيانات في الـ Fragment
-                // مثلاً:
-                // imageView.setImageURI(Uri.parse(imgModel.image_url))
+            // مراقبة تغييرات البيانات في ViewModel وتقديم البيانات إلى ال Adapter
+            nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
+                lifecycleScope.launch {
+                    pagingAdapterImg.submitData(pagingData)
+                }
             }
-        }*/
+
+            // مراقبة الصور المفضلة وتحديث حالة الصور
+            nokatViewModel.favImg.observe(viewLifecycleOwner) { favoriteImages ->
+                val favoriteImageIds = favoriteImages.map { it.id }
+                lifecycleScope.launch {
+                    val snapshot = pagingAdapterImg.snapshot().items
+                    for (image in snapshot) {
+                        image?.is_fav = favoriteImageIds.contains(image.id as? Int ?: 0)
+                    }
+                    pagingAdapterImg.notifyDataSetChanged()
+                }
+            }
+        }
+    }
+
+
 
 
     override fun onDestroyView() {
@@ -229,17 +230,3 @@ class ImgFragment : Fragment() {
 
 
 }
-/*
-            * val mutableListShows = listShows.toMutableList()
-            // إضافة عنصر "مرحبا" إلى القائمة
-            mutableListShows.add("مرحبا")
-            showSnackbar("لا يوجد بيانات")
-            // تحديث القائمة بعد الإضافة
-            listShows = mutableListShows.toList()*/
-
-//    fun adapterOnClick(){
-//        pagingAdapterImg.onItemClick = {
-//            val directions = ImgFragmentDirections.actionImgFragmentToImgFullFragment()
-//            findNavController().navigate(directions)
-//        }
-//    }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/i" android:duration="400" />
+    <item android:drawable="@drawable/ii" android:duration="400" />
+    <item android:drawable="@drawable/iii" android:duration="400" />
+    <item android:drawable="@drawable/iiii" android:duration="400" />
+</animation-list>

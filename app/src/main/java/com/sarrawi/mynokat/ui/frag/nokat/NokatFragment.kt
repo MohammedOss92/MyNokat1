@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.databinding.FragmentMainBinding
@@ -118,14 +119,16 @@ class NokatFragment : Fragment() {
                     nokatViewModel.update_favs(item.id, false)
                     nokatViewModel.delete_favs(fav)
                     lifecycleScope.launch {
-                        Toast.makeText(requireContext(), "تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
+                        val snackbar = Snackbar.make(requireView(), "تم الحذف من المفضلة", Snackbar.LENGTH_SHORT)
+                        snackbar.show()
                         pagingAdapter.notifyItemChanged(position) // Update UI after operation
                     }
                 } else {
                     nokatViewModel.update_favs(item.id, true)
                     nokatViewModel.add_favs(fav)
                     lifecycleScope.launch {
-                        Toast.makeText(requireContext(), "تم الاضافة الى المفضلة", Toast.LENGTH_SHORT).show()
+                        val snackbar = Snackbar.make(requireView(), "تم الاضافة الى المفضلة", Snackbar.LENGTH_SHORT)
+                        snackbar.show()
                         pagingAdapter.notifyItemChanged(position) // Update UI after operation
                     }
                 }
