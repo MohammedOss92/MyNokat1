@@ -168,11 +168,15 @@ class Adapter(
             }.withEndAction {
                 if (binding.imageView.visibility == View.VISIBLE) {
                     binding.imageView.visibility = View.GONE
-                    binding.btncopy.visibility = View.VISIBLE
+                    binding.btncmessenger.visibility = View.VISIBLE
+                    binding.btnwhats.visibility = View.VISIBLE
+                    binding.btnSave.visibility = View.VISIBLE
                     binding.btncshare.visibility = View.VISIBLE
                 } else {
                     binding.imageView.visibility = View.VISIBLE
-                    binding.btncopy.visibility = View.GONE
+                    binding.btncmessenger.visibility = View.GONE
+                    binding.btnwhats.visibility = View.GONE
+                    binding.btnSave.visibility = View.GONE
                     binding.btncshare.visibility = View.GONE
                 }
 
@@ -184,7 +188,9 @@ class Adapter(
         fun resetView() {
             binding.root.clearAnimation()
             binding.imageView.visibility = View.VISIBLE
-            binding.btncopy.visibility = View.GONE
+            binding.btncmessenger.visibility = View.GONE
+            binding.btnwhats.visibility = View.GONE
+            binding.btnSave.visibility = View.GONE
             binding.btncshare.visibility = View.GONE
         }
     }
