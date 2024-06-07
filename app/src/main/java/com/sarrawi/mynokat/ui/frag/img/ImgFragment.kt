@@ -93,8 +93,10 @@ class ImgFragment : Fragment() {
             }
         }
 
-
+        setup()
         nokatViewModel.checkNetworkConnection(requireContext())
+
+
 
     }
 

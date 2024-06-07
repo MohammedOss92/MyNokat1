@@ -199,9 +199,9 @@ class ImgFullFragment : Fragment() {
                         val position = snapshot.indexOfFirst { it?.id == imgModel.id }
                         if (position != -1) {
                             binding.rcImgFull.scrollToPosition(position)
-                            Toast.makeText(requireContext(), "Item found", Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(requireContext(), "Item found", Toast.LENGTH_SHORT).show()
                         } else {
-                            Toast.makeText(requireContext(), "Item not found", Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(requireContext(), "Item not found", Toast.LENGTH_SHORT).show()
                         }
                         binding.rcImgFull.viewTreeObserver.removeOnPreDrawListener(this) ///
                         return true

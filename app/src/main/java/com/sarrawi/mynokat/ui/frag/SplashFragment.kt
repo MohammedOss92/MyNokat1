@@ -1,7 +1,5 @@
 package com.sarrawi.mynokat.ui.frag
 
-import android.animation.AnimatorInflater
-import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
@@ -13,10 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.sarrawi.mynokat.R
-
 
 class SplashFragment : Fragment() {
 
@@ -26,10 +24,8 @@ class SplashFragment : Fragment() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var animJo: AnimationDrawable
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -49,30 +45,28 @@ class SplashFragment : Fragment() {
         imageView.setBackgroundResource(R.drawable.anim)
         animJo = imageView.background as AnimationDrawable
 
-        view.viewTreeObserver.addOnWindowFocusChangeListener { hasFocus ->
-            if (hasFocus) {
-                animJo.start()
+        // ابدأ تشغيل الأنيميشن هنا مباشرةً
+        animJo.start()
+
+        // تشغيل الأنيميشن الأول
+        animateEmoji()
+
+        // بدء التبديل بين الرموز التعبيرية
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                // تغيير الرمز التعبيري
+                currentIndex = (currentIndex + 1) % emojis.size
+                emojiTextView.text = emojis[currentIndex]
+                // إعادة تشغيل الأنيميشن
+                animateEmoji()
+                // التبديل بين الرموز التعبيرية كل 3 ثوانٍ
+                handler.postDelayed(this, 1000)
             }
+        }, 1000)
 
-
-            // تشغيل الأنيميشن الأول
-            animateEmoji()
-
-            // بدء التبديل بين الرموز التعبيرية
-            handler.postDelayed(object : Runnable {
-                override fun run() {
-                    // تغيير الرمز التعبيري
-                    currentIndex = (currentIndex + 1) % emojis.size
-                    emojiTextView.text = emojis[currentIndex]
-                    // إعادة تشغيل الأنيميشن
-                    animateEmoji()
-                    // التبديل بين الرموز التعبيرية كل 3 ثوانٍ
-                    handler.postDelayed(this, 1000)
-                }
-            }, 1000)
-
-            Handler(Looper.myLooper()!!).postDelayed({
-
+        // الانتقال إلى الشاشة الرئيسية بعد 5 ثوانٍ
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            Handler(Looper.getMainLooper()).postDelayed({
                 findNavController()
                     .navigate(
                         R.id.action_splashFragment_to_mainFragment2,
@@ -83,16 +77,12 @@ class SplashFragment : Fragment() {
                                 true
                             ).build()
                     )
-
             }, 5000)
         }
     }
 
     private fun animateEmoji() {
         // تحميل ملف الأنيميشن وتطبيقه
-//        val animator = AnimatorInflater.loadAnimator(requireContext(), R.animator.emoji_shake_animation) as AnimatorSet
-//        animator.setTarget(emojiTextView)
-//        animator.start()
         val animator = ObjectAnimator.ofFloat(emojiTextView, "translationY", 0f, 500f)
         animator.duration = 2000  // مدة الأنيميشن (بالمللي ثانية)
         animator.start()
@@ -103,5 +93,4 @@ class SplashFragment : Fragment() {
         // إيقاف تشغيل الـ handler عند تدمير النشاط
         handler.removeCallbacksAndMessages(null)
     }
-
-    }
+}

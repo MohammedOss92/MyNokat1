@@ -10,4 +10,13 @@
         android:duration="100"
         android:repeatCount="5"
         android:repeatMode="reverse"/>
+
+    <!-- تحريك الرمز التعبيري على المحور Y لتحقيق تأثير الرقص -->
+    <objectAnimator
+        android:propertyName="translationY"
+        android:valueFrom="0"
+        android:valueTo="20"
+        android:duration="100"
+        android:repeatCount="5"
+        android:repeatMode="reverse"/>
 </set>
