@@ -349,6 +349,11 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
                 handleItemClick(bindingAdapterPosition)
                 true
             }
+
+            binding.roundBtn.setOnClickListener {
+                handleItemClick(bindingAdapterPosition)
+                true
+            }
         }
 
         private fun handleItemClick(position: Int) {
@@ -361,7 +366,7 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
             currentFlippedPosition = position
             val randomNumber = (1..2).random()
             val imageUrl = getItem(position)?.image_url
-            flipTheCoin(imageUrl ?: "button", if (randomNumber == 1) "gfgf" else "gdfgdfg")
+            flipTheCoin(imageUrl ?: "button", if (randomNumber == 1) "" else "")
         }
 
         private fun resetItemState(position: Int) {
@@ -387,7 +392,7 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
                     binding.btncopy.visibility = View.GONE
                     binding.btncshare.visibility = View.GONE
                 }
-                Toast.makeText(con, coinSide, Toast.LENGTH_SHORT).show()
+//                Toast.makeText(con, coinSide, Toast.LENGTH_SHORT).show()
                 binding.imageView.isClickable = true
             }.start()
         }

@@ -79,4 +79,31 @@ class SaveImg(con: Context) {
         notificationManager.notify(notificationId, builder.build())
     }
     }
+
+    //    private fun saveBitmapToExternalStorage(bitmap: Bitmap) {
+//        val fileName = "image_${System.currentTimeMillis()}.jpg"
+//
+//        try {
+//            // احصل على مسار التخزين الخارجي
+//            val imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+//
+//            // تأكد من أن المجلد موجود، إذا لم يكن، قم بإنشاء المجلد
+//            if (!imagesDir.exists()) {
+//                imagesDir.mkdirs()
+//            }
+//
+//            val imageFile = File(imagesDir, fileName)
+//            val outputStream = FileOutputStream(imageFile)
+//
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+//            outputStream.flush()
+//            outputStream.close()
+//
+//            // إعلام المستخدم بأن الصورة تم حفظها
+//            Toast.makeText(con, "تم حفظ الصورة", Toast.LENGTH_SHORT).show()
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//            // يمكنك إدراج رسالة خطأ هنا إذا لزم الأمر
+//        }
+//    }
 }

@@ -30,27 +30,63 @@
 <!--            android:layout_gravity="center"-->
 <!--            app:civ_border_width="2dp"-->
 <!--            app:civ_border_color="#FF000000"/>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <ImageView
             android:layout_width="30dp"
             android:layout_height="28dp"
             android:id="@+id/fav_btn"
+            android:layout_gravity="center_vertical"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/new_Msg_m"
+            android:gravity="start"
+            android:layout_weight="1"
             android:src="@drawable/baseline_favorite_border_false"/>
+
+
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="28dp"
+            android:id="@+id/round_btn"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/fav_btn"
+            android:src="@drawable/round"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="end"/>
+    </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:orientation="horizontal">
-            <Button
-                android:id="@+id/btncopy"
-                android:text="Copy"
-                android:visibility="gone"
+            <ImageView
+                android:id="@+id/btnSave"
+                android:visibility=""
+                android:src="@drawable/ic_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <Button
+            <ImageView
                 android:id="@+id/btncshare"
-                android:text="share"
-                android:visibility="gone"
+                android:visibility=""
+                android:src="@drawable/ic_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/btncmessenger"
+                android:visibility=""
+                android:src="@drawable/ic_messenger"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/btnwhats"
+                android:visibility=""
+                android:src="@drawable/whatsapp_icon_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
