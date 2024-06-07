@@ -1,6 +1,7 @@
 package com.sarrawi.mynokat.paging
 
 import android.content.Context
+import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.sarrawi.img.utils.SaveImg
+import com.sarrawi.img.utils.Utils
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.databinding.ImageFullBinding
 import com.sarrawi.mynokat.databinding.ImgRowBinding
@@ -354,6 +357,20 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
                 handleItemClick(bindingAdapterPosition)
                 true
             }
+
+            binding.btncmessenger.setOnClickListener {
+                Utils.shareImgMessenger(con,binding.imageView,binding.root)
+            }
+            binding.btnwhats.setOnClickListener {
+                Utils.shareImageWhatsApp(con,binding.imageView,"",binding.root)
+            }
+            binding.btncshare.setOnClickListener {
+                Utils.ImgShare(con,binding.imageView,binding.root)
+            }
+            binding.btnSave.setOnClickListener {
+                SaveImg.saveBitmapToExternalStorage(con,(binding.imageView.drawable as BitmapDrawable).bitmap)
+            }
+
         }
 
         private fun handleItemClick(position: Int) {
