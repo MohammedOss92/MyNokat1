@@ -54,7 +54,7 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
         if (response.isSuccessful) {
             response.body()?.results?.let { nokats ->
                 database.withTransaction {
-                    database.nokatDao().clearAll()
+//                    database.nokatDao().clearAll()
                     database.nokatDao().insert_Nokat(nokats.NokatModel)
                 }
             }

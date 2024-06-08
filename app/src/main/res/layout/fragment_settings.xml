@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- عنوان الشاشة -->
+    <TextView
+        android:id="@+id/interaction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:padding="8dp"
+        android:text="تفاعل"
+        android:textColor="@color/purple_700"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+    <!-- TextView لعرض الخيارات -->
+    <TextView
+        android:id="@+id/range"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="8dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:padding="8dp"
+        android:text="قيم التطبيق"
+        android:textSize="15sp"/>
+<!--    android:drawableEnd="@drawable/ic_star"-->
+
+    <TextView
+        android:id="@+id/share_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="8dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:padding="8dp"
+        android:text="إدعمنا بنشر التطبيق مع اصدقائك"
+        android:textSize="15sp"/>
+<!--    android:drawableEnd="@drawable/ic_group"-->
+
+    <TextView
+        android:id="@+id/shape"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_ic" />
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:padding="8dp"
+        android:text="معلومات التطبيق"
+        android:textColor="@color/purple_700"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+    <!-- TextView لعرض الخيارات -->
+    <TextView
+        android:id="@+id/vers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:gravity="right"
+        android:padding="8dp"
+        android:text="إصدار التطبيق"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/privacy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:padding="8dp"
+        android:text="سياسة الخصوصية."
+        android:textSize="15sp"/>
+
+
+    <!-- يمكنك إضافة المزيد من الـ TextView حسب الحاجة -->
+
+</LinearLayout>

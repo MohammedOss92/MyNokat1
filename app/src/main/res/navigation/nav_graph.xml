@@ -81,5 +81,9 @@
             android:id="@+id/action_splashFragment_to_mainFragment2"
             app:destination="@id/mainFragment2" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.sarrawi.mynokat.ui.frag.SettingsFragment"
+        android:label="SettingsFragment" />
 
 </navigation>

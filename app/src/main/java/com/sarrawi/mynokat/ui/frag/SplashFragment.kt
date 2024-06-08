@@ -93,4 +93,16 @@ class SplashFragment : Fragment() {
         // إيقاف تشغيل الـ handler عند تدمير النشاط
         handler.removeCallbacksAndMessages(null)
     }
+
+    /*
+             val imageView = findViewById<ImageView>(R.id.imageView)
+        Glide.with(this).load(R.drawable.your_gif).into(imageView)
+
+        // الانتقال إلى النشاط الرئيسي بعد 3 ثوانٍ
+        Handler().postDelayed({
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }, 3000) // 3000 مللي ثانية = 3 ثوانٍ
+    }
+*/
 }
