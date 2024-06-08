@@ -1,5 +1,7 @@
 package com.sarrawi.mynokat.ui.frag
 
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
@@ -23,7 +25,7 @@ class SplashFragment : Fragment() {
     private var currentIndex = 0
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var animJo: AnimationDrawable
-
+    private lateinit var imageView: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -41,7 +43,7 @@ class SplashFragment : Fragment() {
 
         emojiTextView = view.findViewById(R.id.emojiTextView)
 
-        val imageView: ImageView = view.findViewById(R.id.imageView2)
+         imageView = view.findViewById(R.id.imageView2)
         imageView.setBackgroundResource(R.drawable.anim)
         animJo = imageView.background as AnimationDrawable
 
@@ -83,8 +85,11 @@ class SplashFragment : Fragment() {
 
     private fun animateEmoji() {
         // تحميل ملف الأنيميشن وتطبيقه
-        val animator = ObjectAnimator.ofFloat(emojiTextView, "translationY", 0f, 500f)
-        animator.duration = 2000  // مدة الأنيميشن (بالمللي ثانية)
+//        val animator = ObjectAnimator.ofFloat(emojiTextView, "translationY", 0f, 500f)
+//        animator.duration = 2000  // مدة الأنيميشن (بالمللي ثانية)
+//        animator.start()
+        val animator = AnimatorInflater.loadAnimator(requireContext(), R.animator.emoji_shake_animation) as AnimatorSet
+        animator.setTarget(imageView)
         animator.start()
     }
 
