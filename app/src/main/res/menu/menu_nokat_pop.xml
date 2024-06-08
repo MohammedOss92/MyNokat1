@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/share"
+        android:title="مشاركة"/>
+
+    <item
+        android:id="@+id/copy"
+        android:title="نسخ"/>
+
+    <item
+        android:id="@+id/messenger"
+        android:title="ماسنجر"/>
+
+    <item
+        android:id="@+id/whats"
+        android:title="واتس اب"/>
+
+</menu>

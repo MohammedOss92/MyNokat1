@@ -4,9 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.sarrawi.img.utils.Utils
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.databinding.NokatDesignBinding
 import com.sarrawi.mynokat.databinding.NokatdesignfavBinding
@@ -28,6 +30,10 @@ class PagingAdapterNokatFav (val con: Context): PagingDataAdapter<FavNokatModel,
                     }
                 }
             }
+
+            binding.moreBtn.setOnClickListener {
+                popupMenus(it)
+            }
         }
 
         fun bind(favNokatModel: FavNokatModel) {
@@ -39,6 +45,39 @@ class PagingAdapterNokatFav (val con: Context): PagingDataAdapter<FavNokatModel,
 
 
             }
+        }
+
+        fun popupMenus(view: View) {
+
+            val popupMenu = PopupMenu(con,view)
+            popupMenu.inflate(R.menu.menu_nokat_pop)
+            popupMenu.setOnMenuItemClickListener {
+                when(it.itemId){
+                    R.id.share ->{
+
+                        Utils.ShareText(con, "", "",binding.tvNokatN.text.toString() )
+                        true
+                    }
+                    R.id.copy ->{
+
+                        Utils.CopyTxt(con,binding.tvNokatN)
+                        true
+                    }
+                    R.id.messenger ->{
+
+                        Utils.shareTextMessenger(con,binding.tvNokatN.text.toString(),view)
+                        true
+                    }
+                    R.id.whats ->{
+
+                        Utils.shareTextWhatsApp(con,binding.tvNokatN.text.toString(),view)
+                        true
+                    }
+
+                    else -> true
+                }
+            }
+            popupMenu.show()
         }
     }
 

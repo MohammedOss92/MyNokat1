@@ -1,12 +1,19 @@
 package com.sarrawi.mynokat.paging
 
+import android.content.ClipData
 import android.content.Context
+import android.os.Build
+import android.text.ClipboardManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import android.widget.Toast
+import androidx.navigation.fragment.NavHostFragment
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.sarrawi.img.utils.Utils
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.databinding.NokatDesignBinding
 import com.sarrawi.mynokat.model.NokatModel
@@ -26,6 +33,10 @@ class PagingAdapterNokat(val con: Context): PagingDataAdapter<NokatModel, Paging
                     }
                 }
             }
+
+            binding.moreBtn.setOnClickListener {
+                popupMenus(it)
+            }
         }
 
         fun bind(nokatModel: NokatModel) {
@@ -40,7 +51,43 @@ class PagingAdapterNokat(val con: Context): PagingDataAdapter<NokatModel, Paging
                 } else {
                     favBtn.setImageResource(R.drawable.baseline_favorite_border_false)
                 }
+
+
             }
+
+        }
+
+        fun popupMenus(view: View) {
+
+            val popupMenu = PopupMenu(con,view)
+            popupMenu.inflate(R.menu.menu_nokat_pop)
+            popupMenu.setOnMenuItemClickListener {
+                when(it.itemId){
+                    R.id.share ->{
+
+                        Utils.ShareText(con, "", "",binding.tvNokatN.text.toString() )
+                        true
+                    }
+                    R.id.copy ->{
+
+                        Utils.CopyTxt(con,binding.tvNokatN)
+                        true
+                    }
+                    R.id.messenger ->{
+
+                        Utils.shareTextMessenger(con,binding.tvNokatN.text.toString(),view)
+                        true
+                    }
+                    R.id.whats ->{
+
+                        Utils.shareTextWhatsApp(con,binding.tvNokatN.text.toString(),view)
+                        true
+                    }
+
+                    else -> true
+                }
+            }
+            popupMenu.show()
         }
     }
 
