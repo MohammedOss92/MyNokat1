@@ -85,5 +85,10 @@
         android:id="@+id/settingsFragment"
         android:name="com.sarrawi.mynokat.ui.frag.SettingsFragment"
         android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/settFragment"
+        android:name="com.sarrawi.mynokat.ui.frag.img.SettFragment"
+        android:label="fragment_sett"
+        tools:layout="@layout/fragment_sett" />
 
 </navigation>

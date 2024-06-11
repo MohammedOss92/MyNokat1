@@ -13,9 +13,9 @@
         android:title="المفصلة" />
 
     <item
-        android:id="@+id/settingsFragment"
+        android:id="@+id/settFragment"
         android:icon="@drawable/ic_settings"
-        android:title="المفصلة" />
+        android:title="الاعدادات" />
 
 
 

@@ -15,7 +15,7 @@
     <item
         android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_settings"
-        android:title="المفصلة" />
+        android:title="الاعدادات" />
 
 
 </menu>

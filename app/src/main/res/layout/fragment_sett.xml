@@ -26,7 +26,7 @@
         android:padding="8dp"
         android:text="قيم التطبيق"
         android:textSize="15sp"/>
-<!--    android:drawableEnd="@drawable/ic_star"-->
+    <!--    android:drawableEnd="@drawable/ic_star"-->
 
     <TextView
         android:id="@+id/share_app"
@@ -37,7 +37,7 @@
         android:padding="8dp"
         android:text="إدعمنا بنشر التطبيق مع اصدقائك"
         android:textSize="15sp"/>
-<!--    android:drawableEnd="@drawable/ic_group"-->
+    <!--    android:drawableEnd="@drawable/ic_group"-->
 
     <TextView
         android:id="@+id/shape"
@@ -77,6 +77,8 @@
         android:textSize="15sp"/>
 
 
+    <!-- يمكنك إضافة المزيد من الـ TextView حسب الحاجة -->
+
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -88,6 +90,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="10dp"
-        app:menu="@menu/bottom_menu" />
+        app:menu="@menu/bottom_menu_nokat" />
 
 </LinearLayout>

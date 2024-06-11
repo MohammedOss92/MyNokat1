@@ -22,10 +22,10 @@ interface NokatDao {
     suspend fun clearAll()
 
 
-    @Query("select * from Nokat_tb order by createdAt")
+    @Query("select * from Nokat_tb order by id desc")
      fun getAllNokatsDao(): PagingSource<Int, NokatModel>
 
-    @Query("SELECT * FROM Nokat_tb ORDER BY createdAt")
+    @Query("SELECT * FROM Nokat_tb ORDER BY id desc")
     fun getAllNokatsPaging(): PagingSource<Int, NokatModel>
 
     @Query("Update Nokat_tb SET is_fav = :state where id =:ID")

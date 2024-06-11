@@ -1,4 +1,4 @@
-package com.sarrawi.mynokat.ui.frag
+package com.sarrawi.mynokat.ui.frag.img
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -15,12 +15,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sarrawi.img.utils.Utils
 import com.sarrawi.mynokat.BuildConfig
 import com.sarrawi.mynokat.R
+import com.sarrawi.mynokat.databinding.FragmentSettBinding
 import com.sarrawi.mynokat.databinding.FragmentSettingsBinding
 
 
-class SettingsFragment : Fragment() {
-
-    private lateinit var _binding: FragmentSettingsBinding
+class SettFragment : Fragment() {
+    private lateinit var _binding: FragmentSettBinding
     private val binding get() = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +32,12 @@ class SettingsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        _binding = FragmentSettBinding.inflate(inflater, container, false)
+
+
+
+
+
 
         return binding.root
     }
@@ -104,4 +109,5 @@ class SettingsFragment : Fragment() {
         // قم بتعيين النص وتنسيقه في TextView
         binding.vers.text = builder
     }
+
 }
