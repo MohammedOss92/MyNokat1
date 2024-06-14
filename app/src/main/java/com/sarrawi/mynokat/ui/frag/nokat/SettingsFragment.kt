@@ -1,4 +1,4 @@
-package com.sarrawi.mynokat.ui.frag
+package com.sarrawi.mynokat.ui.frag.nokat
 
 import android.content.ActivityNotFoundException
 import android.content.Intent

@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
 import com.sarrawi.mynokat.R
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 
 import com.sarrawi.mynokat.databinding.FragmentMainBinding
 
@@ -43,15 +45,40 @@ class MainFragment : Fragment() {
         val img:Button=view.findViewById(R.id.img)
         val words:Button=view.findViewById(R.id.words)
 
+
+
         img.setOnClickListener {
-            val directions = MainFragmentDirections.actionMainFragment2ToImgFragment()
-            findNavController().navigate(directions)
+            it.animate().apply {
+                duration = 1000  // مدة الرسوم المتحركة بالمللي ثانية
+                rotationYBy(360f)  // يدور العنصر حول المحور Y بمقدار 360 درجة
+                setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        super.onAnimationEnd(animation)
+                        // الانتقال إلى ImgFragment بعد انتهاء الرسوم المتحركة
+                        val directions = MainFragmentDirections.actionMainFragment2ToImgFragment()
+                        findNavController().navigate(directions)
+                    }
+                })
+            }.start()
         }
 
         words.setOnClickListener {
-            val directions = MainFragmentDirections.actionMainFragment2ToNokatFragment()
-            findNavController().navigate(directions)
+            it.animate().apply {
+                duration = 1000  // مدة الرسوم المتحركة بالمللي ثانية
+                rotationYBy(360f)  // يدور العنصر حول المحور Y بمقدار 360 درجة
+                setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        super.onAnimationEnd(animation)
+                        // الانتقال إلى ImgFragment بعد انتهاء الرسوم المتحركة
+                        val directions = MainFragmentDirections.actionMainFragment2ToNokatFragment()
+                        findNavController().navigate(directions)
+                    }
+                })
+            }.start()
         }
+
+
+
 
     }
 

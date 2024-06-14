@@ -83,7 +83,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.sarrawi.mynokat.ui.frag.SettingsFragment"
+        android:name="com.sarrawi.mynokat.ui.frag.nokat.SettingsFragment"
         android:label="SettingsFragment" />
     <fragment
         android:id="@+id/settFragment"

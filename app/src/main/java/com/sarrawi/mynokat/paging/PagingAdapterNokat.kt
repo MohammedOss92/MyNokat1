@@ -1,5 +1,7 @@
 package com.sarrawi.mynokat.paging
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.ClipData
 import android.content.Context
 import android.os.Build
@@ -10,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +20,7 @@ import com.sarrawi.img.utils.Utils
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.databinding.NokatDesignBinding
 import com.sarrawi.mynokat.model.NokatModel
+import com.sarrawi.mynokat.ui.frag.MainFragmentDirections
 
 class PagingAdapterNokat(val con: Context): PagingDataAdapter<NokatModel, PagingAdapterNokat.ViewHolder>(COMPARATOR) {
 
@@ -26,12 +30,23 @@ class PagingAdapterNokat(val con: Context): PagingDataAdapter<NokatModel, Paging
     inner class ViewHolder(private val binding: NokatDesignBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.favBtn.setOnClickListener {
-                val position = bindingAdapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    getItem(position)?.let { item ->
-                        onItemClick?.invoke(item.id ?: 0, item, position)
-                    }
-                }
+
+                it.animate().apply {
+                    duration = 1000  // مدة الرسوم المتحركة بالمللي ثانية
+                    rotationYBy(360f)  // يدور العنصر حول المحور Y بمقدار 360 درجة
+                    setListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            super.onAnimationEnd(animation)
+                            // الانتقال إلى ImgFragment بعد انتهاء الرسوم المتحركة
+                            val position = bindingAdapterPosition
+                            if (position != RecyclerView.NO_POSITION) {
+                                getItem(position)?.let { item ->
+                                    onItemClick?.invoke(item.id ?: 0, item, position)
+                                }
+                            }
+                        }
+                    })
+                }.start()
             }
 
             binding.moreBtn.setOnClickListener {

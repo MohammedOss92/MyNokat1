@@ -1,5 +1,7 @@
 package com.sarrawi.mynokat.paging
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -22,13 +24,24 @@ class PagingAdapterNokatFav (val con: Context): PagingDataAdapter<FavNokatModel,
     inner class ViewHolder(private val binding: NokatdesignfavBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.favBtn.setOnClickListener {
-                val position = bindingAdapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    getItem(position)?.let { item ->
-                         // تحديث حالة المفضلة
-                        onItemClick?.invoke(item)
-                    }
-                }
+                it.animate().apply {
+                    duration = 1000  // مدة الرسوم المتحركة بالمللي ثانية
+                    rotationYBy(360f)  // يدور العنصر حول المحور Y بمقدار 360 درجة
+                    setListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            super.onAnimationEnd(animation)
+                            // الانتقال إلى ImgFragment بعد انتهاء الرسوم المتحركة
+                            val position = bindingAdapterPosition
+                            if (position != RecyclerView.NO_POSITION) {
+                                getItem(position)?.let { item ->
+                                    // تحديث حالة المفضلة
+                                    onItemClick?.invoke(item)
+                                }
+                            }
+                        }
+                    })
+                }.start()
+
             }
 
             binding.moreBtn.setOnClickListener {

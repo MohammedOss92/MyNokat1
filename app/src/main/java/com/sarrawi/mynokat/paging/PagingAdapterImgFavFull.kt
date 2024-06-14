@@ -1,5 +1,7 @@
 package com.sarrawi.mynokat.paging
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -24,13 +26,34 @@ class PagingAdapterImgFavFull (val con: Context, val frag: Fragment) : PagingDat
 
         init {
             binding.favBtn.setOnClickListener {
-                val position = bindingAdapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    getItem(position)?.let { item ->
-                        onbtnclick?.invoke(item.id ?: 0, item, position)
-                    }
-                }
+                it.animate().apply {
+                    duration = 1000  // مدة الرسوم المتحركة بالمللي ثانية
+                    rotationYBy(360f)  // يدور العنصر حول المحور Y بمقدار 360 درجة
+                    setListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            super.onAnimationEnd(animation)
+                            // الانتقال إلى ImgFragment بعد انتهاء الرسوم المتحركة
+                            val position = bindingAdapterPosition
+                            if (position != RecyclerView.NO_POSITION) {
+                                getItem(position)?.let { item ->
+                                    onbtnclick?.invoke(item.id ?: 0, item, position)
+
+                                    // تحديث حالة الزر بعد النقر
+                                    if (item.is_fav) {
+                                        binding.favBtn.setImageResource(R.drawable.baseline_favorite_true)
+                                    } else {
+                                        binding.favBtn.setImageResource(R.drawable.baseline_favorite_border_false)
+                                    }
+                                }
+                            }
+
+                        }
+                    })
+                }.start()
+
+
             }
+
         }
 
         fun bind(favImgModel: FavImgModel?){
