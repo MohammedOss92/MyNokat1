@@ -39,6 +39,7 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
 
 //    val itemss: Flow<PagingData<NokatModel>> = nokatRepo.getAllNokats()
     val itemss: LiveData<PagingData<NokatModel>> = nokatRepo.getAllNokats().cachedIn(viewModelScope)
+    val newNokat: LiveData<PagingData<NokatModel>> = nokatRepo.getAllNewNokats().cachedIn(viewModelScope)
     val nokatStream: Flow<PagingData<NokatModel>> = nokatRepo.getNokatStream()
         .cachedIn(viewModelScope)
 
@@ -74,6 +75,21 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
         viewModelScope.launch {
             try {
                 val response = nokatRepo.getAllImgsNokatSerPag()
+                _response = response as MutableLiveData<PagingData<ImgsNokatModel>>
+            } catch (e: Exception) {
+                Log.e("Test", "getAllNokat: Error: ${e.message}")
+            }
+        }
+
+        return _response
+    }
+
+    fun getAllImageNew(): LiveData<PagingData<ImgsNokatModel>> {
+
+        var _response = MutableLiveData<PagingData<ImgsNokatModel>>()
+        viewModelScope.launch {
+            try {
+                val response = nokatRepo.getAllImgsNokatSerPagNew()
                 _response = response as MutableLiveData<PagingData<ImgsNokatModel>>
             } catch (e: Exception) {
                 Log.e("Test", "getAllNokat: Error: ${e.message}")

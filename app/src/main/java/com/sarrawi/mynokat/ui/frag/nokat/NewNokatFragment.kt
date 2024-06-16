@@ -6,16 +6,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.databinding.FragmentNewNokatBinding
 import com.sarrawi.mynokat.databinding.FragmentNokatBinding
 import com.sarrawi.mynokat.db.LocaleSource
 import com.sarrawi.mynokat.db.PostDatabase
+import com.sarrawi.mynokat.model.FavNokatModel
 import com.sarrawi.mynokat.paging.PagingAdapterNokat
 import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
 import com.sarrawi.mynokat.viewModel.NokatViewModel
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class NewNokatFragment : Fragment() {
@@ -47,5 +58,59 @@ class NewNokatFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val navController = findNavController()
+        val bottomNav: BottomNavigationView = binding.bottomNavNokat
 
+        // ربط BottomNavigationView مع NavController
+        bottomNav.setupWithNavController(navController)
+        
+        setup()
+    }
+
+
+    private fun setup() {
+        if (isAdded) {
+            binding.rcNewNokat.layoutManager = LinearLayoutManager(requireContext())
+
+            val pagingAdapter = PagingAdapterNokat(requireContext())
+            binding.rcNewNokat.adapter = pagingAdapter
+
+            lifecycleScope.launch {
+                nokatViewModel.newNokat.observe(viewLifecycleOwner) { pagingData ->
+                    pagingAdapter.submitData(lifecycle, pagingData)
+                }
+            }
+
+            pagingAdapter.onItemClick = { id, item, position ->
+                val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(
+                    Date()
+                )
+                val fav = FavNokatModel(item.id, item.NokatTypes, item.new_nokat, item.NokatName, item.createdAt).apply {
+                    createdAt = currentTime
+                }
+
+                if (item.is_fav) {
+                    nokatViewModel.update_favs(item.id, false)
+                    nokatViewModel.delete_favs(fav)
+                    lifecycleScope.launch {
+                        val snackbar = Snackbar.make(requireView(), "تم الحذف من المفضلة", Snackbar.LENGTH_SHORT)
+                        snackbar.show()
+                        pagingAdapter.notifyItemChanged(position) // Update UI after operation
+                    }
+                } else {
+                    nokatViewModel.update_favs(item.id, true)
+                    nokatViewModel.add_favs(fav)
+                    lifecycleScope.launch {
+                        val snackbar = Snackbar.make(requireView(), "تم الاضافة الى المفضلة", Snackbar.LENGTH_SHORT)
+                        snackbar.show()
+                        pagingAdapter.notifyItemChanged(position) // Update UI after operation
+                    }
+                }
+            }
+
+            pagingAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        }
+    }
 }

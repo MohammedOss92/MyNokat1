@@ -90,5 +90,13 @@
         android:name="com.sarrawi.mynokat.ui.frag.img.SettFragment"
         android:label="fragment_sett"
         tools:layout="@layout/fragment_sett" />
+    <fragment
+        android:id="@+id/newNokatFragment"
+        android:name="com.sarrawi.mynokat.ui.frag.nokat.NewNokatFragment"
+        android:label="NewNokatFragment" />
+    <fragment
+        android:id="@+id/newImgFragment"
+        android:name="com.sarrawi.mynokat.ui.frag.img.NewImgFragment"
+        android:label="NewImgFragment" />
 
 </navigation>

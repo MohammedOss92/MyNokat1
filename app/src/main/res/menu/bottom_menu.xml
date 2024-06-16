@@ -13,6 +13,12 @@
         android:title="المفصلة" />
 
     <item
+        android:id="@+id/newImgFragment"
+
+        android:icon="@drawable/new_msg"
+        android:title="الجديده" />
+
+    <item
         android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_settings"
         android:title="الاعدادات" />

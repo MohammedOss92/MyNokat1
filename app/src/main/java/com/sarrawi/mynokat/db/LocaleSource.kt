@@ -74,6 +74,9 @@ class LocaleSource(context: Context) {
         return nokatDao.getAllNokatsPaging()
     }
 
+    fun getAllNewNokatsDao(): PagingSource<Int, NokatModel> {
+        return nokatDao.getAllNewNokat()
+    }
 /////////////////
     suspend fun insertFavoriteImage(favImgModel: FavImgModel){
         return favImageDao.insertFavoriteImage(favImgModel)

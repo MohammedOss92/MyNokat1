@@ -24,6 +24,13 @@ interface ApiService {
         @Query("page") page: Int
     ):Response<ImgsNokatResponse>
 
+    @GET("imgnokatapinew")
+    suspend fun getAllImgNokatPaNew(
+        @Query("page") page: Int
+    ):Response<ImgsNokatResponse>
+
+
+
     companion object {
         var retrofitService: ApiService? = null
         fun provideRetrofitInstance(): ApiService {

@@ -9,6 +9,7 @@ import com.sarrawi.mynokat.db.LocaleSource
 import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.model.*
 import com.sarrawi.mynokat.paging.ImagePaging
+import com.sarrawi.mynokat.paging.ImgPagingNew
 import com.sarrawi.mynokat.paging.NokatPaging
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -49,6 +50,16 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
         ).liveData
     }
 
+    fun getAllNewNokats(): LiveData<PagingData<NokatModel>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders =  false
+            ),
+            pagingSourceFactory = { database.nokatDao().getAllNewNokat() }
+        ).liveData
+    }
+
     suspend fun refreshNokats() {
         val response = apiService.getAllNokatPa(1) // قم بضبط الصفحة حسب الحاجة
         if (response.isSuccessful) {
@@ -84,6 +95,18 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
                 pagingSourceFactory = { ImagePaging(apiService) }
             ).liveData
         }
+
+    fun getAllImgsNokatSerPagNew():LiveData<PagingData<ImgsNokatModel>>{
+
+        return  Pager(
+            config = PagingConfig(pageSize = 12,
+                enablePlaceholders =  false
+            ),
+
+            pagingSourceFactory = { ImgPagingNew(apiService) }
+        ).liveData
+    }
+
     fun getAllImgsNokatSerPa():Flow<PagingData<ImgsNokatModel>>{
         return  Pager(
             config = PagingConfig(pageSize = 12,

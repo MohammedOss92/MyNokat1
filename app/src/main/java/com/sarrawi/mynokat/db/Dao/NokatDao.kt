@@ -28,6 +28,9 @@ interface NokatDao {
     @Query("SELECT * FROM Nokat_tb ORDER BY id desc")
     fun getAllNokatsPaging(): PagingSource<Int, NokatModel>
 
+    @Query("SELECT * FROM Nokat_tb where new_nokat=1 ORDER BY id desc")
+    fun getAllNewNokat(): PagingSource<Int, NokatModel>
+
     @Query("Update Nokat_tb SET is_fav = :state where id =:ID")
     suspend fun update_fav(ID:Int,state:Boolean)
 
