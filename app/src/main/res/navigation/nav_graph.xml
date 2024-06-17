@@ -97,6 +97,10 @@
     <fragment
         android:id="@+id/newImgFragment"
         android:name="com.sarrawi.mynokat.ui.frag.img.NewImgFragment"
-        android:label="NewImgFragment" />
+        android:label="NewImgFragment" >
+        <action
+            android:id="@+id/action_newImgFragment_to_imgFullFragment"
+            app:destination="@id/imgFullFragment" />
+    </fragment>
 
 </navigation>

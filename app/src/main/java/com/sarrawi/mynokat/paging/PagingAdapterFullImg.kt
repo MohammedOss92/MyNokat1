@@ -3,6 +3,7 @@ package com.sarrawi.mynokat.paging
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
+import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.sarrawi.img.utils.SaveImg
+import com.sarrawi.img.utils.Utils
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.databinding.ImageFullBinding
 import com.sarrawi.mynokat.databinding.ImgRowBinding
@@ -28,6 +31,9 @@ class PagingAdapterFullImg(val con: Context, val frag: Fragment) : PagingDataAda
     inner class ViewHolder(private val binding: ImageFullBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
+
+            setUpListener()
+
             binding.favBtn.setOnClickListener {
                 it.animate().apply {
                     duration = 1000  // مدة الرسوم المتحركة بالمللي ثانية
@@ -94,6 +100,21 @@ class PagingAdapterFullImg(val con: Context, val frag: Fragment) : PagingDataAda
             }
 
 
+        }
+
+        fun setUpListener(){
+            binding.btncmessenger.setOnClickListener {
+                Utils.shareImgMessenger(con,binding.imageViewfull,binding.root)
+            }
+            binding.btnwhats.setOnClickListener {
+                Utils.shareImageWhatsApp(con,binding.imageViewfull,"",binding.root)
+            }
+            binding.btncshare.setOnClickListener {
+                Utils.ImgShare(con,binding.imageViewfull,binding.root)
+            }
+            binding.btnSave.setOnClickListener {
+                SaveImg.saveBitmapToExternalStorage(con,(binding.imageViewfull.drawable as BitmapDrawable).bitmap)
+            }
         }
 
 

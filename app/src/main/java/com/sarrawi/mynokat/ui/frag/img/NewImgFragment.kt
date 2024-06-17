@@ -24,6 +24,7 @@ import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.model.FavImgModel
 import com.sarrawi.mynokat.paging.PagingAdapterImg
 import com.sarrawi.mynokat.paging.PagingAdapterImgFavFull
+import com.sarrawi.mynokat.paging.PagingAdpterNewImg
 import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
 import com.sarrawi.mynokat.viewModel.NokatViewModel
@@ -50,7 +51,7 @@ class NewImgFragment : Fragment() {
             PostDatabase.getInstance(requireContext())
         )
     }
-    private val pagingAdapterImg by lazy { PagingAdapterImg(requireActivity(),this) }
+    private val pagingAdapterImg by lazy { PagingAdpterNewImg(requireActivity(),this) }
 
     private lateinit var favimgModel: FavImgModel
 
@@ -179,6 +180,8 @@ class NewImgFragment : Fragment() {
             } else {
                 Log.d("TAG", "Item is not favorite")
             }
+
+
 
 //
             //            }

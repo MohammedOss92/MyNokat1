@@ -45,6 +45,7 @@ class ImgFullFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         imgModel = ImgFullFragmentArgs.fromBundle(requireArguments()).fullimg
+        imgModel = ImgFullFragmentArgs.fromBundle(requireArguments()).fullimg
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
