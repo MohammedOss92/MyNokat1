@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.databinding.ActivityMainBinding
@@ -50,6 +51,16 @@ class MainActivity : AppCompatActivity() {
             ViewModelProvider(this, MyViewModelFactory(mainRepository, this, PostDatabase.getInstance(this))).get(
                 NokatViewModel::class.java
             )
+
+        FirebaseMessaging.getInstance().subscribeToTopic("alert")
+        FirebaseMessaging.getInstance().token
+            .addOnSuccessListener { token ->
+                // قم بتنفيذ العمليات المطلوبة هنا على الـ token
+
+            }
+            .addOnFailureListener { exception ->
+                // قم بتنفيذ العمليات المطلوبة هنا في حالة فشل العملية
+            }
 
         if (intent.hasExtra("targetScreen")) {
             val targetScreen = intent.getStringExtra("targetScreen")
