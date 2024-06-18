@@ -1,16 +1,14 @@
 package com.sarrawi.mynokat.ui
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.api.ApiService
@@ -20,6 +18,7 @@ import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
 import com.sarrawi.mynokat.viewModel.NokatViewModel
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,6 +51,16 @@ class MainActivity : AppCompatActivity() {
                 NokatViewModel::class.java
             )
 
+        if (intent.hasExtra("targetScreen")) {
+            val targetScreen = intent.getStringExtra("targetScreen")
+            if ("screen1" == targetScreen) {
+                navController.navigate(R.id.newNokatFragment)
+            } else if ("screen2" == targetScreen) {
+                navController.navigate(R.id.newImgFragment)
+            }
+        }
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -74,3 +83,5 @@ class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 }
+
+

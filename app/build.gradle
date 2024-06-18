@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -84,5 +85,9 @@ dependencies {
     implementation('androidx.paging:paging-common-ktx:3.2.1')
     implementation('androidx.paging:paging-runtime-ktx:3.2.1')
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
+
 
 }

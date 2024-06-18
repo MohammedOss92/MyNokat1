@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "140777009939",
+    "project_id": "mynokat",
+    "storage_bucket": "mynokat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140777009939:android:8e48f9e26eda224ccda0e6",
+        "android_client_info": {
+          "package_name": "com.sarrawi.mynokat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC46Xf-e4HUAxZ8Kv2al5oIx55VBLR4Us0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
