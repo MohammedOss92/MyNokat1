@@ -1,41 +1,34 @@
 package com.sarrawi.mynokat.ui.frag.nokat
 
+import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.api.ApiService
-import com.sarrawi.mynokat.databinding.FragmentMainBinding
 import com.sarrawi.mynokat.databinding.FragmentNokatBinding
 import com.sarrawi.mynokat.db.LocaleSource
 import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.model.FavNokatModel
-import com.sarrawi.mynokat.model.NokatModel
 import com.sarrawi.mynokat.paging.PagingAdapterNokat
 import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
 import com.sarrawi.mynokat.viewModel.NokatViewModel
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -259,13 +252,13 @@ class NokatFragment : Fragment() {
                 when(menuItem.itemId){
 
                     R.id.refresh ->{
-                       nokatViewModel.refreshNokats()
-                        if (mInterstitialAd != null) {
-                            mInterstitialAd?.show(requireActivity())
-                        } else {
-                            // Handle the case when ad is not loaded yet
-                            // You might want to load the ad again or show an alternative action
-                        }
+                       nokatViewModel.refreshNokats(requireContext(), view,this@NokatFragment)
+//                        if (mInterstitialAd != null) {
+//                            mInterstitialAd?.show(requireActivity())
+//                        } else {
+//                            // Handle the case when ad is not loaded yet
+//                            // You might want to load the ad again or show an alternative action
+//                        }
                     }
 
 
@@ -274,6 +267,84 @@ class NokatFragment : Fragment() {
             }
 
         },viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    fun loadInterstitialAd() {
+        MobileAds.initialize(requireActivity()) { initializationStatus ->
+            // do nothing on initialization complete
+        }
+
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(
+            requireActivity(),
+            "ca-app-pub-1895204889916566/1691767609",
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    // The mInterstitialAd reference will be null until an ad is loaded.
+                    mInterstitialAd = interstitialAd
+                    Log.i("onAdLoadedL", "onAdLoaded")
+                }
+
+                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                    // Handle the error
+                    Log.d("onAdLoadedF", loadAdError.toString())
+                    mInterstitialAd = null
+                }
+            }
+        )
+    }
+
+    fun hideprogressdialog() {
+        Log.e("tesssst","entred")
+        //  recreate()
+        // mprogressdaialog!!.dismiss()
+        binding.progressBar.visibility = View.GONE
+        binding.tvLoad.visibility = View.GONE
+
+        if (mInterstitialAd != null) {
+            mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+                override fun onAdDismissedFullScreenContent() {
+                    Log.d(ContentValues.TAG, "Ad was dismissed.")
+                    // Load the next interstitial ad.
+                    loadInterstitialAd()
+                }
+
+                override fun onAdFailedToShowFullScreenContent(p0: AdError) {
+                    Log.d(ContentValues.TAG, "Ad failed to show.")
+                    // Load the next interstitial ad.
+                    loadInterstitialAd()
+                }
+
+                override fun onAdShowedFullScreenContent() {
+                    Log.d(ContentValues.TAG, "Ad showed fullscreen content.")
+                    mInterstitialAd = null
+                }
+            }
+            mInterstitialAd?.show(requireActivity())
+        } else {
+            Log.d(ContentValues.TAG, "Ad wasn't loaded.")
+            // Load the next interstitial ad.
+            loadInterstitialAd()
+        }
+
+        mInterstitialAd?.show(requireActivity())
+
+
+
+
+    }
+    fun showprogressdialog() {
+
+        binding.progressBar.visibility = View.VISIBLE
+        binding.tvLoad.visibility  = View.VISIBLE
+
+
+        //  mprogressdaialog = Dialog(this)
+        //  mprogressdaialog!!.setCancelable(false)
+        //  mprogressdaialog!!.setContentView(R.layout.progress_dialog)
+
+        //  mprogressdaialog!!.show()
     }
 
     /*https://chatgpt.com/share/c05fc186-75e5-415b-99ec-ffb1a3435a14

@@ -1,5 +1,6 @@
 package com.sarrawi.mynokat.repository
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.paging.*
@@ -61,6 +62,7 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
     }
 
     suspend fun refreshNokats() {
+
         val response = apiService.getAllNokatPa(1) // قم بضبط الصفحة حسب الحاجة
         if (response.isSuccessful) {
             response.body()?.results?.let { nokats ->
@@ -69,6 +71,7 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
                     database.nokatDao().insert_Nokat(nokats.NokatModel)
                 }
             }
+
         } else {
             throw Exception("Error refreshing data")
         }

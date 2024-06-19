@@ -1,17 +1,21 @@
 package com.sarrawi.mynokat.viewModel
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.view.View
+import android.widget.Toast
+import androidx.lifecycle.*
 import androidx.paging.*
+import com.google.android.material.snackbar.Snackbar
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.model.*
 import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.ui.MainActivity
+import com.sarrawi.mynokat.ui.frag.nokat.NokatFragment
 import com.sarrawi.mynokat.utils.NetworkConnection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -43,12 +47,21 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
     val nokatStream: Flow<PagingData<NokatModel>> = nokatRepo.getNokatStream()
         .cachedIn(viewModelScope)
 
-    fun refreshNokats() {
-        viewModelScope.launch {
-            try {
-                nokatRepo.refreshNokats()
-            } catch (e: Exception) {
-                // التعامل مع الخطأ حسب الحاجة
+    fun refreshNokats(context: Context, rootView: View?, fragment: NokatFragment) {
+        fragment.viewLifecycleOwner.lifecycleScope.launch {
+            if (internetCheck(context)) {
+                try {
+                    fragment.showprogressdialog()  // عرض حوار التحميل
+                    nokatRepo.refreshNokats()  // تحديث البيانات من المستودع
+                    fragment.hideprogressdialog()  // إخفاء حوار التحميل بعد التحديث
+                } catch (e: Exception) {
+                    fragment.hideprogressdialog()  // إخفاء حوار التحميل في حالة حدوث خطأ
+                    // التعامل مع الخطأ حسب الحاجة
+                    Snackbar.make(rootView!!, "حدث خطأ أثناء التحديث. الرجاء المحاولة مرة أخرى.", Snackbar.LENGTH_SHORT).show()
+                }
+            } else {
+                fragment.hideprogressdialog()  // إخفاء حوار التحميل في حالة عدم وجود اتصال إنترنت
+                Snackbar.make(rootView!!, "الرجاء التحقق من اتصال الإنترنت...", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
@@ -162,6 +175,20 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
 
     val favImg: LiveData<List<FavImgModel>> = nokatRepo.getAllFavImg()
     val favImg2: LiveData<PagingData<FavImgModel>> = nokatRepo.getAllFavImge().cachedIn(viewModelScope)
+
+    fun internetCheck(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // للأجهزة بنظام Android 10+
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)?.let { networkCapabilities ->
+                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                        networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+            } ?: false
+        } else {
+            connectivityManager.activeNetworkInfo?.isConnectedOrConnecting == true
+        }
+    }
 
 //    fun getAllNokat2(): LiveData<PagingData<NokatModel>> {
 //        val _response = MutableLiveData<PagingData<NokatModel>>()
