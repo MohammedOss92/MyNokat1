@@ -34,6 +34,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
+
 class NokatFragment : Fragment() {
 
     private var _binding: FragmentNokatBinding? = null
@@ -74,6 +75,8 @@ class NokatFragment : Fragment() {
         menu_item()
         setup()
         InterstitialAd_fun()
+        loadInterstitialAd()
+
 //        adapterOnClick()
     }
 
@@ -116,6 +119,7 @@ class NokatFragment : Fragment() {
 // بمجرد أن يصل clickCount إلى 4، اعرض الإعلان
                     if (mInterstitialAd != null) {
                         mInterstitialAd?.show(requireActivity())
+                        loadInterstitialAd()
                     } else {
                         Log.d("TAG", "The interstitial ad wasn't ready yet.")
                     }

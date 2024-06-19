@@ -54,7 +54,7 @@ class MainFragment : Fragment() {
         val img:Button=view.findViewById(R.id.img)
         val words:Button=view.findViewById(R.id.words)
         InterstitialAd_fun()
-
+        loadInterstitialAd()
 
         img.setOnClickListener {
 
@@ -63,6 +63,7 @@ class MainFragment : Fragment() {
 // بمجرد أن يصل clickCount إلى 4، اعرض الإعلان
                 if (mInterstitialAd != null) {
                     mInterstitialAd?.show(requireActivity())
+                    loadInterstitialAd()
                 } else {
                     Log.d("TAG", "The interstitial ad wasn't ready yet.")
                 }
@@ -92,6 +93,7 @@ class MainFragment : Fragment() {
 // بمجرد أن يصل clickCount إلى 4، اعرض الإعلان
                 if (mInterstitialAd != null) {
                     mInterstitialAd?.show(requireActivity())
+                    loadInterstitialAd()
                 } else {
                     Log.d("TAG", "The interstitial ad wasn't ready yet.")
                 }
@@ -121,6 +123,32 @@ class MainFragment : Fragment() {
     fun InterstitialAd_fun (){
 
 
+        MobileAds.initialize(requireActivity()) { initializationStatus ->
+            // do nothing on initialization complete
+        }
+
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(
+            requireActivity(),
+            "ca-app-pub-1895204889916566/1691767609",
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    // The mInterstitialAd reference will be null until an ad is loaded.
+                    mInterstitialAd = interstitialAd
+                    Log.i("onAdLoadedL", "onAdLoaded")
+                }
+
+                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                    // Handle the error
+                    Log.d("onAdLoadedF", loadAdError.toString())
+                    mInterstitialAd = null
+                }
+            }
+        )
+    }
+
+    fun loadInterstitialAd() {
         MobileAds.initialize(requireActivity()) { initializationStatus ->
             // do nothing on initialization complete
         }

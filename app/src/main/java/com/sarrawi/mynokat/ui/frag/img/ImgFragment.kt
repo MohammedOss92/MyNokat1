@@ -19,6 +19,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.sarrawi.mynokat.R
@@ -57,7 +62,8 @@ class ImgFragment : Fragment() {
     }
 
     private val pagingAdapterImg by lazy { PagingAdapterImg(requireActivity(),this) }
-
+    var clickCount = 0
+    var mInterstitialAd: InterstitialAd?=null
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var bottomNav : BottomNavigationView
 
@@ -95,7 +101,8 @@ class ImgFragment : Fragment() {
 
         setup()
         nokatViewModel.checkNetworkConnection(requireContext())
-
+        InterstitialAd_fun()
+        loadInterstitialAd()
 
 
     }
@@ -152,6 +159,20 @@ class ImgFragment : Fragment() {
 
             // تحديد الإجراء الذي يتم تنفيذه عند النقر على عنصر في RecyclerView
             pagingAdapterImg.onItemClick = { item, position ->
+
+                clickCount++
+                if (clickCount >= 2) {
+// بمجرد أن يصل clickCount إلى 4، اعرض الإعلان
+                    if (mInterstitialAd != null) {
+                        mInterstitialAd?.show(requireActivity())
+                        loadInterstitialAd()
+                    } else {
+                        Log.d("TAG", "The interstitial ad wasn't ready yet.")
+                    }
+                    clickCount = 0 // اعيد قيمة المتغير clickCount إلى الصفر بعد عرض الإعلان
+
+                }
+
                 val currentTime =
                     SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
                 val fav = FavImgModel(item.id, item.new_img, item.pic, item.image_url).apply {
@@ -222,7 +243,58 @@ class ImgFragment : Fragment() {
     }
 
 
+    fun InterstitialAd_fun (){
 
+
+        MobileAds.initialize(requireActivity()) { initializationStatus ->
+            // do nothing on initialization complete
+        }
+
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(
+            requireActivity(),
+            "ca-app-pub-1895204889916566/1691767609",
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    // The mInterstitialAd reference will be null until an ad is loaded.
+                    mInterstitialAd = interstitialAd
+                    Log.i("onAdLoadedL", "onAdLoaded")
+                }
+
+                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                    // Handle the error
+                    Log.d("onAdLoadedF", loadAdError.toString())
+                    mInterstitialAd = null
+                }
+            }
+        )
+    }
+    fun loadInterstitialAd() {
+        MobileAds.initialize(requireActivity()) { initializationStatus ->
+            // do nothing on initialization complete
+        }
+
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(
+            requireActivity(),
+            "ca-app-pub-1895204889916566/1691767609",
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    // The mInterstitialAd reference will be null until an ad is loaded.
+                    mInterstitialAd = interstitialAd
+                    Log.i("onAdLoadedL", "onAdLoaded")
+                }
+
+                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                    // Handle the error
+                    Log.d("onAdLoadedF", loadAdError.toString())
+                    mInterstitialAd = null
+                }
+            }
+        )
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -14,6 +14,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.sarrawi.mynokat.R
@@ -42,7 +47,8 @@ class FavNokatFragment : Fragment() {
     private val nokatViewModel: NokatViewModel by viewModels {
         MyViewModelFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext()))
     }
-
+    var clickCount = 0
+    var mInterstitialAd: InterstitialAd?=null
     private val pagingAdapterNokatFav by lazy { PagingAdapterNokatFav(requireActivity()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +74,8 @@ class FavNokatFragment : Fragment() {
         bottomNav.setupWithNavController(navController)
         setup()
         adapterOnClick()
+        InterstitialAd_fun()
+        loadInterstitialAd()
     }
 
     private fun setup() {
@@ -87,6 +95,19 @@ class FavNokatFragment : Fragment() {
     private fun adapterOnClick() {
 
         pagingAdapterNokatFav.onItemClick = { favNokatModel ->
+
+            clickCount++
+            if (clickCount >= 2) {
+// بمجرد أن يصل clickCount إلى 4، اعرض الإعلان
+                if (mInterstitialAd != null) {
+                    mInterstitialAd?.show(requireActivity())
+                    loadInterstitialAd()
+                } else {
+                    Log.d("TAG", "The interstitial ad wasn't ready yet.")
+                }
+                clickCount = 0 // اعيد قيمة المتغير clickCount إلى الصفر بعد عرض الإعلان
+
+            }
             nokatViewModel.viewModelScope.launch {
                 nokatViewModel.update_fav(favNokatModel.id, false)
                 val result = mainRepository.deleteFav(favNokatModel)
@@ -96,6 +117,59 @@ class FavNokatFragment : Fragment() {
         }
 
 
+    }
+
+    fun InterstitialAd_fun (){
+
+
+        MobileAds.initialize(requireActivity()) { initializationStatus ->
+            // do nothing on initialization complete
+        }
+
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(
+            requireActivity(),
+            "ca-app-pub-1895204889916566/1691767609",
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    // The mInterstitialAd reference will be null until an ad is loaded.
+                    mInterstitialAd = interstitialAd
+                    Log.i("onAdLoadedL", "onAdLoaded")
+                }
+
+                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                    // Handle the error
+                    Log.d("onAdLoadedF", loadAdError.toString())
+                    mInterstitialAd = null
+                }
+            }
+        )
+    }
+    fun loadInterstitialAd() {
+        MobileAds.initialize(requireActivity()) { initializationStatus ->
+            // do nothing on initialization complete
+        }
+
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(
+            requireActivity(),
+            "ca-app-pub-1895204889916566/1691767609",
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    // The mInterstitialAd reference will be null until an ad is loaded.
+                    mInterstitialAd = interstitialAd
+                    Log.i("onAdLoadedL", "onAdLoaded")
+                }
+
+                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                    // Handle the error
+                    Log.d("onAdLoadedF", loadAdError.toString())
+                    mInterstitialAd = null
+                }
+            }
+        )
     }
     }
 
