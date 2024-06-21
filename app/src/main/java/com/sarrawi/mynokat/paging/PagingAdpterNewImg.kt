@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -78,7 +79,7 @@ class PagingAdpterNewImg(val con: Context, val frag: Fragment) : PagingDataAdapt
                     favBtn.setImageResource(R.drawable.baseline_favorite_border_false)
                 }
 
-
+                binding.btnnew.setImageResource(R.drawable.new_msg)
 
             }
 
@@ -108,6 +109,12 @@ class PagingAdpterNewImg(val con: Context, val frag: Fragment) : PagingDataAdapt
                     .into(binding.imageView)
                 binding.imageView.visibility = View.GONE
                 binding.lyNoInternet.visibility = View.VISIBLE
+            }
+
+            if (imgModel?.new_img == 0) {
+                binding.btnnew.setVisibility(View.INVISIBLE)
+            } else {
+                binding.btnnew.setVisibility(View.VISIBLE)
             }
         }
 
@@ -175,12 +182,14 @@ class PagingAdpterNewImg(val con: Context, val frag: Fragment) : PagingDataAdapt
                     binding.btncshare.visibility = View.VISIBLE
                     binding.btncmessenger.visibility = View.VISIBLE
                     binding.btnwhats.visibility = View.VISIBLE
+                    binding.btnnew.visibility = View.VISIBLE
                 } else {
                     binding.imageView.visibility = View.VISIBLE
                     binding.btncmessenger.visibility = View.GONE
                     binding.btnwhats.visibility = View.GONE
                     binding.btnSave.visibility = View.GONE
                     binding.btncshare.visibility = View.GONE
+                    binding.btnnew.visibility = View.GONE
                 }
 //                Toast.makeText(con, coinSide, Toast.LENGTH_SHORT).show()
                 binding.imageView.isClickable = true

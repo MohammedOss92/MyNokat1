@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.paging.PagingDataAdapter
@@ -21,6 +22,7 @@ import com.sarrawi.mynokat.databinding.ImageFullBinding
 import com.sarrawi.mynokat.databinding.ImgRowBinding
 import com.sarrawi.mynokat.model.FavImgModel
 import com.sarrawi.mynokat.ui.frag.img.FavFragment
+import com.sarrawi.mynokat.ui.frag.img.FavFragmentFull
 
 class PagingAdapterImgFavFull (val con: Context, val frag: Fragment) : PagingDataAdapter<FavImgModel, PagingAdapterImgFavFull.ViewHolder>(COMPARATOR) {
 
@@ -58,9 +60,12 @@ class PagingAdapterImgFavFull (val con: Context, val frag: Fragment) : PagingDat
 
             }
 
+            setupListeners()
         }
 
         fun bind(favImgModel: FavImgModel?){
+
+            binding.btnnew.setImageResource(R.drawable.new_msg)
 
             binding.apply {
                 if(favImgModel!!.is_fav){
@@ -87,24 +92,30 @@ class PagingAdapterImgFavFull (val con: Context, val frag: Fragment) : PagingDat
                 .load(favImgModel?.image_url)
                 .apply(requestOptions)
                 .into(binding.imageViewfull)
+
+            if (favImgModel?.new_img == 0) {
+                binding.btnnew.setVisibility(View.INVISIBLE)
+            } else {
+                binding.btnnew.setVisibility(View.VISIBLE)
+            }
         }
         private fun setupListeners() {
 
             binding.btncmessenger.setOnClickListener {
                 Utils.shareImgMessenger(con,binding.imageViewfull,binding.root)
-                (frag as? FavFragment)?.showInterstitial()
+                (frag as? FavFragmentFull)?.showInterstitial()
             }
             binding.btnwhats.setOnClickListener {
                 Utils.shareImageWhatsApp(con,binding.imageViewfull,"",binding.root)
-                (frag as? FavFragment)?.showInterstitial()
+                (frag as? FavFragmentFull)?.showInterstitial()
             }
             binding.btncshare.setOnClickListener {
                 Utils.ImgShare(con,binding.imageViewfull,binding.root)
-                (frag as? FavFragment)?.showInterstitial()
+                (frag as? FavFragmentFull)?.showInterstitial()
             }
             binding.btnSave.setOnClickListener {
                 SaveImg.saveBitmapToExternalStorage(con,(binding.imageViewfull.drawable as BitmapDrawable).bitmap)
-                (frag as? FavFragment)?.showInterstitial()
+                (frag as? FavFragmentFull)?.showInterstitial()
             }
 
         }

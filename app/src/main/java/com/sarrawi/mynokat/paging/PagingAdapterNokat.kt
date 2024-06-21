@@ -67,6 +67,12 @@ class PagingAdapterNokat(val con: Context): PagingDataAdapter<NokatModel, Paging
                     favBtn.setImageResource(R.drawable.baseline_favorite_border_false)
                 }
 
+                if (nokatModel.new_nokat == 0) {
+                    binding.newNokat.setVisibility(View.INVISIBLE)
+                } else {
+                    binding.newNokat.setVisibility(View.VISIBLE)
+                }
+
 
             }
 

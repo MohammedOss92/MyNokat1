@@ -62,54 +62,59 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:weightSum="5">
 
-            <!-- الصورة على اليمين -->
+            <!-- الزر الأول -->
             <ImageView
                 android:id="@+id/btnSave"
                 android:visibility="gone"
                 android:src="@drawable/ic_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="end" />
-
-            <!-- الصورة على اليسار -->
-            <!-- الصورتين في المنتصف -->
-            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:layout_weight="1"
+                android:layout_gravity="center" />
 
-                <ImageView
-                    android:id="@+id/btncmessenger"
-                    android:visibility="gone"
-                    android:src="@drawable/ic_messenger"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    />
+            <!-- الزر الثاني -->
+            <ImageView
+                android:id="@+id/btncmessenger"
+                android:visibility="gone"
+                android:src="@drawable/ic_messenger"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center" />
 
-                <ImageView
-                    android:id="@+id/btnwhats"
-                    android:visibility="gone"
-                    android:src="@drawable/whatsapp_icon_blue"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"/>
-            </LinearLayout>
+            <!-- الزر الثالث -->
+            <ImageView
+                android:id="@+id/btnwhats"
+                android:visibility="gone"
+                android:src="@drawable/whatsapp_icon_blue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center" />
+
+            <!-- الزر الرابع -->
             <ImageView
                 android:id="@+id/btncshare"
                 android:visibility="gone"
                 android:src="@drawable/ic_share"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_gravity="start" />
+                android:layout_gravity="center" />
 
-
+            <!-- الزر الخامس -->
+            <ImageView
+                android:id="@+id/btnnew"
+                android:src="@drawable/new_msg"
+                android:visibility="gone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center" />
 
         </LinearLayout>
 

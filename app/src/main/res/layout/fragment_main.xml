@@ -9,8 +9,8 @@
 
     <Button
         android:id="@+id/img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:text="الصور"
         android:textColor="#0C2923"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,8 +22,8 @@
 
     <Button
         android:id="@+id/words"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:text="الكلمات"
         android:textColor="#0C2923"
         app:layout_constraintStart_toEndOf="@id/img"

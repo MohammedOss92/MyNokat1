@@ -67,6 +67,8 @@ class PagingAdapterFullImg(val con: Context, val frag: Fragment) : PagingDataAda
 
         fun bind(imgModel: ImgsNokatModel?, isInternetConnected: Boolean) {
 
+            binding.btnnew.setImageResource(R.drawable.new_msg)
+
             binding.apply {
                 if(imgModel!!.is_fav){
                     favBtn.setImageResource(R.drawable.baseline_favorite_true)
@@ -101,10 +103,17 @@ class PagingAdapterFullImg(val con: Context, val frag: Fragment) : PagingDataAda
                 binding.lyNoInternetfull.visibility = View.VISIBLE
             }
 
-
+            if (imgModel?.new_img == 0) {
+                binding.btnnew.setVisibility(View.INVISIBLE)
+            } else {
+                binding.btnnew.setVisibility(View.VISIBLE)
+            }
         }
 
         fun setUpListener(){
+
+
+
             binding.btncmessenger.setOnClickListener {
                 Utils.shareImgMessenger(con,binding.imageViewfull,binding.root)
                 (frag as? ImgFullFragment)?.showInterstitial()

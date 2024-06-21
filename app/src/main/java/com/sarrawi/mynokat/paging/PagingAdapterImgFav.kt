@@ -67,6 +67,8 @@ class PagingAdapterImgFav (val con: Context, val frag: Fragment) : PagingDataAda
 
         fun bind(favImgModel: FavImgModel?){
 
+            binding.btnnew.setImageResource(R.drawable.new_msg)
+
             binding.apply {
                 if(favImgModel!!.is_fav){
                     favBtn.setImageResource(R.drawable.baseline_favorite_true)
@@ -175,12 +177,15 @@ class PagingAdapterImgFav (val con: Context, val frag: Fragment) : PagingDataAda
                     binding.btncshare.visibility = View.VISIBLE
                     binding.btncmessenger.visibility = View.VISIBLE
                     binding.btnwhats.visibility = View.VISIBLE
+                    binding.btnnew.visibility = View.VISIBLE
+
                 } else {
                     binding.imageView.visibility = View.VISIBLE
                     binding.btncmessenger.visibility = View.GONE
                     binding.btnwhats.visibility = View.GONE
                     binding.btnSave.visibility = View.GONE
                     binding.btncshare.visibility = View.GONE
+                    binding.btnnew.visibility = View.GONE
                 }
 //                Toast.makeText(con, coinSide, Toast.LENGTH_SHORT).show()
                 binding.imageView.isClickable = true
