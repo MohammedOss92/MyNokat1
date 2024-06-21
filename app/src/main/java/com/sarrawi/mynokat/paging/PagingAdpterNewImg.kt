@@ -22,8 +22,7 @@ import com.sarrawi.img.utils.Utils
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.databinding.ImgRowBinding
 import com.sarrawi.mynokat.model.ImgsNokatModel
-import com.sarrawi.mynokat.ui.frag.img.ImgFragmentDirections
-import com.sarrawi.mynokat.ui.frag.img.NewImgFragmentDirections
+
 
 class PagingAdpterNewImg(val con: Context, val frag: Fragment) : PagingDataAdapter<ImgsNokatModel, PagingAdpterNewImg.ViewHolder>(COMPARATOR) {
 
@@ -83,13 +82,7 @@ class PagingAdpterNewImg(val con: Context, val frag: Fragment) : PagingDataAdapt
 
             }
 
-            binding.imageView.setOnClickListener {
-                val imgModel = getItem(bindingAdapterPosition)
-                imgModel?.let {
-                    val directions = NewImgFragmentDirections.actionNewImgFragmentToImgFullFragment(it)
-                    frag.findNavController().navigate(directions)
-                }
-            }
+
             if (isInternetConnected) {
                 val requestOptions = RequestOptions()
                     .placeholder(R.drawable.ic_baseline_autorenew_24)
