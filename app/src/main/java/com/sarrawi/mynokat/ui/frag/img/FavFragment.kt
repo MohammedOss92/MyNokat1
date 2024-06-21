@@ -202,4 +202,18 @@ class FavFragment : Fragment() {
             }
         )
     }
+    fun showInterstitial(){
+        clickCount++
+        if (clickCount >= 2) {
+// بمجرد أن يصل clickCount إلى 4، اعرض الإعلان
+            if (mInterstitialAd != null) {
+                mInterstitialAd?.show(requireActivity())
+                loadInterstitialAd()
+            } else {
+                Log.d("TAG", "The interstitial ad wasn't ready yet.")
+            }
+            clickCount = 0 // اعيد قيمة المتغير clickCount إلى الصفر بعد عرض الإعلان
+
+        }
+    }
 }

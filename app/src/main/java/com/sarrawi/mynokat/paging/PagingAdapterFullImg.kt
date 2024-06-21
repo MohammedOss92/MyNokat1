@@ -23,6 +23,8 @@ import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.databinding.ImageFullBinding
 import com.sarrawi.mynokat.databinding.ImgRowBinding
 import com.sarrawi.mynokat.model.ImgsNokatModel
+import com.sarrawi.mynokat.ui.frag.img.ImgFragment
+import com.sarrawi.mynokat.ui.frag.img.ImgFullFragment
 
 class PagingAdapterFullImg(val con: Context, val frag: Fragment) : PagingDataAdapter<ImgsNokatModel, PagingAdapterFullImg.ViewHolder>(COMPARATOR) {
     private var isInternetConnected: Boolean = true
@@ -105,15 +107,19 @@ class PagingAdapterFullImg(val con: Context, val frag: Fragment) : PagingDataAda
         fun setUpListener(){
             binding.btncmessenger.setOnClickListener {
                 Utils.shareImgMessenger(con,binding.imageViewfull,binding.root)
+                (frag as? ImgFullFragment)?.showInterstitial()
             }
             binding.btnwhats.setOnClickListener {
                 Utils.shareImageWhatsApp(con,binding.imageViewfull,"",binding.root)
+                (frag as? ImgFullFragment)?.showInterstitial()
             }
             binding.btncshare.setOnClickListener {
                 Utils.ImgShare(con,binding.imageViewfull,binding.root)
+                (frag as? ImgFullFragment)?.showInterstitial()
             }
             binding.btnSave.setOnClickListener {
                 SaveImg.saveBitmapToExternalStorage(con,(binding.imageViewfull.drawable as BitmapDrawable).bitmap)
+                (frag as? ImgFullFragment)?.showInterstitial()
             }
         }
 

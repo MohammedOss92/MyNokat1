@@ -3,6 +3,7 @@ package com.sarrawi.mynokat.paging
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
+import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -13,10 +14,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.sarrawi.img.utils.SaveImg
+import com.sarrawi.img.utils.Utils
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.databinding.ImageFullBinding
 import com.sarrawi.mynokat.databinding.ImgRowBinding
 import com.sarrawi.mynokat.model.FavImgModel
+import com.sarrawi.mynokat.ui.frag.img.FavFragment
 
 class PagingAdapterImgFavFull (val con: Context, val frag: Fragment) : PagingDataAdapter<FavImgModel, PagingAdapterImgFavFull.ViewHolder>(COMPARATOR) {
 
@@ -83,6 +87,26 @@ class PagingAdapterImgFavFull (val con: Context, val frag: Fragment) : PagingDat
                 .load(favImgModel?.image_url)
                 .apply(requestOptions)
                 .into(binding.imageViewfull)
+        }
+        private fun setupListeners() {
+
+            binding.btncmessenger.setOnClickListener {
+                Utils.shareImgMessenger(con,binding.imageViewfull,binding.root)
+                (frag as? FavFragment)?.showInterstitial()
+            }
+            binding.btnwhats.setOnClickListener {
+                Utils.shareImageWhatsApp(con,binding.imageViewfull,"",binding.root)
+                (frag as? FavFragment)?.showInterstitial()
+            }
+            binding.btncshare.setOnClickListener {
+                Utils.ImgShare(con,binding.imageViewfull,binding.root)
+                (frag as? FavFragment)?.showInterstitial()
+            }
+            binding.btnSave.setOnClickListener {
+                SaveImg.saveBitmapToExternalStorage(con,(binding.imageViewfull.drawable as BitmapDrawable).bitmap)
+                (frag as? FavFragment)?.showInterstitial()
+            }
+
         }
 
 

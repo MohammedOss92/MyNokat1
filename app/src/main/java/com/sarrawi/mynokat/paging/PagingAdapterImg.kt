@@ -28,6 +28,7 @@ import com.sarrawi.mynokat.model.ItemModel
 import com.sarrawi.mynokat.model.NokatModel
 import com.sarrawi.mynokat.model.bind.ITEM_TYPE_ANOTHER
 import com.sarrawi.mynokat.model.bind.ITEM_TYPE_IMG
+import com.sarrawi.mynokat.ui.frag.img.ImgFragment
 import com.sarrawi.mynokat.ui.frag.img.ImgFragmentDirections
 
 //class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter<ItemModel, RecyclerView.ViewHolder>(COMPARATOR) {
@@ -377,15 +378,19 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
 
             binding.btncmessenger.setOnClickListener {
                 Utils.shareImgMessenger(con,binding.imageView,binding.root)
+                (frag as? ImgFragment)?.showInterstitial()
             }
             binding.btnwhats.setOnClickListener {
                 Utils.shareImageWhatsApp(con,binding.imageView,"",binding.root)
+                (frag as? ImgFragment)?.showInterstitial()
             }
             binding.btncshare.setOnClickListener {
                 Utils.ImgShare(con,binding.imageView,binding.root)
+                (frag as? ImgFragment)?.showInterstitial()
             }
             binding.btnSave.setOnClickListener {
                 SaveImg.saveBitmapToExternalStorage(con,(binding.imageView.drawable as BitmapDrawable).bitmap)
+                (frag as? ImgFragment)?.showInterstitial()
             }
 
         }
