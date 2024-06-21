@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -19,6 +22,7 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.snackbar.Snackbar
+import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.databinding.FragmentImgFullBinding
 import com.sarrawi.mynokat.db.LocaleSource
@@ -52,6 +56,12 @@ class ImgFullFragment : Fragment() {
         super.onCreate(savedInstanceState)
         imgModel = ImgFullFragmentArgs.fromBundle(requireArguments()).fullimg
         imgModel = ImgFullFragmentArgs.fromBundle(requireArguments()).fullimg
+
+//        val args: ImgFullFragmentArgs by navArgs()
+//        val imgModel = args.fullimg
+
+        // عرض البيانات أو استخدامها كما هو مطلوب
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

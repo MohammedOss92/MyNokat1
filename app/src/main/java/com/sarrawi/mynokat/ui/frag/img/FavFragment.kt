@@ -144,6 +144,7 @@ class FavFragment : Fragment() {
                 )
             )
 
+
             val snackbar = Snackbar.make(requireView(), "تم الحذف", Snackbar.LENGTH_SHORT)
             snackbar.show()
         }

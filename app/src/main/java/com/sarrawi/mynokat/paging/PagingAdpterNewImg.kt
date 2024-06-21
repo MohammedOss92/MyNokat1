@@ -22,6 +22,8 @@ import com.sarrawi.img.utils.Utils
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.databinding.ImgRowBinding
 import com.sarrawi.mynokat.model.ImgsNokatModel
+import com.sarrawi.mynokat.ui.frag.img.FavFragment
+import com.sarrawi.mynokat.ui.frag.img.NewImgFragment
 
 
 class PagingAdpterNewImg(val con: Context, val frag: Fragment) : PagingDataAdapter<ImgsNokatModel, PagingAdpterNewImg.ViewHolder>(COMPARATOR) {
@@ -129,15 +131,19 @@ class PagingAdpterNewImg(val con: Context, val frag: Fragment) : PagingDataAdapt
 
             binding.btncmessenger.setOnClickListener {
                 Utils.shareImgMessenger(con,binding.imageView,binding.root)
+                (frag as? FavFragment)?.showInterstitial()
             }
             binding.btnwhats.setOnClickListener {
                 Utils.shareImageWhatsApp(con,binding.imageView,"",binding.root)
+                (frag as? FavFragment)?.showInterstitial()
             }
             binding.btncshare.setOnClickListener {
                 Utils.ImgShare(con,binding.imageView,binding.root)
+                (frag as? FavFragment)?.showInterstitial()
             }
             binding.btnSave.setOnClickListener {
                 SaveImg.saveBitmapToExternalStorage(con,(binding.imageView.drawable as BitmapDrawable).bitmap)
+                (frag as? NewImgFragment)?.showInterstitial()
             }
 
         }
