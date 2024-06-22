@@ -95,6 +95,7 @@ class FavFragment : Fragment() {
             nokatViewModel.favImg2.observe(viewLifecycleOwner) { pagingData ->
                 // قم بتقديم البيانات إلى ال Adapter
                 favPagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
+
             }
 
             // تحديث RecyclerView عندما تأتي بيانات جديدة
