@@ -87,12 +87,12 @@ class FavFragmentFull : Fragment() {
                 pagingAdapterImgFavFull.submitData(viewLifecycleOwner.lifecycle, pagingData)
                 scrollToSelectedImage()
 
-                if (pagingAdapterImgFavFull.snapshot().isEmpty()) {
-                    findNavController().navigate(R.id.imgFragment)
-                    Toast.makeText(requireContext(), "No data available", Toast.LENGTH_SHORT).show()
-                } else {
-                    scrollToSelectedImage()
-                }
+//                if (pagingAdapterImgFavFull.snapshot().isEmpty()) {
+////                    findNavController().navigate(R.id.imgFragment)
+//                    Toast.makeText(requireContext(), "No data available", Toast.LENGTH_SHORT).show()
+//                } else {
+//                    scrollToSelectedImage()
+//                }
             }
 
             // تحديث RecyclerView عندما تأتي بيانات جديدة

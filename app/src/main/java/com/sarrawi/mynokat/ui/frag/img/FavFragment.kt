@@ -95,7 +95,12 @@ class FavFragment : Fragment() {
             nokatViewModel.favImg2.observe(viewLifecycleOwner) { pagingData ->
                 // قم بتقديم البيانات إلى ال Adapter
                 favPagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
-
+//                if (pagingAdapterImgFavFull.snapshot().isEmpty()) {
+////                    findNavController().navigate(R.id.imgFragment)
+//                    Toast.makeText(requireContext(), "No data available", Toast.LENGTH_SHORT).show()
+//                } else {
+//                    scrollToSelectedImage()
+//                }
             }
 
             // تحديث RecyclerView عندما تأتي بيانات جديدة

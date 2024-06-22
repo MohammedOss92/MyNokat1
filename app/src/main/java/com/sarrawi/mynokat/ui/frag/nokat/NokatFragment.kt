@@ -29,6 +29,7 @@ import com.sarrawi.mynokat.paging.PagingAdapterNokat
 import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
 import com.sarrawi.mynokat.viewModel.NokatViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -106,7 +107,11 @@ class NokatFragment : Fragment() {
 
             val pagingAdapter = PagingAdapterNokat(requireContext())
             binding.rcNokat.adapter = pagingAdapter
-
+//            lifecycleScope.launch {
+//                nokatViewModel.invalidatePagingSource()
+//                nokatViewModel.nokatFlow.collectLatest { pagingData ->
+//                    pagingAdapter.submitData(pagingData)
+//                }}
             lifecycleScope.launch {
                 nokatViewModel.itemss.observe(viewLifecycleOwner) { pagingData ->
                     pagingAdapter.submitData(lifecycle, pagingData)

@@ -13,11 +13,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.model.*
+import com.sarrawi.mynokat.paging.NokatPaging
 import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.ui.MainActivity
 import com.sarrawi.mynokat.ui.frag.nokat.NokatFragment
 import com.sarrawi.mynokat.utils.NetworkConnection
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
 class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: Context,database:PostDatabase):ViewModel() {
@@ -66,6 +69,19 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
         }
     }
 
+    private val pagingSourceFlow = MutableStateFlow(Unit)
+
+    val nokatFlow: Flow<PagingData<NokatModel>> = pagingSourceFlow.flatMapLatest {
+        Pager(
+            config = PagingConfig(pageSize = 20, enablePlaceholders = false),
+            pagingSourceFactory = { NokatPaging(ApiService.provideRetrofitInstance(), database) }
+        ).flow
+            .cachedIn(viewModelScope)
+    }
+
+    fun invalidatePagingSource() {
+        pagingSourceFlow.value = Unit
+    }
 
     fun getAllNokat(): LiveData<PagingData<FavNokatModel>> {
         Log.e("tessst","entred22")
