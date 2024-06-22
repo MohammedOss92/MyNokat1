@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -82,8 +83,16 @@ class FavFragmentFull : Fragment() {
             // تحميل البيانات باستخدام Paging
             nokatViewModel.favImg2.observe(viewLifecycleOwner) { pagingData ->
                 // قم بتقديم البيانات إلى ال Adapter
+
                 pagingAdapterImgFavFull.submitData(viewLifecycleOwner.lifecycle, pagingData)
                 scrollToSelectedImage()
+
+                if (pagingAdapterImgFavFull.snapshot().isEmpty()) {
+                    findNavController().navigate(R.id.imgFragment)
+                    Toast.makeText(requireContext(), "No data available", Toast.LENGTH_SHORT).show()
+                } else {
+                    scrollToSelectedImage()
+                }
             }
 
             // تحديث RecyclerView عندما تأتي بيانات جديدة

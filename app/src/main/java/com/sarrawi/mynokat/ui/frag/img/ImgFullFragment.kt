@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.gms.ads.AdRequest
@@ -30,6 +31,7 @@ import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.model.FavImgModel
 import com.sarrawi.mynokat.model.ImgsNokatModel
 import com.sarrawi.mynokat.model.ItemModel
+import com.sarrawi.mynokat.model.Model2
 import com.sarrawi.mynokat.paging.PagingAdapterFullImg
 import com.sarrawi.mynokat.paging.PagingAdapterImg
 import com.sarrawi.mynokat.repository.NokatRepo
@@ -50,6 +52,7 @@ class ImgFullFragment : Fragment() {
 
     private val pagingAdapterfullImg by lazy { PagingAdapterFullImg(requireActivity(), this) }
     private lateinit var imgModel: ImgsNokatModel
+    private lateinit var model2: Model2
     var clickCount = 0
     var mInterstitialAd: InterstitialAd?=null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +65,16 @@ class ImgFullFragment : Fragment() {
 
         // عرض البيانات أو استخدامها كما هو مطلوب
 
+//        model2?.let {
+//            val imgNokatList = it.imgNokatList
+//            imgNokatList?.let { list ->
+//                val pagingData = PagingData.from(list)
+//                pagingAdapterfullImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
+//            } ?: run {
+//                // تعامل مع الحالة عند وجود null في imgNokatList
+//                Toast.makeText(requireContext(), "No data available", Toast.LENGTH_SHORT).show()
+//            }
+//        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
