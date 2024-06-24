@@ -56,7 +56,7 @@ class PagingAdapterNokat(val con: Context): PagingDataAdapter<NokatModel, Paging
 
         fun bind(nokatModel: NokatModel) {
             binding.apply {
-                tvTitle.text = nokatModel.NokatTypes
+//                tvTitle.text = nokatModel.NokatTypes
                 tvNokatN.text = nokatModel.NokatName
                 newNokat.setImageResource(R.drawable.new_msg)
                 newNokat.visibility = if (nokatModel.new_nokat == 0) View.INVISIBLE else View.VISIBLE

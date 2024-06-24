@@ -11,7 +11,6 @@ import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.model.*
 import com.sarrawi.mynokat.paging.ImagePaging
 import com.sarrawi.mynokat.paging.ImgPagingNew
-import com.sarrawi.mynokat.paging.NokatPaging
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 

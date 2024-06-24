@@ -13,7 +13,7 @@ data class NokatModel(
     val id: Int,
 
     @ColumnInfo("NokatTypes")
-    @SerializedName("NokatTypes")
+
     val NokatTypes: String,
 
     @ColumnInfo("new_nokat")
