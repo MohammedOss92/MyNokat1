@@ -261,8 +261,10 @@ class NokatFragment : Fragment() {
                 when(menuItem.itemId){
 
                     R.id.refresh ->{
-                       nokatViewModel.refreshNokats(requireContext(), view,this@NokatFragment)
-//                        if (mInterstitialAd != null) {
+                        lifecycleScope.launch {
+                            nokatViewModel.refreshNokats(ApiService.provideRetrofitInstance(),PostDatabase.getInstance(requireContext()))
+                        }
+                        //                        if (mInterstitialAd != null) {
 //                            mInterstitialAd?.show(requireActivity())
 //                        } else {
 //                            // Handle the case when ad is not loaded yet

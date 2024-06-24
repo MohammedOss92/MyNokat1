@@ -22,6 +22,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 
 class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: Context,database:PostDatabase):ViewModel() {
 
@@ -50,24 +52,31 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
     val nokatStream: Flow<PagingData<NokatModel>> = nokatRepo.getNokatStream()
         .cachedIn(viewModelScope)
 
-    fun refreshNokats(context: Context, rootView: View?, fragment: NokatFragment) {
-        fragment.viewLifecycleOwner.lifecycleScope.launch {
-            if (internetCheck(context)) {
-                try {
-                    fragment.showprogressdialog()  // عرض حوار التحميل
-                    nokatRepo.refreshNokats()  // تحديث البيانات من المستودع
-                    fragment.hideprogressdialog()  // إخفاء حوار التحميل بعد التحديث
-                } catch (e: Exception) {
-                    fragment.hideprogressdialog()  // إخفاء حوار التحميل في حالة حدوث خطأ
-                    // التعامل مع الخطأ حسب الحاجة
-                    Snackbar.make(rootView!!, "حدث خطأ أثناء التحديث. الرجاء المحاولة مرة أخرى.", Snackbar.LENGTH_SHORT).show()
+    suspend fun refreshNokats(apiService: ApiService, database: PostDatabase) {
+        var page = 1 // البدء بالصفحة الأولى
+        var nokatList: List<NokatModel> = emptyList()
+
+        try {
+            do {
+                val response = apiService.getAllNokatPa(page)
+                if (response.isSuccessful) {
+                    nokatList = response.body()?.results?.NokatModel ?: emptyList()
+                    database.nokatDao().insert_Nokat(nokatList)
+                    page++
+                } else {
+                    // تجاهل الاستجابات غير الناجحة
+                    // يمكنك هنا إضافة سجل للأخطاء أو تسجيلها بشكل مناسب
+                    // أو يمكنك ترك هذا المكان فارغاً إذا كنت لا تريد معالجة الأخطاء هنا
                 }
-            } else {
-                fragment.hideprogressdialog()  // إخفاء حوار التحميل في حالة عدم وجود اتصال إنترنت
-                Snackbar.make(rootView!!, "الرجاء التحقق من اتصال الإنترنت...", Snackbar.LENGTH_SHORT).show()
-            }
+            } while (nokatList.isNotEmpty())
+        } catch (e: IOException) {
+            throw IOException("Network error", e)
+        } catch (e: HttpException) {
+            // يمكنك هنا ترك هذا المكان فارغاً إذا كنت لا تريد معالجة الأخطاء هنا
         }
     }
+
+
 
     private val pagingSourceFlow = MutableStateFlow(Unit)
 

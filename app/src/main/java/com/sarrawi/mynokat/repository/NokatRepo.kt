@@ -13,6 +13,8 @@ import com.sarrawi.mynokat.paging.ImagePaging
 import com.sarrawi.mynokat.paging.ImgPagingNew
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
+import retrofit2.HttpException
+import java.io.IOException
 
 class NokatRepo constructor(val apiService: ApiService, private val localeSource: LocaleSource,val database:PostDatabase) {
 
@@ -60,21 +62,7 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
         ).liveData
     }
 
-    suspend fun refreshNokats() {
 
-        val response = apiService.getAllNokatPa(1) // قم بضبط الصفحة حسب الحاجة
-        if (response.isSuccessful) {
-            response.body()?.results?.let { nokats ->
-                database.withTransaction {
-//                    database.nokatDao().clearAll()
-                    database.nokatDao().insert_Nokat(nokats.NokatModel)
-                }
-            }
-
-        } else {
-            throw Exception("Error refreshing data")
-        }
-    }
 
     fun getAllNokat(): LiveData<PagingData<NokatModel>> {
         return Pager(
