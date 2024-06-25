@@ -104,4 +104,6 @@ class SettingsFragment : Fragment() {
         // قم بتعيين النص وتنسيقه في TextView
         binding.vers.text = builder
     }
+
+
 }

@@ -130,12 +130,7 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
         return _response
     }
 
-    val countLiveData: LiveData<Int> = nokatRepo.countLiveData
 
-    // وظيفة لإرجاع LiveData الخاصة بعدد الصور
-    fun getAllImageCount(): LiveData<Int> {
-        return nokatRepo.countLiveData
-    }
 
     val countLiveDataa: LiveData<Int> = nokatRepo.countLiveDataa
 
@@ -145,7 +140,7 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
         }
     }
 
-
+    val countLiveDatanokat: LiveData<Int> get() = nokatRepo.countLiveDataNokat
 
     fun getAllImageNew(): LiveData<PagingData<ImgsNokatModel>> {
 

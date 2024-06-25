@@ -84,6 +84,10 @@ class MainFragment : Fragment() {
         nokatViewModel.fetchImageCount()
 
         val words:Button=view.findViewById(R.id.words)
+
+        nokatViewModel.countLiveDatanokat.observe(viewLifecycleOwner, Observer { count ->
+            binding.wordCountTextView.setText("عدد النكت: "+ count.toString())
+        })
         InterstitialAd_fun()
         loadInterstitialAd()
 

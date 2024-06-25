@@ -38,6 +38,8 @@ class LocaleSource(context: Context) {
         }
     }
 
+    val countLiveDataNokat: LiveData<Int> get() = nokatDao.getNokatCount()
+
 
     suspend fun insert_Nokat(nokatModel: List<NokatModel>){
         return nokatDao.insert_Nokat(nokatModel)

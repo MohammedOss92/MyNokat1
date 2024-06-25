@@ -26,6 +26,8 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
     private val _countLiveDataa = MutableLiveData<Int>()
     val countLiveDataa: LiveData<Int> get() = _countLiveDataa
 
+    val countLiveDataNokat: LiveData<Int> get() = localeSource.countLiveDataNokat
+
     suspend fun getImgCount() {
         try {
             val response = withContext(Dispatchers.IO) { apiService.ImgCount() }
