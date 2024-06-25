@@ -39,6 +39,8 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
         get() = _isConnected
 
 
+
+
     fun checkNetworkConnection(applicationContext: Context) {
         val networkConnection = NetworkConnection(applicationContext)
         networkConnection.observeForever { isConnected ->
@@ -104,9 +106,15 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
         return nokatRepo.getAllImgsNokatSerPag()
     }
 
+    private val _imageCount = MutableLiveData<List<TotalImages>>()
+    val imageCount: LiveData<List<TotalImages>> get() = _imageCount
 
 
-//    fun getAllImage(): LiveData<PagingData<ItemModel>> {
+
+
+
+
+    //    fun getAllImage(): LiveData<PagingData<ItemModel>> {
     fun getAllImage(): LiveData<PagingData<ImgsNokatModel>> {
 
         var _response = MutableLiveData<PagingData<ImgsNokatModel>>()
@@ -121,6 +129,23 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
 
         return _response
     }
+
+    val countLiveData: LiveData<Int> = nokatRepo.countLiveData
+
+    // وظيفة لإرجاع LiveData الخاصة بعدد الصور
+    fun getAllImageCount(): LiveData<Int> {
+        return nokatRepo.countLiveData
+    }
+
+    val countLiveDataa: LiveData<Int> = nokatRepo.countLiveDataa
+
+    fun fetchImageCount() {
+        viewModelScope.launch {
+            nokatRepo.getImgCount()
+        }
+    }
+
+
 
     fun getAllImageNew(): LiveData<PagingData<ImgsNokatModel>> {
 

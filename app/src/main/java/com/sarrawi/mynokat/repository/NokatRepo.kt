@@ -2,7 +2,9 @@ package com.sarrawi.mynokat.repository
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.liveData
 import androidx.paging.*
 import androidx.room.withTransaction
 import com.sarrawi.mynokat.api.ApiService
@@ -11,14 +13,31 @@ import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.model.*
 import com.sarrawi.mynokat.paging.ImagePaging
 import com.sarrawi.mynokat.paging.ImgPagingNew
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 
 class NokatRepo constructor(val apiService: ApiService, private val localeSource: LocaleSource,val database:PostDatabase) {
 
     suspend fun getAllNokatSer() = apiService.getAllNokat()
+    private val _countLiveDataa = MutableLiveData<Int>()
+    val countLiveDataa: LiveData<Int> get() = _countLiveDataa
+
+    suspend fun getImgCount() {
+        try {
+            val response = withContext(Dispatchers.IO) { apiService.ImgCount() }
+            if (response.isSuccessful) {
+                _countLiveDataa.postValue(response.body()?.total_images)
+            } else {
+                _countLiveDataa.postValue(0)
+            }
+        } catch (e: Exception) {
+            _countLiveDataa.postValue(0)
+        }
+    }
 
 //    fun getAllNokatSerpa(): LiveData<PagingData<NokatModel>> {
 //        return Pager(
@@ -74,6 +93,9 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
         ).liveData
     }
 
+
+    private val _countLiveData = MutableLiveData<Int>()
+    val countLiveData: LiveData<Int> get() = _countLiveData
 //    fun getAllImgsNokatSerPag():LiveData<PagingData<ItemModel>>{
     fun getAllImgsNokatSerPag():LiveData<PagingData<ImgsNokatModel>>{
 
@@ -82,7 +104,7 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
                     enablePlaceholders =  false
                 ),
 
-                pagingSourceFactory = { ImagePaging(apiService) }
+                pagingSourceFactory = { ImagePaging(apiService,_countLiveData) }
             ).liveData
         }
 
@@ -103,7 +125,7 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
             enablePlaceholders =  false
             ),
 
-        pagingSourceFactory = { ImagePaging(apiService) }
+        pagingSourceFactory = { ImagePaging(apiService,_countLiveData) }
         ).flow
     }
 

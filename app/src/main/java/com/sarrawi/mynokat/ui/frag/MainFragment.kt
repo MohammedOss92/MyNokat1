@@ -11,13 +11,24 @@ import com.sarrawi.mynokat.R
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.util.Log
+import android.widget.TextView
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.sarrawi.mynokat.api.ApiService
 
 import com.sarrawi.mynokat.databinding.FragmentMainBinding
+import com.sarrawi.mynokat.db.LocaleSource
+import com.sarrawi.mynokat.db.PostDatabase
+import com.sarrawi.mynokat.repository.NokatRepo
+import com.sarrawi.mynokat.viewModel.MyViewModelFactory
+import com.sarrawi.mynokat.viewModel.NokatViewModel
+import kotlinx.coroutines.launch
 
 
 class MainFragment : Fragment() {
@@ -28,6 +39,12 @@ class MainFragment : Fragment() {
     var clickCount = 0
     var mInterstitialAd: InterstitialAd?=null
 
+    private val retrofitService = ApiService.provideRetrofitInstance()
+    private val mainRepository by lazy { NokatRepo(retrofitService, LocaleSource(requireContext()),
+        PostDatabase.getInstance(requireContext())) }
+    private val nokatViewModel: NokatViewModel by viewModels {
+        MyViewModelFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext()))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,6 +69,20 @@ class MainFragment : Fragment() {
 //        binding.tblayout.setupWithViewPager(binding.vpager)
 
         val img:Button=view.findViewById(R.id.img)
+        val tvCount:TextView=view.findViewById(R.id.imageCountTextView)
+
+        lifecycleScope.launch {
+
+            nokatViewModel.countLiveDataa.observe(viewLifecycleOwner, Observer { count ->
+                // تحديث TextView بالعدد الإجمالي للصور
+                tvCount.setText("عدد الصور: "+count.toString())
+                // تسجيل العدد الإجمالي للصور في السجل
+                Log.d("YourFragment", "Total image count: $count")
+            })
+        }
+        // Trigger the data load
+        nokatViewModel.fetchImageCount()
+
         val words:Button=view.findViewById(R.id.words)
         InterstitialAd_fun()
         loadInterstitialAd()

@@ -20,6 +20,29 @@
         app:layout_constraintHorizontal_bias="0.3"
         android:background="@drawable/aa"/>
 
+    <TextView
+        android:id="@+id/wordCountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/img"
+        app:layout_constraintTop_toBottomOf="@id/words"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"/>
+
+    <TextView
+        android:id="@+id/imageCountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/words"
+        app:layout_constraintTop_toBottomOf="@id/img"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"/>
+
+
     <Button
         android:id="@+id/words"
         android:layout_width="100dp"

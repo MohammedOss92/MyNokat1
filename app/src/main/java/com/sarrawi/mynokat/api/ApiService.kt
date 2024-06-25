@@ -2,6 +2,7 @@ package com.sarrawi.mynokat.api
 
 import com.sarrawi.mynokat.model.ImgsNokatResponse
 import com.sarrawi.mynokat.model.NokatRespone
+import com.sarrawi.mynokat.model.TotalImages
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -28,6 +29,9 @@ interface ApiService {
     suspend fun getAllImgNokatPaNew(
         @Query("page") page: Int
     ):Response<ImgsNokatResponse>
+
+    @GET("image-count")
+    suspend fun ImgCount(): Response<TotalImages>
 
 
 
