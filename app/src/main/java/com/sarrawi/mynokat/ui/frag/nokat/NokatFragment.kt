@@ -133,7 +133,7 @@ class NokatFragment : Fragment() {
                 }
 
                 val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-                val fav = FavNokatModel(item.id, item.NokatTypes, item.new_nokat, item.NokatName, item.createdAt).apply {
+                val fav = FavNokatModel(item.id, item.new_nokat, item.NokatName, item.createdAt).apply {
                     createdAt = currentTime
                 }
 

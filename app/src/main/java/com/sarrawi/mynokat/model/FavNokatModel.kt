@@ -12,9 +12,6 @@ data class FavNokatModel (
     @SerializedName("id")
     val id: Int,
 
-    @ColumnInfo("NokatTypes")
-    @SerializedName("NokatTypes")
-    val NokatTypes: String,
 
     @ColumnInfo("new_nokat")
     @SerializedName("new_nokat")

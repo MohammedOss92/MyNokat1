@@ -68,30 +68,12 @@ class MainFragment : Fragment() {
 //        binding.vpager.adapter=adapter
 //        binding.tblayout.setupWithViewPager(binding.vpager)
 
-        val img:Button=view.findViewById(R.id.img)
-        val tvCount:TextView=view.findViewById(R.id.imageCountTextView)
 
-        lifecycleScope.launch {
-
-            nokatViewModel.countLiveDataa.observe(viewLifecycleOwner, Observer { count ->
-                // تحديث TextView بالعدد الإجمالي للصور
-                tvCount.setText("عدد الصور: "+count.toString())
-                // تسجيل العدد الإجمالي للصور في السجل
-                Log.d("YourFragment", "Total image count: $count")
-            })
-        }
-        // Trigger the data load
-        nokatViewModel.fetchImageCount()
-
-        val words:Button=view.findViewById(R.id.words)
-
-        nokatViewModel.countLiveDatanokat.observe(viewLifecycleOwner, Observer { count ->
-            binding.wordCountTextView.setText("عدد النكت: "+ count.toString())
-        })
         InterstitialAd_fun()
         loadInterstitialAd()
 
-        img.setOnClickListener {
+
+        binding.img.setOnClickListener {
 
             clickCount++
             if (clickCount >= 1) {
@@ -121,7 +103,7 @@ class MainFragment : Fragment() {
 
 
 
-        words.setOnClickListener {
+        binding.words.setOnClickListener {
 
             clickCount++
             if (clickCount >= 1) {
@@ -149,6 +131,26 @@ class MainFragment : Fragment() {
                 })
             }.start()
         }
+
+        lifecycleScope.launch {
+
+            nokatViewModel.countLiveDataa.observe(viewLifecycleOwner, Observer { count ->
+                // تحديث TextView بالعدد الإجمالي للصور
+                binding.imageCountTextView.setText("عدد الصور: "+count.toString())
+                // تسجيل العدد الإجمالي للصور في السجل
+                Log.d("YourFragment", "Total image count: $count")
+            })
+        }
+        // Trigger the data load
+        nokatViewModel.fetchImageCount()
+
+
+        nokatViewModel.countLiveDatanokat.observe(viewLifecycleOwner, Observer { count ->
+            binding.wordCountTextView.setText("عدد النكت: "+ count.toString())
+        })
+
+
+
 
 
 

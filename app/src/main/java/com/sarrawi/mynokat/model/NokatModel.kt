@@ -12,9 +12,6 @@ data class NokatModel(
     @SerializedName("id")
     val id: Int,
 
-    @ColumnInfo("NokatTypes")
-
-    val NokatTypes: String,
 
     @ColumnInfo("new_nokat")
     @SerializedName("new_nokat")

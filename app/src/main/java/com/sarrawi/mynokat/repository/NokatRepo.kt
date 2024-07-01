@@ -28,6 +28,8 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
 
     val countLiveDataNokat: LiveData<Int> get() = localeSource.countLiveDataNokat
 
+    suspend fun  fcount()=apiService.ImgCount()
+
     suspend fun getImgCount() {
         try {
             val response = withContext(Dispatchers.IO) { apiService.ImgCount() }
