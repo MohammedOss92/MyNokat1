@@ -27,6 +27,7 @@ class PagingAdapterNokat(val con: Context): PagingDataAdapter<NokatModel, Paging
     var onItemClick2: ((item:NokatModel,position:Int) -> Unit)? = null
     var onItemClick: ((Int, NokatModel, Int) -> Unit)? = null
 
+
     inner class ViewHolder(private val binding: NokatDesignBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.favBtn.setOnClickListener {

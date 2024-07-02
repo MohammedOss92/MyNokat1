@@ -23,6 +23,7 @@ import java.io.IOException
 class NokatRepo constructor(val apiService: ApiService, private val localeSource: LocaleSource,val database:PostDatabase) {
 
     suspend fun getAllNokatSer() = apiService.getAllNokat()
+    suspend fun getAllNokatTypeSer() = apiService.getAllNokat()
     private val _countLiveDataa = MutableLiveData<Int>()
     val countLiveDataa: LiveData<Int> get() = _countLiveDataa
 

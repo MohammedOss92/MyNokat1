@@ -14,6 +14,7 @@ import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.model.*
 import com.sarrawi.mynokat.paging.NokatPaging
+import com.sarrawi.mynokat.paging.NokatTypePaging
 import com.sarrawi.mynokat.repository.NokatRepo
 import com.sarrawi.mynokat.ui.MainActivity
 import com.sarrawi.mynokat.ui.frag.nokat.NokatFragment
@@ -79,6 +80,19 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
     }
 
 
+    private val pagingSourceFlowTypes = MutableStateFlow(Unit)
+
+    val nokatTypesFlow: Flow<PagingData<NokatTypeModel>> = pagingSourceFlowTypes.flatMapLatest {
+        Pager(
+            config = PagingConfig(pageSize = 12, enablePlaceholders = false),
+            pagingSourceFactory = { NokatTypePaging(ApiService.provideRetrofitInstance(), database) }
+        ).flow
+            .cachedIn(viewModelScope)
+    }
+
+    fun invalidatePagingSourceTypes() {
+        pagingSourceFlowTypes.value = Unit
+    }
 
     private val pagingSourceFlow = MutableStateFlow(Unit)
 
@@ -94,13 +108,7 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
         pagingSourceFlow.value = Unit
     }
 
-    fun getAllNokat(): LiveData<PagingData<FavNokatModel>> {
-        Log.e("tessst","entred22")
-//        viewModelScope.launch {
-//          __response.postValue(msgsRepo.getAllFav())
-//        }
-        return nokatRepo.getAllFav()
-    }
+
 
     fun getAllImagea(): LiveData<PagingData<ImgsNokatModel>> {
         return nokatRepo.getAllImgsNokatSerPag()

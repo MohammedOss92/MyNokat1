@@ -33,7 +33,11 @@
         android:id="@+id/nokatFragment"
         android:name="com.sarrawi.mynokat.ui.frag.nokat.NokatFragment"
         android:label="fragment_nokat"
-        tools:layout="@layout/fragment_nokat" />
+        tools:layout="@layout/fragment_nokat" >
+    <argument
+        android:name="id"
+        app:argType="integer" />
+    </fragment>
 
     <fragment
         android:id="@+id/mainFragment2"
@@ -44,9 +48,10 @@
         <action
             android:id="@+id/action_mainFragment2_to_imgFragment"
             app:destination="@id/imgFragment" />
+
         <action
-            android:id="@+id/action_mainFragment2_to_nokatFragment"
-            app:destination="@id/nokatFragment" />
+            android:id="@+id/action_mainFragment2_to_nokatTypesFragment"
+            app:destination="@id/nokatTypesFragment" />
     </fragment>
     <fragment
         android:id="@+id/favFragment2"
@@ -98,5 +103,14 @@
         android:id="@+id/newImgFragment"
         android:name="com.sarrawi.mynokat.ui.frag.img.NewImgFragment"
         android:label="NewImgFragment" />
+    <fragment
+        android:id="@+id/nokatTypesFragment"
+        android:name="com.sarrawi.mynokat.ui.frag.nokat.NokatTypesFragment"
+        android:label="NokatTypesFragment"
+        tools:layout="@layout/fragment_nokat_types" >
+        <action
+            android:id="@+id/action_nokatTypesFragment_to_nokatFragment"
+            app:destination="@id/nokatFragment" />
+    </fragment>
 
 </navigation>

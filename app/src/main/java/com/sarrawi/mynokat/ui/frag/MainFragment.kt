@@ -125,7 +125,7 @@ class MainFragment : Fragment() {
                     override fun onAnimationEnd(animation: Animator) {
                         super.onAnimationEnd(animation)
                         // الانتقال إلى ImgFragment بعد انتهاء الرسوم المتحركة
-                        val directions = MainFragmentDirections.actionMainFragment2ToNokatFragment()
+                        val directions = MainFragmentDirections.actionMainFragment2ToNokatTypesFragment()
                         findNavController().navigate(directions)
                     }
                 })
