@@ -31,7 +31,9 @@ import com.sarrawi.mynokat.model.FavNokatModel
 import com.sarrawi.mynokat.paging.PagingAdapterNokat
 import com.sarrawi.mynokat.paging.PagingAdapterNokatTypes
 import com.sarrawi.mynokat.repository.NokatRepo
+import com.sarrawi.mynokat.viewModel.MyVMFactory
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
+import com.sarrawi.mynokat.viewModel.NokatVM
 import com.sarrawi.mynokat.viewModel.NokatViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -46,7 +48,7 @@ class NokatTypesFragment : Fragment() {
     private val binding get() = _binding!!
     var clickCount = 0
     var mInterstitialAd: InterstitialAd?=null
-
+    private val ID_Type_id=0
     private val retrofitService = ApiService.provideRetrofitInstance()
     private val mainRepository by lazy { NokatRepo(retrofitService, LocaleSource(requireContext()),
         PostDatabase.getInstance(requireContext())) }
@@ -54,7 +56,11 @@ class NokatTypesFragment : Fragment() {
         MyViewModelFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext()))
     }
 
-    private val pagingAdapterNokatTypes by lazy { PagingAdapterNokatTypes(requireActivity()) }
+    private val nokatViewModel2: NokatVM by viewModels {
+        MyVMFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext()),ID_Type_id)
+    }
+
+    private val pagingAdapterNokatTypes by lazy { PagingAdapterNokatTypes(requireActivity(),this) }
 
 
 
@@ -90,14 +96,18 @@ class NokatTypesFragment : Fragment() {
         if (isAdded) {
             binding.rcNokatType.layoutManager = LinearLayoutManager(requireContext())
 
-            val pagingAdapter = PagingAdapterNokatTypes(requireContext())
+            val pagingAdapter = PagingAdapterNokatTypes(requireContext(),this)
             binding.rcNokatType.adapter = pagingAdapter
             lifecycleScope.launch {
-                nokatViewModel.invalidatePagingSourceTypes()
-                nokatViewModel.nokatTypesFlow.collectLatest { pagingData ->
-                    Log.d("NokatTypeFlow", "Received new paging data: $pagingData")
-                    pagingAdapter.submitData(pagingData)
-                }}
+//                nokatViewModel.invalidatePagingSourceTypes()
+//                nokatViewModel.nokatTypesFlow.collectLatest { pagingData ->
+//                    Log.d("NokatTypeFlow", "Received new paging data: $pagingData")
+//                    pagingAdapter.submitData(pagingData)
+//                }
+                nokatViewModel.nokatType.observe(viewLifecycleOwner) { pagingData ->
+                    pagingAdapter.submitData(lifecycle, pagingData)
+                }
+            }
 
 
 
@@ -108,23 +118,21 @@ class NokatTypesFragment : Fragment() {
 
     private fun adapterOnClick(){
 
-        pagingAdapterNokatTypes.onItemClick = {id ->
-
+        pagingAdapterNokatTypes.onItemClick = { id ->
             clickCount++
             if (clickCount >= 2) {
-// بمجرد أن يصل clickCount إلى 4، اعرض الإعلان
                 if (mInterstitialAd != null) {
                     mInterstitialAd?.show(requireActivity())
                 } else {
                     Log.d("TAG", "The interstitial ad wasn't ready yet.")
                 }
-                clickCount = 0 // اعيد قيمة المتغير clickCount إلى الصفر بعد عرض الإعلان
-
+                clickCount = 0
             }
 
             val direction = NokatTypesFragmentDirections.actionNokatTypesFragmentToNokatFragment(id)
             findNavController().navigate(direction)
         }
+
 
     }
 
@@ -172,10 +180,11 @@ class NokatTypesFragment : Fragment() {
 
                     R.id.refresh ->{
                         lifecycleScope.launch {
-                            nokatViewModel.refreshNokats(
+                            nokatViewModel2.refreshNokatsType(
                                 ApiService.provideRetrofitInstance(),
                                 PostDatabase.getInstance(requireContext()))
                         }
+
                         //                        if (mInterstitialAd != null) {
 //                            mInterstitialAd?.show(requireActivity())
 //                        } else {

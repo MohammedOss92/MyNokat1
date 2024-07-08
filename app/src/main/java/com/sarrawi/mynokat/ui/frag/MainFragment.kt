@@ -26,7 +26,9 @@ import com.sarrawi.mynokat.databinding.FragmentMainBinding
 import com.sarrawi.mynokat.db.LocaleSource
 import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.repository.NokatRepo
+import com.sarrawi.mynokat.viewModel.MyVMFactory
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
+import com.sarrawi.mynokat.viewModel.NokatVM
 import com.sarrawi.mynokat.viewModel.NokatViewModel
 import kotlinx.coroutines.launch
 
@@ -38,12 +40,16 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
     var clickCount = 0
     var mInterstitialAd: InterstitialAd?=null
-
+    private val ID_Type_id=0
     private val retrofitService = ApiService.provideRetrofitInstance()
     private val mainRepository by lazy { NokatRepo(retrofitService, LocaleSource(requireContext()),
         PostDatabase.getInstance(requireContext())) }
     private val nokatViewModel: NokatViewModel by viewModels {
         MyViewModelFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext()))
+    }
+
+    private val nokatVM: NokatVM by viewModels {
+        MyVMFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext()),ID_Type_id)
     }
 
     override fun onCreateView(

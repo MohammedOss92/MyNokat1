@@ -22,4 +22,12 @@
     <style name="Theme.MyNokat.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.MyNokat.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#FFEB3B</item> <!-- أصفر -->
+        <item name="colorPrimaryDark">#FBC02D</item> <!-- أصفر داكن -->
+        <item name="colorAccent">#FF9800</item> <!-- برتقالي -->
+    </style>
 </resources>

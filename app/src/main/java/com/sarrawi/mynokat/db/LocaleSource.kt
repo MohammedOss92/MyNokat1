@@ -71,9 +71,9 @@ class LocaleSource(context: Context) {
 //    suspend fun getAllNokatsDao(): List<NokatModel>{
 //        return nokatDao?.getAllNokatsDao()!!
 //    }
-
+private val ID_Type_id=0
     fun getAllNokatsDao(): PagingSource<Int, NokatModel> {
-        return nokatDao.getAllNokatsPaging()
+        return nokatDao.getAllNokatsPaging(ID_Type_id)
     }
 
     fun getAllNewNokatsDao(): PagingSource<Int, NokatModel> {

@@ -48,11 +48,12 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
             _isConnected.value = isConnected
         }
     }
-
+    val ID_Type_id=0
+    val nokatType: LiveData<PagingData<NokatTypeWithCount>> = nokatRepo.getAllNokatsTypes().cachedIn(viewModelScope)
 //    val itemss: Flow<PagingData<NokatModel>> = nokatRepo.getAllNokats()
-    val itemss: LiveData<PagingData<NokatModel>> = nokatRepo.getAllNokats().cachedIn(viewModelScope)
+    val itemss: LiveData<PagingData<NokatModel>> = nokatRepo.getAllNokats(ID_Type_id).cachedIn(viewModelScope)
     val newNokat: LiveData<PagingData<NokatModel>> = nokatRepo.getAllNewNokats().cachedIn(viewModelScope)
-    val nokatStream: Flow<PagingData<NokatModel>> = nokatRepo.getNokatStream()
+    val nokatStream: Flow<PagingData<NokatModel>> = nokatRepo.getNokatStream(ID_Type_id)
         .cachedIn(viewModelScope)
 
     suspend fun refreshNokats(apiService: ApiService, database: PostDatabase) {
@@ -94,19 +95,19 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
         pagingSourceFlowTypes.value = Unit
     }
 
-    private val pagingSourceFlow = MutableStateFlow(Unit)
-
-    val nokatFlow: Flow<PagingData<NokatModel>> = pagingSourceFlow.flatMapLatest {
-        Pager(
-            config = PagingConfig(pageSize = 20, enablePlaceholders = false),
-            pagingSourceFactory = { NokatPaging(ApiService.provideRetrofitInstance(), database) }
-        ).flow
-            .cachedIn(viewModelScope)
-    }
-
-    fun invalidatePagingSource() {
-        pagingSourceFlow.value = Unit
-    }
+//    private val pagingSourceFlow = MutableStateFlow(Unit)
+//
+//    val nokatFlow: Flow<PagingData<NokatModel>> = pagingSourceFlow.flatMapLatest {
+//        Pager(
+//            config = PagingConfig(pageSize = 20, enablePlaceholders = false),
+//            pagingSourceFactory = { NokatPaging(ApiService.provideRetrofitInstance(), database,ID_Type_id) }
+//        ).flow
+//            .cachedIn(viewModelScope)
+//    }
+//
+//    fun invalidatePagingSource() {
+//        pagingSourceFlow.value = Unit
+//    }
 
 
 

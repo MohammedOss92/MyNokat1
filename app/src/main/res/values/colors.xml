@@ -8,4 +8,38 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="colorPrimary">#FFEB3B</color>
+    <color name="colorPrimaryDark">#FBC02D</color>
+    <color name="colorAccent">#FF9800</color>
+    <color name="backgroundLight">#FAFAFA</color>
+    <color name="cardBackground">#FFFFFF</color>
+    <color name="textColor">#000000</color>
+    <color name="textHighlight">#FF9800</color> <!-- برتقالي -->
+    <color name="buttonColor">#03A9F4</color> <!-- أزرق سماوي -->
+    <color name="buttonTextColor">#FFFFFF</color> <!-- أبيض -->
+
+<!--    أصفر: #FFEB3B
+برتقالي: #FF9800
+أزرق سماوي: #03A9F4
+أخضر: #4CAF50
+أحمر: #F44336
+الألوان الثانوية:
+
+أزرق فاتح: #B3E5FC
+أخضر فاتح: #C8E6C9
+برتقالي فاتح: #FFE0B2
+أصفر فاتح: #FFF9C4
+أحمر فاتح: #FFCDD2
+ألوان الخلفية:
+
+خلفية فاتحة: #FFFFFF (أبيض)
+خلفية داكنة: #FAFAFA (رمادي فاتح جداً)
+أمثلة على استخدام الألوان في التطبيق:
+
+شاشة عرض النكت:
+
+الخلفية العامة: #FAFAFA (رمادي فاتح جداً)
+عناصر النكتة (CardView): #FFFFFF (أبيض) مع حدود خفيفة (Shadow).
+نص النكتة: #000000 (أسود) مع لون النص الأساسي أو لون مشرق مثل البرتقالي #FF9800.
+أزرار أو أيقونات التفاعل (مثل المشاركة): يمكن استخدام الألوان الزاهية مثل الأزرق السماوي #03A9F4 أو الأخضر #4CAF50.-->
 </resources>

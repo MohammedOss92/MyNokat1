@@ -30,7 +30,9 @@ import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.paging.PagingAdapterNokat
 import com.sarrawi.mynokat.paging.PagingAdapterNokatFav
 import com.sarrawi.mynokat.repository.NokatRepo
+import com.sarrawi.mynokat.viewModel.MyVMFactory
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
+import com.sarrawi.mynokat.viewModel.NokatVM
 import com.sarrawi.mynokat.viewModel.NokatViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -41,11 +43,12 @@ class FavNokatFragment : Fragment() {
     private var _binding: FragmentFavNokatBinding? = null
     private val binding get() = _binding!!
 
+    private val ID_Type_id=0
     private val retrofitService = ApiService.provideRetrofitInstance()
     private val mainRepository by lazy { NokatRepo(retrofitService, LocaleSource(requireContext()),
         PostDatabase.getInstance(requireContext())) }
-    private val nokatViewModel: NokatViewModel by viewModels {
-        MyViewModelFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext()))
+    private val nokatViewModel: NokatVM by viewModels {
+        MyVMFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext()),ID_Type_id)
     }
     var clickCount = 0
     var mInterstitialAd: InterstitialAd?=null

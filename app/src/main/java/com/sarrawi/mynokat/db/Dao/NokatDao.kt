@@ -12,8 +12,7 @@ import com.sarrawi.mynokat.model.NokatModel
 @Dao
 interface NokatDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert_Nokat(nokatModel: List<NokatModel>)
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert_Nokat2(nokatModel: NokatModel)
@@ -22,11 +21,16 @@ interface NokatDao {
     suspend fun clearAll()
 
 
-    @Query("select * from Nokat_tb order by id desc")
-     fun getAllNokatsDao(): PagingSource<Int, NokatModel>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert_Nokat(nokatModel: List<NokatModel>)
 
-    @Query("SELECT * FROM Nokat_tb ORDER BY id desc")
-    fun getAllNokatsPaging(): PagingSource<Int, NokatModel>
+    @Query("select * from Nokat_tb where ID_Type = :ID_Type_id order by id desc")
+    fun getAllNokatsDao(ID_Type_id: Int): PagingSource<Int, NokatModel>
+
+
+
+    @Query("select * from Nokat_tb where ID_Type =:ID_Type_id order by id desc")
+    fun getAllNokatsPaging(ID_Type_id: Int): PagingSource<Int, NokatModel>
 
     @Query("SELECT * FROM Nokat_tb where new_nokat=1 ORDER BY id desc")
     fun getAllNewNokat(): PagingSource<Int, NokatModel>
@@ -36,6 +40,7 @@ interface NokatDao {
 
     @Query("SELECT COUNT(*) FROM Nokat_tb")
     fun getNokatCount(): LiveData<Int>
+
 
 
 //    @Query("SELECT e.*, c.MsgTypes AS typeTitle " +

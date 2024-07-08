@@ -53,9 +53,9 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
 //            pagingSourceFactory = { NokatPaging(apiService) }
 //        ).liveData
 //    }
-
-    fun getNokatStream(): Flow<PagingData<NokatModel>> {
-        val pagingSourceFactory = { database.nokatDao().getAllNokatsPaging() }
+private val ID_Type_id=0
+    fun getNokatStream(ID_Type_id:Int): Flow<PagingData<NokatModel>> {
+        val pagingSourceFactory = { database.nokatDao().getAllNokatsPaging(ID_Type_id) }
 
         return Pager(
             config = PagingConfig(
@@ -66,13 +66,23 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
         ).flow
     }
 
-    fun getAllNokats(): LiveData<PagingData<NokatModel>> {
+    fun getAllNokats(ID_Type_id:Int): LiveData<PagingData<NokatModel>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
                     enablePlaceholders =  false
             ),
-            pagingSourceFactory = { database.nokatDao().getAllNokatsPaging() }
+            pagingSourceFactory = { database.nokatDao().getAllNokatsPaging(ID_Type_id) }
+        ).liveData
+    }
+
+    fun getAllNokatsTypes(): LiveData<PagingData<NokatTypeWithCount>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders =  false
+            ),
+            pagingSourceFactory = { database.nokatTypesDao().getAllNokatTypesWithCounts() }
         ).liveData
     }
 
@@ -94,7 +104,7 @@ class NokatRepo constructor(val apiService: ApiService, private val localeSource
                 pageSize = 12,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { database.nokatDao().getAllNokatsPaging() }
+            pagingSourceFactory = { database.nokatDao().getAllNokatsPaging(ID_Type_id) }
         ).liveData
     }
 

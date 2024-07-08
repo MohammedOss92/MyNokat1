@@ -8,6 +8,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -18,6 +19,12 @@ interface ApiService {
     @GET("nokatapi") // تغيير نهاية الطريق الخاصة بك
     suspend fun getAllNokatPa(
 
+        @Query("page") page: Int
+    ): Response<NokatRespone>
+
+    @GET("nokatapiids/{ID_Type_id}") // تغيير نهاية الطريق الخاصة بك
+    suspend fun getAllNokatbyID(
+        @Path("ID_Type_id") ID_Type_id:Int,
         @Query("page") page: Int
     ): Response<NokatRespone>
 

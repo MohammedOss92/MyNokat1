@@ -4,6 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,18 +15,41 @@ import com.sarrawi.mynokat.databinding.NokatDesignBinding
 import com.sarrawi.mynokat.databinding.NokattypeDesignBinding
 import com.sarrawi.mynokat.model.NokatModel
 import com.sarrawi.mynokat.model.NokatTypeModel
+import com.sarrawi.mynokat.model.NokatTypeWithCount
+import com.sarrawi.mynokat.ui.frag.nokat.NokatTypesFragmentDirections
 
 
-class PagingAdapterNokatTypes(val con: Context): PagingDataAdapter<NokatTypeModel, PagingAdapterNokatTypes.ViewHolder>(COMPARATOR) {
+class PagingAdapterNokatTypes(val con: Context,val frag: Fragment): PagingDataAdapter<NokatTypeWithCount, PagingAdapterNokatTypes.ViewHolder>(COMPARATOR) {
 
     var onItemClick: ((Int) -> Unit)? = null
 
     inner class ViewHolder(private val binding: NokattypeDesignBinding): RecyclerView.ViewHolder(binding.root) {
 
+        init {
+            binding.root.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    getItem(position)?.let { item ->
+                        // تمرير المعرف إلى الاتجاه
+                        val direction =
+                            NokatTypesFragmentDirections.actionNokatTypesFragmentToNokatFragment(
+                                item.msgTypes!!.id
+                            )
+                        findNavController(frag).navigate(direction)
 
-        fun bind(nokatTypeModel: NokatTypeModel) {
+                        // يمكنك استدعاء onItemClick إذا كنت بحاجة لذلك
+                        onItemClick?.invoke(item.msgTypes!!.id)
+                    }
+                }
+
+
+            }
+        }
+
+
+        fun bind(nokatTypeModel: NokatTypeWithCount) {
             binding.apply {
-                tvTitleNokat.text = nokatTypeModel.NoktTypes
+                tvTitleNokat.text = nokatTypeModel.msgTypes!!.NoktTypes
 
             }
 
@@ -43,12 +69,12 @@ class PagingAdapterNokatTypes(val con: Context): PagingDataAdapter<NokatTypeMode
     }
 
     companion object {
-        private val COMPARATOR = object : DiffUtil.ItemCallback<NokatTypeModel>() {
-            override fun areItemsTheSame(oldItem: NokatTypeModel, newItem: NokatTypeModel): Boolean {
-                return oldItem.id == newItem.id
+        private val COMPARATOR = object : DiffUtil.ItemCallback<NokatTypeWithCount>() {
+            override fun areItemsTheSame(oldItem: NokatTypeWithCount, newItem: NokatTypeWithCount): Boolean {
+                return oldItem.msgTypes!!.id == newItem.msgTypes!!.id
             }
 
-            override fun areContentsTheSame(oldItem: NokatTypeModel, newItem: NokatTypeModel): Boolean {
+            override fun areContentsTheSame(oldItem: NokatTypeWithCount, newItem: NokatTypeWithCount): Boolean {
                 return oldItem == newItem
             }
         }

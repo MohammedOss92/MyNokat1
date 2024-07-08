@@ -27,7 +27,9 @@ import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.model.FavNokatModel
 import com.sarrawi.mynokat.paging.PagingAdapterNokat
 import com.sarrawi.mynokat.repository.NokatRepo
+import com.sarrawi.mynokat.viewModel.MyVMFactory
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
+import com.sarrawi.mynokat.viewModel.NokatVM
 import com.sarrawi.mynokat.viewModel.NokatViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -46,15 +48,18 @@ class NokatFragment : Fragment() {
     private val retrofitService = ApiService.provideRetrofitInstance()
     private val mainRepository by lazy { NokatRepo(retrofitService, LocaleSource(requireContext()),
         PostDatabase.getInstance(requireContext())) }
-    private val nokatViewModel: NokatViewModel by viewModels {
-        MyViewModelFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext()))
+    private val ID_Type_id=0
+    private var argsId = -1
+    private val nokatViewModel: NokatVM by viewModels {
+        MyVMFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext()),argsId)
     }
 
     private val PagingAdapterNokat by lazy { PagingAdapterNokat(requireActivity()) }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        argsId = NokatFragmentArgs.fromBundle(requireArguments()).id
     }
 
     override fun onCreateView(
@@ -68,12 +73,12 @@ class NokatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val navController = findNavController()
-        val bottomNav: BottomNavigationView = binding.bottomNavNokat
-
-        // ربط BottomNavigationView مع NavController
-        bottomNav.setupWithNavController(navController)
-        menu_item()
+//        val navController = findNavController()
+//        val bottomNav: BottomNavigationView = binding.bottomNavNokat
+//
+//        // ربط BottomNavigationView مع NavController
+//        bottomNav.setupWithNavController(navController)
+//        menu_item()
         setup()
         InterstitialAd_fun()
         loadInterstitialAd()
@@ -261,9 +266,9 @@ class NokatFragment : Fragment() {
                 when(menuItem.itemId){
 
                     R.id.refresh ->{
-                        lifecycleScope.launch {
-                            nokatViewModel.refreshNokats(ApiService.provideRetrofitInstance(),PostDatabase.getInstance(requireContext()))
-                        }
+//                        lifecycleScope.launch {
+//                            nokatViewModel.refreshAllNokats(ApiService.provideRetrofitInstance(),PostDatabase.getInstance(requireContext()))
+//                        }
                         //                        if (mInterstitialAd != null) {
 //                            mInterstitialAd?.show(requireActivity())
 //                        } else {
