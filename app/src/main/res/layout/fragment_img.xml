@@ -11,6 +11,7 @@
         android:id="@+id/rc_Img_Nokat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintVertical_chainStyle="spread"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavImg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
