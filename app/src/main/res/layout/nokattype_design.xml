@@ -40,7 +40,52 @@
                 android:id="@+id/tvTitleNokat"
                 android:gravity="right"
                 android:textSize="25sp"
+
                 />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <!--            <ImageView-->
+                <!--                android:id="@+id/new_Msg"-->
+                <!--                android:layout_width="30dp"-->
+                <!--                android:layout_height="28dp"-->
+                <!--                android:src="@mipmap/new_msg"-->
+                <!--                android:layout_gravity="center_vertical"-->
+                <!--                android:visibility="gone" />-->
+
+                <TextView
+                    android:id="@+id/tvnewCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/background_circle_red"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Small Text"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp" />
+
+                <Space
+                    android:id="@+id/ss"
+                    android:layout_width="16dp"
+                    android:layout_height="wrap_content" /> <!-- تغيير العرض حسب الحاجة -->
+
+                <TextView
+                    android:id="@+id/tvCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"
+                    android:text="Small Text"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="25sp" />
+
+
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

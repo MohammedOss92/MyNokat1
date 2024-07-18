@@ -50,7 +50,8 @@ class PagingAdapterNokatTypes(val con: Context,val frag: Fragment): PagingDataAd
         fun bind(nokatTypeModel: NokatTypeWithCount) {
             binding.apply {
                 tvTitleNokat.text = nokatTypeModel.msgTypes!!.NoktTypes
-
+                tvCount.text = nokatTypeModel.subCount.toString()
+                tvnewCount.text = nokatTypeModel.newNokatCount.toString()
             }
 
         }

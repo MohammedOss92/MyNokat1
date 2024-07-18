@@ -19,46 +19,24 @@
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat/app/src/main/res/menu/bottom_menu_nokat.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat/app/src/main/res/menu/menu_main.xml" value="0.10989583333333333" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat/app/src/main/res/menu/menu_nokat.xml" value="0.10989583333333333" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable-anydpi/baseline_favorite_true.xml" value="0.1" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable-anydpi/error_a.xml" value="0.1" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable-hdpi/shape_ic.xml" value="0.12" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable-v24/error_a.xml" value="0.1405" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable-v24/ic_baseline_autorenew_24.xml" value="0.1405" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable-xxhdpi/ic_favorite.xml" value="0.1405" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable-xxhdpi/more.xml" value="0.1405" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable-xxhdpi/shape.xml" value="0.1405" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable/aa.xml" value="0.1405" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable/anim.xml" value="0.1405" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/drawable/custom_btn.xml" value="0.1" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout-normal/fragment_img.xml" value="0.10989583333333333" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout-normal/img_row.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/activity_main.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/content_main.xml" value="0.24739583333333334" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_fav.xml" value="0.1" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_fav_full.xml" value="0.24739583333333334" />
+        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_fav.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_fav_nokat.xml" value="0.10989583333333333" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_first.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_img.xml" value="0.1" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_img_full.xml" value="0.10989583333333333" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_main.xml" value="0.2" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_new_img.xml" value="0.24739583333333334" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_new_nokat.xml" value="0.24739583333333334" />
+        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_main.xml" value="0.1" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_nokat.xml" value="0.1" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_nokat_types.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_second.xml" value="0.24739583333333334" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_sett.xml" value="0.12031408308004053" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_settings.xml" value="0.264" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/fragment_splash.xml" value="0.24739583333333334" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/image_full.xml" value="0.2" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/img_row.xml" value="0.264" />
+        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/img_row.xml" value="0.1" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/nokat_design.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/nokatdesignfav.xml" value="0.24739583333333334" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/layout/nokattype_design.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/menu/bottom_menu.xml" value="0.24739583333333334" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/menu/bottom_menu_nokat.xml" value="0.1" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/menu/menu_main.xml" value="0.24739583333333334" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/menu/menu_nokat.xml" value="0.24739583333333334" />
-        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat2/app/src/main/res/menu/menu_nokat_pop.xml" value="0.10989583333333333" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat22/app/src/main/res/drawable-anydpi/baseline_favorite_border_false.xml" value="0.121" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat22/app/src/main/res/drawable-anydpi/baseline_favorite_true.xml" value="0.121" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat22/app/src/main/res/layout-normal/fragment_img.xml" value="0.10885416666666667" />
@@ -69,6 +47,11 @@
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat22/app/src/main/res/layout/img_row.xml" value="0.10989583333333333" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat22/app/src/main/res/layout/nokat_design.xml" value="0.10989583333333333" />
         <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat22/app/src/main/res/layout/nokatdesignfav.xml" value="0.10885416666666667" />
+        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat222/app/src/main/res/drawable-hdpi/background_circle_red.xml" value="0.1405" />
+        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat222/app/src/main/res/drawable/cus_new.xml" value="0.1405" />
+        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat222/app/src/main/res/drawable/custom_btn.xml" value="0.1405" />
+        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat222/app/src/main/res/layout/fragment_main.xml" value="0.24739583333333334" />
+        <entry key="..\:/Users/Abdallah/AndroidStudioProjects/MyNokat222/app/src/main/res/layout/nokattype_design.xml" value="0.2" />
       </map>
     </option>
   </component>
