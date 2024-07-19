@@ -21,8 +21,7 @@
     <fragment
         android:id="@+id/imgFragment"
         android:name="com.sarrawi.mynokat.ui.frag.img.ImgFragment"
-        android:label="fragment_img"
-        tools:layout="@layout/fragment_img" >
+        tools:layout="@layout/fragment_img">
         <action
             android:id="@+id/action_imgFragment_to_imgFullFragment"
             app:destination="@id/imgFullFragment" />
@@ -32,18 +31,16 @@
     <fragment
         android:id="@+id/nokatFragment"
         android:name="com.sarrawi.mynokat.ui.frag.nokat.NokatFragment"
-        android:label="fragment_nokat"
-        tools:layout="@layout/fragment_nokat" >
-    <argument
-        android:name="id"
-        app:argType="integer" />
+        tools:layout="@layout/fragment_nokat">
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
 
     <fragment
         android:id="@+id/mainFragment2"
         android:name="com.sarrawi.mynokat.ui.frag.MainFragment"
-        android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_main">
 
         <action
             android:id="@+id/action_mainFragment2_to_imgFragment"
@@ -56,8 +53,7 @@
     <fragment
         android:id="@+id/favFragment2"
         android:name="com.sarrawi.mynokat.ui.frag.img.FavFragment"
-        android:label="fragment_fav"
-        tools:layout="@layout/fragment_fav" >
+        tools:layout="@layout/fragment_fav">
         <action
             android:id="@+id/action_favFragment2_to_favFragmentFull"
             app:destination="@id/favFragmentFull" />
@@ -65,12 +61,10 @@
     <fragment
         android:id="@+id/favNokatFragment"
         android:name="com.sarrawi.mynokat.ui.frag.nokat.FavNokatFragment"
-        android:label="fragment_fav_nokat"
         tools:layout="@layout/fragment_fav_nokat" />
     <fragment
         android:id="@+id/favFragmentFull"
-        android:name="com.sarrawi.mynokat.ui.frag.img.FavFragmentFull"
-        android:label="FavFragmentFull" >
+        android:name="com.sarrawi.mynokat.ui.frag.img.FavFragmentFull">
 
 
         <argument
@@ -88,26 +82,21 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.sarrawi.mynokat.ui.frag.nokat.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:name="com.sarrawi.mynokat.ui.frag.nokat.SettingsFragment" />
     <fragment
         android:id="@+id/settFragment"
         android:name="com.sarrawi.mynokat.ui.frag.img.SettFragment"
-        android:label="fragment_sett"
         tools:layout="@layout/fragment_sett" />
     <fragment
         android:id="@+id/newNokatFragment"
-        android:name="com.sarrawi.mynokat.ui.frag.nokat.NewNokatFragment"
-        android:label="NewNokatFragment" />
+        android:name="com.sarrawi.mynokat.ui.frag.nokat.NewNokatFragment" />
     <fragment
         android:id="@+id/newImgFragment"
-        android:name="com.sarrawi.mynokat.ui.frag.img.NewImgFragment"
-        android:label="NewImgFragment" />
+        android:name="com.sarrawi.mynokat.ui.frag.img.NewImgFragment" />
     <fragment
         android:id="@+id/nokatTypesFragment"
         android:name="com.sarrawi.mynokat.ui.frag.nokat.NokatTypesFragment"
-        android:label="NokatTypesFragment"
-        tools:layout="@layout/fragment_nokat_types" >
+        tools:layout="@layout/fragment_nokat_types">
         <action
             android:id="@+id/action_nokatTypesFragment_to_nokatFragment"
             app:destination="@id/nokatFragment" />

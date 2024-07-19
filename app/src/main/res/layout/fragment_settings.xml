@@ -1,86 +1,126 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.frag.nokat.SettingsFragment">
 
-    <!-- عنوان الشاشة -->
+    <!-- Guideline عمودي لتقسيم الشاشة إلى أجزاء -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical_25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical_50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical_75"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
+
     <TextView
         android:id="@+id/interaction"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="right"
         android:padding="8dp"
         android:text="تفاعل"
         android:textColor="@color/purple_700"
         android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/range" />
 
     <!-- TextView لعرض الخيارات -->
     <TextView
         android:id="@+id/range"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:drawablePadding="8dp"
         android:foreground="?android:attr/selectableItemBackground"
         android:padding="8dp"
         android:text="قيم التطبيق"
-        android:textSize="15sp"/>
-<!--    android:drawableEnd="@drawable/ic_star"-->
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/interaction"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/share_app"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:drawablePadding="8dp"
         android:foreground="?android:attr/selectableItemBackground"
         android:padding="8dp"
         android:text="إدعمنا بنشر التطبيق مع اصدقائك"
-        android:textSize="15sp"/>
-<!--    android:drawableEnd="@drawable/ic_group"-->
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/range"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/shape"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_ic" />
+        android:background="@drawable/shape_ic"
+        app:layout_constraintTop_toBottomOf="@id/share_app"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/info"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="right"
         android:padding="8dp"
         android:text="معلومات التطبيق"
         android:textColor="@color/purple_700"
         android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/shape"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- TextView لعرض الخيارات -->
     <TextView
         android:id="@+id/vers"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground"
         android:gravity="right"
         android:padding="8dp"
         android:text="إصدار التطبيق"
-        android:textSize="15sp"/>
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/privacy"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground"
         android:padding="8dp"
         android:text="سياسة الخصوصية."
-        android:textSize="15sp"/>
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/vers"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
 
     <!-- BottomNavigationView -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -88,6 +128,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/privacy"
+        app:layout_constraintVertical_bias="1.0"
         app:menu="@menu/bottom_menu" />
 
-</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
