@@ -1,6 +1,8 @@
 package com.sarrawi.mynokat.ui.frag.nokat
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -90,6 +92,10 @@ class NokatTypesFragment : Fragment() {
         adapterOnClick()
         InterstitialAd_fun()
         loadInterstitialAd()
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            // بدء عملية التحديث
+            startRefreshing()
+        }
     }
 
     private fun setup() {
@@ -179,18 +185,7 @@ class NokatTypesFragment : Fragment() {
                 when(menuItem.itemId){
 
                     R.id.refresh ->{
-                        lifecycleScope.launch {
-                            nokatViewModel2.refreshNokatsType(
-                                ApiService.provideRetrofitInstance(),
-                                PostDatabase.getInstance(requireContext()))
-                        }
-
-                        //                        if (mInterstitialAd != null) {
-//                            mInterstitialAd?.show(requireActivity())
-//                        } else {
-//                            // Handle the case when ad is not loaded yet
-//                            // You might want to load the ad again or show an alternative action
-//                        }
+                        startRefreshing()
                     }
 
 
@@ -227,4 +222,30 @@ class NokatTypesFragment : Fragment() {
         )
     }
 
+    private fun startRefreshing() {
+        // بدء عملية التحديث
+        binding.swipeRefreshLayout.isRefreshing = true // بدء عملية التحديث
+
+        // إنشاء Handler للتأخير قبل إيقاف التحديث
+        val handler = Handler(Looper.getMainLooper())
+
+        lifecycleScope.launch {
+            try {
+                // هنا يمكنك استدعاء عملية التحديث الفعلي إذا لزم الأمر
+                nokatViewModel2.refreshNokatsType(
+                    ApiService.provideRetrofitInstance(),
+                    PostDatabase.getInstance(requireContext()),
+                    requireView()
+                )
+            } catch (e: Exception) {
+                // التعامل مع الأخطاء
+                e.printStackTrace()
+            } finally {
+                // تأخير إيقاف التحديث لمدة 5 ثوانٍ بعد بدء التحديث
+                handler.postDelayed({
+                    binding.swipeRefreshLayout.isRefreshing = false
+                }, 5000) // تأخير 5 ثوانٍ
+            }
+        }
+    }
 }
