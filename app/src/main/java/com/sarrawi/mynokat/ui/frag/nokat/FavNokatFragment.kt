@@ -81,6 +81,7 @@ class FavNokatFragment : Fragment() {
         loadInterstitialAd()
     }
 
+
     private fun setup() {
         if (isAdded) {
             binding.rcNokatFav.layoutManager = LinearLayoutManager(requireContext())
@@ -93,6 +94,7 @@ class FavNokatFragment : Fragment() {
             pagingAdapterNokatFav.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
         }
     }
+
 
 
     private fun adapterOnClick() {

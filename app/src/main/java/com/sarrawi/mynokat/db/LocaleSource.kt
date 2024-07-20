@@ -50,6 +50,8 @@ class LocaleSource(context: Context) {
     }
 
 
+
+
     suspend fun update_fav(id: Int, state:Boolean){
         return nokatDao.update_fav(id,state)
     }
