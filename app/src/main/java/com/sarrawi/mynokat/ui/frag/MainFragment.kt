@@ -15,6 +15,8 @@ import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
@@ -31,6 +33,7 @@ import com.sarrawi.mynokat.viewModel.MyVMFactory
 import com.sarrawi.mynokat.viewModel.MyViewModelFactory
 import com.sarrawi.mynokat.viewModel.NokatVM
 import com.sarrawi.mynokat.viewModel.NokatViewModel
+import com.sarrawi.mynokat.workmanager.FetchDataWorker
 import kotlinx.coroutines.launch
 
 
@@ -79,7 +82,8 @@ class MainFragment : Fragment() {
         InterstitialAd_fun()
         loadInterstitialAd()
 
-
+        val fetchDataRequest = OneTimeWorkRequest.Builder(FetchDataWorker::class.java).build()
+        WorkManager.getInstance(requireContext()).enqueue(fetchDataRequest)
         binding.img.setOnClickListener {
 
             clickCount++
