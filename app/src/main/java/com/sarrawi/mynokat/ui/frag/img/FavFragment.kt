@@ -121,6 +121,8 @@ class FavFragment : Fragment() {
     }
 
 
+
+
     private fun adapterOnClick() {
 
         favPagingAdapterImg.onbtnclick = { id, item, position ->

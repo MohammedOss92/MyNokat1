@@ -27,6 +27,7 @@ import com.sarrawi.mynokat.databinding.FragmentFavNokatBinding
 import com.sarrawi.mynokat.databinding.FragmentNokatBinding
 import com.sarrawi.mynokat.db.LocaleSource
 import com.sarrawi.mynokat.db.PostDatabase
+import com.sarrawi.mynokat.model.FavNokatModel
 import com.sarrawi.mynokat.paging.PagingAdapterNokat
 import com.sarrawi.mynokat.paging.PagingAdapterNokatFav
 import com.sarrawi.mynokat.repository.NokatRepo
@@ -36,6 +37,8 @@ import com.sarrawi.mynokat.viewModel.NokatVM
 import com.sarrawi.mynokat.viewModel.NokatViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class FavNokatFragment : Fragment() {
@@ -75,7 +78,7 @@ class FavNokatFragment : Fragment() {
 
         // ربط BottomNavigationView مع NavController
         bottomNav.setupWithNavController(navController)
-        setup()
+        setupp()
         adapterOnClick()
         InterstitialAd_fun()
         loadInterstitialAd()
@@ -86,14 +89,53 @@ class FavNokatFragment : Fragment() {
         if (isAdded) {
             binding.rcNokatFav.layoutManager = LinearLayoutManager(requireContext())
             binding.rcNokatFav.adapter = pagingAdapterNokatFav
-
+            val newItem = FavNokatModel(
+                id = 0, // أو أي قيمة مناسبة
+                new_nokat = 0, // قيمة مناسبة
+                NokatName = "مرحبا",
+                createdAt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+            )
             nokatViewModel.favNokat.observe(viewLifecycleOwner) { pagingData ->
                 pagingAdapterNokatFav.submitData(lifecycle, pagingData)
+
             }
 
             pagingAdapterNokatFav.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
         }
     }
+
+
+    private fun setupp() {
+        if (isAdded) {
+            binding.rcNokatFav.layoutManager = LinearLayoutManager(requireContext())
+            binding.rcNokatFav.adapter = pagingAdapterNokatFav
+
+            lifecycleScope.launch {
+                nokatViewModel.favNokat.observe(viewLifecycleOwner) { pagingData ->
+                    pagingAdapterNokatFav.submitData(lifecycle,pagingData)
+                }
+            }
+
+            pagingAdapterNokatFav.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
+
+            // إضافة عنصر عند الحاجة
+            addNewFavItem()
+        }
+    }
+
+    private fun addNewFavItem() {
+        val newItem = FavNokatModel(
+            id = 0, // أو أي قيمة مناسبة
+            new_nokat = 0, // قيمة مناسبة
+            NokatName = "مرحبا",
+            createdAt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+        )
+
+        lifecycleScope.launch {
+            nokatViewModel.add_favs(newItem)
+        }
+    }
+
 
 
 
