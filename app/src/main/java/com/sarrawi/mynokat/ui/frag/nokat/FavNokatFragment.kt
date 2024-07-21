@@ -89,12 +89,7 @@ class FavNokatFragment : Fragment() {
         if (isAdded) {
             binding.rcNokatFav.layoutManager = LinearLayoutManager(requireContext())
             binding.rcNokatFav.adapter = pagingAdapterNokatFav
-            val newItem = FavNokatModel(
-                id = 0, // أو أي قيمة مناسبة
-                new_nokat = 0, // قيمة مناسبة
-                NokatName = "مرحبا",
-                createdAt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-            )
+
             nokatViewModel.favNokat.observe(viewLifecycleOwner) { pagingData ->
                 pagingAdapterNokatFav.submitData(lifecycle, pagingData)
 
@@ -118,23 +113,11 @@ class FavNokatFragment : Fragment() {
 
             pagingAdapterNokatFav.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
 
-            // إضافة عنصر عند الحاجة
-            addNewFavItem()
+
         }
     }
 
-    private fun addNewFavItem() {
-        val newItem = FavNokatModel(
-            id = 0, // أو أي قيمة مناسبة
-            new_nokat = 0, // قيمة مناسبة
-            NokatName = "مرحبا",
-            createdAt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-        )
 
-        lifecycleScope.launch {
-            nokatViewModel.add_favs(newItem)
-        }
-    }
 
 
 
