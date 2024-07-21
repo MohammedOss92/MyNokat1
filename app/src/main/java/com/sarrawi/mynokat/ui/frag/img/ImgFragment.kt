@@ -1,12 +1,17 @@
 package com.sarrawi.mynokat.ui.frag.img
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -44,6 +49,7 @@ import com.sarrawi.mynokat.viewModel.MyViewModelFactory
 import com.sarrawi.mynokat.viewModel.NokatViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -53,6 +59,9 @@ class ImgFragment : Fragment() {
     private lateinit var _binding: FragmentImgBinding
 
     private val binding get() = _binding
+
+    private val WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1 // تعريف الثابت هنا
+    private val READ_EXTERNAL_STORAGE_REQUEST_CODE = 2 // تعريف الثابت هنا
 
     private val retrofitService = ApiService.provideRetrofitInstance()
     private val mainRepository by lazy { NokatRepo(retrofitService, LocaleSource(requireContext()),
@@ -103,6 +112,14 @@ class ImgFragment : Fragment() {
         nokatViewModel.checkNetworkConnection(requireContext())
         InterstitialAd_fun()
         loadInterstitialAd()
+
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // إذا لم يكن لديك الإذن، قم بطلبه
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_EXTERNAL_STORAGE_REQUEST_CODE)
+        } else {
+            // تم منح الإذن، قم بإنشاء المجلد مباشرة
+            createDirectory()
+        }
 
 
     }
@@ -316,6 +333,22 @@ class ImgFragment : Fragment() {
 
     }
 
+    private fun createDirectory() {
+        val dir = File(Environment.getExternalStorageDirectory(), "MyPics")
+        if (!dir.exists()) {
+            dir.mkdirs()
+        }
+    }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            WRITE_EXTERNAL_STORAGE_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // تم منح الإذن، قم بإنشاء المجلد
+                    createDirectory()
+                }
+            }
+        }
+    }
 
 }

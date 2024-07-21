@@ -244,7 +244,7 @@ class NokatTypesFragment : Fragment() {
                 // تأخير إيقاف التحديث لمدة 5 ثوانٍ بعد بدء التحديث
                 handler.postDelayed({
                     binding.swipeRefreshLayout.isRefreshing = false
-                }, 5000) // تأخير 5 ثوانٍ
+                }, 1000) // تأخير 5 ثوانٍ
             }
         }
     }
