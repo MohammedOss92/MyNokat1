@@ -12,11 +12,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
@@ -52,29 +49,13 @@ class ImgFullFragment : Fragment() {
 
     private val pagingAdapterfullImg by lazy { PagingAdapterFullImg(requireActivity(), this) }
     private lateinit var imgModel: ImgsNokatModel
-    private lateinit var model2: Model2
     var clickCount = 0
     var mInterstitialAd: InterstitialAd?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         imgModel = ImgFullFragmentArgs.fromBundle(requireArguments()).fullimg
-        imgModel = ImgFullFragmentArgs.fromBundle(requireArguments()).fullimg
 
-//        val args: ImgFullFragmentArgs by navArgs()
-//        val imgModel = args.fullimg
 
-        // عرض البيانات أو استخدامها كما هو مطلوب
-
-//        model2?.let {
-//            val imgNokatList = it.imgNokatList
-//            imgNokatList?.let { list ->
-//                val pagingData = PagingData.from(list)
-//                pagingAdapterfullImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
-//            } ?: run {
-//                // تعامل مع الحالة عند وجود null في imgNokatList
-//                Toast.makeText(requireContext(), "No data available", Toast.LENGTH_SHORT).show()
-//            }
-//        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -192,39 +173,11 @@ class ImgFullFragment : Fragment() {
 
 
 
-    private fun setupRecyclerView() {
-        binding.rcImgFull.layoutManager = LinearLayoutManager(requireContext())
-        binding.rcImgFull.adapter = pagingAdapterfullImg
-        nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
-            pagingAdapterfullImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
-            scrollToSelectedImage()
-        }
-    }
+
 
     private fun scrollToSelectedImage() {
         binding.rcImgFull.viewTreeObserver.addOnPreDrawListener(
             object : ViewTreeObserver.OnPreDrawListener {
-//                override fun onPreDraw(): Boolean {
-//                    if (pagingAdapterImg.itemCount > 0) {
-//                        val snapshot = pagingAdapterImg.snapshot()
-//                        val position = snapshot.indexOfFirst { item ->
-//                            (item is ItemModel.ImgsItem) && (item.imgsNokatModel.id == imgModel?.id)
-//                        }
-//                        if (position != -1) {
-//                            binding.rcImgFull.scrollToPosition(position)
-//                            Toast.makeText(requireContext(), "Item found", Toast.LENGTH_SHORT).show()
-//                        } else {
-//                            Toast.makeText(requireContext(), "Item not found", Toast.LENGTH_SHORT).show()
-//                        }
-//                        binding.rcImgFull.viewTreeObserver.removeOnPreDrawListener(this)
-//                        return true
-//                    }
-//                    return false
-//                }
-
-
-
-
                 override fun onPreDraw(): Boolean {
                     if (pagingAdapterfullImg.itemCount > 0) {
                         val snapshot = pagingAdapterfullImg.snapshot()
@@ -243,6 +196,7 @@ class ImgFullFragment : Fragment() {
             }
         )
     }
+
 
     fun InterstitialAd_fun (){
 
@@ -312,20 +266,5 @@ class ImgFullFragment : Fragment() {
         }
     }
 
-//    private fun setupInitialData(view: View) {
-//        // هنا يمكنك الحصول على البيانات مباشرة من الـ Adapter وعرضها في الـ Fragment
-//        val initialData = pagingAdapterfullImg.snapshot().items
-//
-//        // التحقق من البيانات وعرضها في الـ Fragment
-//        initialData.forEach { item ->
-//            if (item is ItemModel.AnotherItem) {
-//                val favImgModel = item.favImgModel
-//                // هنا يمكنك استخدام favImgModelلعرض البيانات في الـ Fragment
-//                // مثلاً:
-//                val imageView = view.findViewById<ImageView>(R.id.fullImageView)
-//                Glide.with(this).load(favImgModel.imageUrl).into(imageView)
-//                // قم بعرض البيانات الأخرى حسب الحاجة
-//            }
-//        }
-//    }
+
 }

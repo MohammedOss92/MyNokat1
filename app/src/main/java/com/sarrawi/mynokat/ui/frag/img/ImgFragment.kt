@@ -230,34 +230,7 @@ class ImgFragment : Fragment() {
         }
 
 
-    fun setupre() {
-        if (isAdded) {
-            // تعيين إعدادات RecyclerView
-            binding.rcImgNokat.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
 
-            // تعيين Adapter لـ RecyclerView
-            binding.rcImgNokat.adapter = pagingAdapterImg
-
-            // مراقبة تغييرات البيانات في ViewModel وتقديم البيانات إلى ال Adapter
-            nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
-                lifecycleScope.launch {
-                    pagingAdapterImg.submitData(pagingData)
-                }
-            }
-
-            // مراقبة الصور المفضلة وتحديث حالة الصور
-            nokatViewModel.favImg.observe(viewLifecycleOwner) { favoriteImages ->
-                val favoriteImageIds = favoriteImages.map { it.id }
-                lifecycleScope.launch {
-                    val snapshot = pagingAdapterImg.snapshot().items
-                    for (image in snapshot) {
-                        image?.is_fav = favoriteImageIds.contains(image.id as? Int ?: 0)
-                    }
-                    pagingAdapterImg.notifyDataSetChanged()
-                }
-            }
-        }
-    }
 
 
     fun InterstitialAd_fun (){
