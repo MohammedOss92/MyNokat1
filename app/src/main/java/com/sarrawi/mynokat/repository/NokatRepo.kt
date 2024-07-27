@@ -119,7 +119,7 @@ private val ID_Type_id=0
                     enablePlaceholders =  false
                 ),
 
-                pagingSourceFactory = { ImagePaging(apiService,_countLiveData) }
+                pagingSourceFactory = { ImagePaging(apiService) }
             ).liveData
         }
 
@@ -140,7 +140,7 @@ private val ID_Type_id=0
             enablePlaceholders =  false
             ),
 
-        pagingSourceFactory = { ImagePaging(apiService,_countLiveData) }
+        pagingSourceFactory = { ImagePaging(apiService) }
         ).flow
     }
 

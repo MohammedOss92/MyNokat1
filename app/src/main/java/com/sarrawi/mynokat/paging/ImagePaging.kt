@@ -10,7 +10,7 @@ import com.sarrawi.mynokat.model.ItemModel
 
 class ImagePaging(
     private val apiService: ApiService,
-    private val countLiveData: MutableLiveData<Int>
+
 ) : PagingSource<Int, ImgsNokatModel>() {
 
     companion object {
@@ -30,10 +30,9 @@ class ImagePaging(
             val response = apiService.getAllImgNokatPa(currentPage)
             if (response.isSuccessful) {
                 val data = response.body()?.results?.ImgsNokatModel ?: emptyList()
-                val count = response.body()?.count ?: 0
 
-                // تحديث LiveData بالعدد الإجمالي للصور
-                countLiveData.postValue(count)
+                // إضافة تتبع المعرّفات
+                Log.d("PagingSource", "Page $currentPage, Loaded Image IDs: ${data.map { it.id }}")
 
                 LoadResult.Page(
                     data = data,
@@ -47,5 +46,7 @@ class ImagePaging(
             LoadResult.Error(e)
         }
     }
+
+
 
 }

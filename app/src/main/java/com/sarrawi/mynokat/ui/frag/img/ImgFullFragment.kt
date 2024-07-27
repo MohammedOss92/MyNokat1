@@ -198,6 +198,9 @@ class ImgFullFragment : Fragment() {
     }
 
 
+
+
+
     fun InterstitialAd_fun (){
 
 

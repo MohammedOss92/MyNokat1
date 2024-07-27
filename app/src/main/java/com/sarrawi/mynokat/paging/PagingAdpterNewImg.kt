@@ -165,7 +165,7 @@ class PagingAdpterNewImg(val con: Context, val frag: Fragment) : PagingDataAdapt
 //            val holder = binding.imageView.findViewHolderForAdapterPosition(position) as? ViewHolder
 //            holder?.resetView()
 
-            val viewHolder = (frag.requireView().findViewById(R.id.rc_Img_Nokat) as RecyclerView).findViewHolderForAdapterPosition(position) as? ViewHolder
+            val viewHolder = (frag.requireView().findViewById(R.id.rc_Img_Nokat_new) as RecyclerView).findViewHolderForAdapterPosition(position) as? ViewHolder
             viewHolder?.resetView()
         }
 
