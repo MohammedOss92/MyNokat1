@@ -7,3 +7,5 @@ package com.sarrawi.mynokat
 
 //bookmark
 //https://chatgpt.com/share/4034fcc7-444b-4619-9cda-4afe25fe774f
+
+//////https://chatgpt.com/share/11221c1e-05f1-4f8f-a86c-7c51f5d88cb9
