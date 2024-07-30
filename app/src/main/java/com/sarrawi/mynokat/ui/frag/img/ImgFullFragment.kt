@@ -48,7 +48,7 @@ class ImgFullFragment : Fragment() {
     private val mainRepository by lazy { NokatRepo(retrofitService, LocaleSource(requireContext()), PostDatabase.getInstance(requireContext())) }
     private val nokatViewModel: NokatViewModel by viewModels { MyViewModelFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext())) }
     private val sharedViewModel: SharedViewModel by activityViewModels {
-        SharedViewModelFactory(retrofitService) // تأكد من تهيئة ApiService بشكل صحيح
+        SharedViewModelFactory(retrofitService,mainRepository, requireContext(), PostDatabase.getInstance(requireContext())) // تأكد من تهيئة ApiService بشكل صحيح
     }
 
     private val pagingAdapterfullImg by lazy { PagingAdapterFullImg(requireActivity(), this) }

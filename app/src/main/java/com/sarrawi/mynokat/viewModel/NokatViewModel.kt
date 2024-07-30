@@ -124,20 +124,20 @@ class NokatViewModel constructor(private val nokatRepo: NokatRepo,val context: C
 
 
     //    fun getAllImage(): LiveData<PagingData<ItemModel>> {
-//    fun getAllImage(): LiveData<PagingData<ImgsNokatModel>> {
-//
-//        var _response = MutableLiveData<PagingData<ImgsNokatModel>>()
-//        viewModelScope.launch {
-//            try {
-//                val response = nokatRepo.getAllImgsNokatSerPag()
-//                _response = response as MutableLiveData<PagingData<ImgsNokatModel>>
-//            } catch (e: Exception) {
-//                Log.e("Test", "getAllNokat: Error: ${e.message}")
-//            }
-//        }
-//
-//        return _response
-//    }
+    fun getAllImage(): LiveData<PagingData<ImgsNokatModel>> {
+
+        var _response = MutableLiveData<PagingData<ImgsNokatModel>>()
+        viewModelScope.launch {
+            try {
+                val response = nokatRepo.getAllImgsNokatSerPag()
+                _response = response as MutableLiveData<PagingData<ImgsNokatModel>>
+            } catch (e: Exception) {
+                Log.e("Test", "getAllNokat: Error: ${e.message}")
+            }
+        }
+
+        return _response
+    }
 
 
 

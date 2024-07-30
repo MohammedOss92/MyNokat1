@@ -77,7 +77,7 @@ class ImgFragment : Fragment() {
     private lateinit var bottomNav : BottomNavigationView
 
     private val sharedViewModel: SharedViewModel by activityViewModels {
-        SharedViewModelFactory(retrofitService) // تأكد من تهيئة ApiService بشكل صحيح
+        SharedViewModelFactory(retrofitService,mainRepository, requireContext(), PostDatabase.getInstance(requireContext())) // تأكد من تهيئة ApiService بشكل صحيح
     }
 
 
