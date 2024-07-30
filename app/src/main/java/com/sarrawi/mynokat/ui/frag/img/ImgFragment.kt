@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -45,8 +46,7 @@ import com.sarrawi.mynokat.paging.Adapter
 import com.sarrawi.mynokat.paging.PagingAdapterImg
 import com.sarrawi.mynokat.paging.PagingAdapterNokat
 import com.sarrawi.mynokat.repository.NokatRepo
-import com.sarrawi.mynokat.viewModel.MyViewModelFactory
-import com.sarrawi.mynokat.viewModel.NokatViewModel
+import com.sarrawi.mynokat.viewModel.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.io.File
@@ -75,6 +75,11 @@ class ImgFragment : Fragment() {
     var mInterstitialAd: InterstitialAd?=null
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var bottomNav : BottomNavigationView
+
+    private val sharedViewModel: SharedViewModel by activityViewModels {
+        SharedViewModelFactory(retrofitService) // تأكد من تهيئة ApiService بشكل صحيح
+    }
+
 
 
     override fun onCreateView(
@@ -137,10 +142,19 @@ class ImgFragment : Fragment() {
             binding.rcImgNokat.adapter = pagingAdapterImg
 
             // مراقبة تغييرات البيانات في ViewModel وتقديم البيانات إلى ال Adapter
-            nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
-                lifecycleScope.launch {
-                    pagingAdapterImg.submitData(pagingData)
+//            nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
+//                lifecycleScope.launch {
+//                    pagingAdapterImg.submitData(pagingData)
+//                }
+
+            lifecycleScope.launch {
+                sharedViewModel.pagingDataFlow.collectLatest { pagingData ->
+                    lifecycleScope.launch {
+                        pagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
+                    }
                 }
+
+
 
                 nokatViewModel.favImg.observe(viewLifecycleOwner) { favoriteImages ->
                     // تحويل قائمة الصور المفضلة إلى قائمة من IDs

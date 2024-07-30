@@ -1,16 +1,13 @@
 package com.sarrawi.mynokat.paging
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.model.ImgsNokatModel
-import com.sarrawi.mynokat.model.ItemModel
 
 class ImagePaging(
-    private val apiService: ApiService,
-
+    private val apiService: ApiService
 ) : PagingSource<Int, ImgsNokatModel>() {
 
     companion object {
@@ -31,7 +28,6 @@ class ImagePaging(
             if (response.isSuccessful) {
                 val data = response.body()?.results?.ImgsNokatModel ?: emptyList()
 
-                // إضافة تتبع المعرّفات
                 Log.d("PagingSource", "Page $currentPage, Loaded Image IDs: ${data.map { it.id }}")
 
                 LoadResult.Page(
@@ -46,7 +42,4 @@ class ImagePaging(
             LoadResult.Error(e)
         }
     }
-
-
-
 }

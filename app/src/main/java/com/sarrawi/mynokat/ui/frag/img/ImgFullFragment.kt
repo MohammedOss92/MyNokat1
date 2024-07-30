@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -32,8 +33,8 @@ import com.sarrawi.mynokat.model.Model2
 import com.sarrawi.mynokat.paging.PagingAdapterFullImg
 import com.sarrawi.mynokat.paging.PagingAdapterImg
 import com.sarrawi.mynokat.repository.NokatRepo
-import com.sarrawi.mynokat.viewModel.MyViewModelFactory
-import com.sarrawi.mynokat.viewModel.NokatViewModel
+import com.sarrawi.mynokat.viewModel.*
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -46,6 +47,9 @@ class ImgFullFragment : Fragment() {
     private val retrofitService = ApiService.provideRetrofitInstance()
     private val mainRepository by lazy { NokatRepo(retrofitService, LocaleSource(requireContext()), PostDatabase.getInstance(requireContext())) }
     private val nokatViewModel: NokatViewModel by viewModels { MyViewModelFactory(mainRepository, requireContext(), PostDatabase.getInstance(requireContext())) }
+    private val sharedViewModel: SharedViewModel by activityViewModels {
+        SharedViewModelFactory(retrofitService) // تأكد من تهيئة ApiService بشكل صحيح
+    }
 
     private val pagingAdapterfullImg by lazy { PagingAdapterFullImg(requireActivity(), this) }
     private lateinit var imgModel: ImgsNokatModel
@@ -90,12 +94,19 @@ class ImgFullFragment : Fragment() {
 
             // تعيين Adapter لـ RecyclerView
             binding.rcImgFull.adapter = pagingAdapterfullImg
-
-            // مراقبة تغييرات البيانات في ViewModel وتقديم البيانات إلى ال Adapter
-            nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
-
-                    pagingAdapterfullImg.submitData(viewLifecycleOwner.lifecycle,pagingData)
+            lifecycleScope.launch {
+            sharedViewModel.pagingDataFlow.collectLatest { pagingData ->
+                lifecycleScope.launch {
+                    pagingAdapterfullImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
                     scrollToSelectedImage()
+                }
+            }
+
+                // مراقبة تغييرات البيانات في ViewModel وتقديم البيانات إلى ال Adapter
+//            nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
+//
+//                    pagingAdapterfullImg.submitData(viewLifecycleOwner.lifecycle,pagingData)
+//                    scrollToSelectedImage()
 
 
                 nokatViewModel.favImg.observe(viewLifecycleOwner) { favoriteImages ->

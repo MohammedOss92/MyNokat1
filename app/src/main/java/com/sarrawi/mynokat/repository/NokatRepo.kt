@@ -11,7 +11,6 @@ import com.sarrawi.mynokat.api.ApiService
 import com.sarrawi.mynokat.db.LocaleSource
 import com.sarrawi.mynokat.db.PostDatabase
 import com.sarrawi.mynokat.model.*
-import com.sarrawi.mynokat.paging.ImagePaging
 import com.sarrawi.mynokat.paging.ImgPagingNew
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -112,16 +111,16 @@ private val ID_Type_id=0
     private val _countLiveData = MutableLiveData<Int>()
     val countLiveData: LiveData<Int> get() = _countLiveData
 //    fun getAllImgsNokatSerPag():LiveData<PagingData<ItemModel>>{
-    fun getAllImgsNokatSerPag():LiveData<PagingData<ImgsNokatModel>>{
-
-            return  Pager(
-                config = PagingConfig(pageSize = 12,
-                    enablePlaceholders =  false
-                ),
-
-                pagingSourceFactory = { ImagePaging(apiService) }
-            ).liveData
-        }
+//    fun getAllImgsNokatSerPag():LiveData<PagingData<ImgsNokatModel>>{
+//
+//            return  Pager(
+//                config = PagingConfig(pageSize = 12,
+//                    enablePlaceholders =  false
+//                ),
+//
+//                pagingSourceFactory = { ImagePaging(apiService) }
+//            ).liveData
+//        }
 
     fun getAllImgsNokatSerPagNew():LiveData<PagingData<ImgsNokatModel>>{
 
@@ -134,15 +133,15 @@ private val ID_Type_id=0
         ).liveData
     }
 
-    fun getAllImgsNokatSerPa():Flow<PagingData<ImgsNokatModel>>{
-        return  Pager(
-            config = PagingConfig(pageSize = 12,
-            enablePlaceholders =  false
-            ),
-
-        pagingSourceFactory = { ImagePaging(apiService) }
-        ).flow
-    }
+//    fun getAllImgsNokatSerPa():Flow<PagingData<ImgsNokatModel>>{
+//        return  Pager(
+//            config = PagingConfig(pageSize = 12,
+//            enablePlaceholders =  false
+//            ),
+//
+//        pagingSourceFactory = { ImagePaging(apiService) }
+//        ).flow
+//    }
 
     fun getNokatRepo(): PagingSource<Int,NokatModel> {
         return localeSource.getAllNokatsDao()
