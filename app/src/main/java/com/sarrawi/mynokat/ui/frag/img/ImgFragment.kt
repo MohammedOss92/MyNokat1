@@ -148,32 +148,30 @@ class ImgFragment : Fragment() {
 //                }
 
             lifecycleScope.launch {
+                // جمع بيانات الصور
                 sharedViewModel.pagingDataFlow.collectLatest { pagingData ->
-                    lifecycleScope.launch {
-                        pagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
-                    }
+                    pagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
                 }
+            }
 
+            sharedViewModel.favImg.observe(viewLifecycleOwner) { favoriteImages ->
+                // تحويل قائمة الصور المفضلة إلى قائمة من IDs
+                val favoriteImageIds = favoriteImages.map { it.id }
 
-
-                nokatViewModel.favImg.observe(viewLifecycleOwner) { favoriteImages ->
-                    // تحويل قائمة الصور المفضلة إلى قائمة من IDs
-                    val favoriteImageIds = favoriteImages.map { it.id }
-
-                    lifecycleScope.launch {
-                        pagingAdapterImg.loadStateFlow.collect { loadStates ->
-                            if (loadStates.refresh is LoadState.NotLoading) {
-                                // التحقق من الصور المفضلة وتحديث حالة الصور في PagingData
-                                pagingAdapterImg.snapshot().items.forEach { image ->
-                                    image?.let {
-                                        it.is_fav = favoriteImageIds.contains(it.id as? Int ?: 0)
-// تحقق مما إذا كانت الصورة مفضلة
-                                    }
+                // تأكد من أن بيانات الصور قد تم تحميلها
+                lifecycleScope.launch {
+                    pagingAdapterImg.loadStateFlow.collect { loadStates ->
+                        if (loadStates.refresh is LoadState.NotLoading) {
+                            val updatedItems = pagingAdapterImg.snapshot().items.filterNotNull().map { image ->
+                                image.apply {
+                                    is_fav = favoriteImageIds.contains(this.id as? Int ?: 0)
                                 }
-
-                                // تحديث واجهة المستخدم بعد تحديث البيانات
-                                pagingAdapterImg.notifyDataSetChanged()
                             }
+
+                            // تحديث الـ adapter بالبيانات المعدلة
+                            pagingAdapterImg.submitData(PagingData.from(updatedItems))
+                            pagingAdapterImg.notifyDataSetChanged()
+
                         }
                     }
                 }
@@ -211,16 +209,16 @@ class ImgFragment : Fragment() {
                 }
 
                 if (item.is_fav) {
-                    nokatViewModel.update_favs_img(item.id, false)
-                    nokatViewModel.delete_favs_img(fav)
+                    sharedViewModel.update_favs_img(item.id, false)
+                    sharedViewModel.delete_favs_img(fav)
                     lifecycleScope.launch {
                         val snackbar = Snackbar.make(requireView(), "تم الحذف من المفضلة", Snackbar.LENGTH_SHORT)
                         snackbar.show()
                         pagingAdapterImg.notifyItemChanged(position) // تحديث واجهة المستخدم بعد العملية
                     }
                 } else {
-                    nokatViewModel.update_favs_img(item.id, true)
-                    nokatViewModel.add_favs_img(fav)
+                    sharedViewModel.update_favs_img(item.id, true)
+                    sharedViewModel.add_favs_img(fav)
                     lifecycleScope.launch {
                         val snackbar = Snackbar.make(requireView(), "تم الاضافة الى المفضلة", Snackbar.LENGTH_SHORT)
                         snackbar.show()
