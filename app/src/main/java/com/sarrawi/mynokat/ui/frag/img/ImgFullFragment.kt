@@ -125,7 +125,7 @@ class ImgFullFragment : Fragment() {
                                 // لا تقم بإعادة تقديم البيانات بشكل يدوي، فهذا ليس ضرورياً
                                 // قد تحتاج إلى إعادة تقييم الحاجة لتحديث حالة `is_fav` في مكان آخر، مثل في `PagingSource` أو `ViewModel`
 //                                pagingAdapterfullImg.submitData(PagingData.from(updatedItems))
-//                                pagingAdapterfullImg.notifyDataSetChanged()
+                                pagingAdapterfullImg.notifyDataSetChanged()
                             }
                         }
                     }
