@@ -243,6 +243,10 @@ private val ID_Type_id=0
 
     }
 
+    fun getAllFavImgflow(): Flow<List<FavImgModel>> {
+        return localeSource.favImageDao.getAllFavoriteImagesflow()
+    }
+
 
 
 }

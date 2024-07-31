@@ -1,6 +1,7 @@
 package com.sarrawi.mynokat.viewModel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,11 +34,25 @@ class SharedViewModel constructor(private val apiService: ApiService, private va
     }
 
     val pagingDataFlow: Flow<PagingData<ImgsNokatModel>> = Pager(
-        config = PagingConfig(pageSize = 20, enablePlaceholders = false),
+        config = PagingConfig(pageSize = 12, enablePlaceholders = false),
         pagingSourceFactory = { ImagePaging(apiService) }
     ).flow.cachedIn(viewModelScope)
 
 
+    fun getAllImage(): LiveData<PagingData<ImgsNokatModel>> {
+
+        var _response = MutableLiveData<PagingData<ImgsNokatModel>>()
+        viewModelScope.launch {
+            try {
+                val response = nokatRepo.getAllImgsNokatSerPag()
+                _response = response as MutableLiveData<PagingData<ImgsNokatModel>>
+            } catch (e: Exception) {
+                Log.e("Test", "getAllNokat: Error: ${e.message}")
+            }
+        }
+
+        return _response
+    }
 
     fun update_favs_img(id: Int, state: Boolean) = viewModelScope.launch {
         nokatRepo.update_favs_img(id, state)
@@ -52,7 +67,7 @@ class SharedViewModel constructor(private val apiService: ApiService, private va
     }
 
     val favImg: LiveData<List<FavImgModel>> = nokatRepo.getAllFavImg()
-
+    val favImgFlow: Flow<List<FavImgModel>> = nokatRepo.getAllFavImgflow()
     }
 
 

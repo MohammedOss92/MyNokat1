@@ -95,20 +95,24 @@ class ImgFullFragment : Fragment() {
 
             // تعيين Adapter لـ RecyclerView
             binding.rcImgFull.adapter = pagingAdapterfullImg
+            // إعداد RecyclerView
+
+
+// جمع بيانات الصور من ViewModel
             lifecycleScope.launch {
                 sharedViewModel.pagingDataFlow.collectLatest { pagingData ->
-                        pagingAdapterfullImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
-                        scrollToSelectedImage()
+                    pagingAdapterfullImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
+                    scrollToSelectedImage()
                 }
             }
 
-
-
-                sharedViewModel.favImg.observe(viewLifecycleOwner) { favoriteImages ->
+// جمع البيانات المفضلة من ViewModel
+            lifecycleScope.launch {
+                sharedViewModel.favImgFlow.collectLatest { favoriteImages ->
                     // تحويل قائمة الصور المفضلة إلى قائمة من IDs
                     val favoriteImageIds = favoriteImages.map { it.id }
 
-                    // تأكد من أن بيانات الصور قد تم تحميلها
+                    // تحقق من أن البيانات قد تم تحميلها
                     lifecycleScope.launch {
                         pagingAdapterfullImg.loadStateFlow.collect { loadStates ->
                             if (loadStates.refresh is LoadState.NotLoading) {
@@ -118,14 +122,16 @@ class ImgFullFragment : Fragment() {
                                     }
                                 }
 
-                                // تحديث الـ adapter بالبيانات المعدلة
-                                pagingAdapterfullImg.submitData(PagingData.from(updatedItems))
-                                pagingAdapterfullImg.notifyDataSetChanged()
-
+                                // لا تقم بإعادة تقديم البيانات بشكل يدوي، فهذا ليس ضرورياً
+                                // قد تحتاج إلى إعادة تقييم الحاجة لتحديث حالة `is_fav` في مكان آخر، مثل في `PagingSource` أو `ViewModel`
+//                                pagingAdapterfullImg.submitData(PagingData.from(updatedItems))
+//                                pagingAdapterfullImg.notifyDataSetChanged()
                             }
                         }
                     }
                 }
+
+            }
 
 //aa
 
@@ -133,46 +139,46 @@ class ImgFullFragment : Fragment() {
 
 
 
-        // تحديد الإجراء الذي يتم تنفيذه عند النقر على عنصر في RecyclerView
-        pagingAdapterfullImg.onItemClick = { item, position ->
-            val currentTime =
-                SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-            val fav = FavImgModel(item.id, item.new_img, item.pic, item.image_url).apply {
-                createdAt = currentTime
-            }
-
-            if (item.is_fav) {
-                sharedViewModel.update_favs_img(item.id, false)
-                sharedViewModel.delete_favs_img(fav)
-                lifecycleScope.launch {
-                    val snackbar = Snackbar.make(requireView(), "تم الحذف من المفضلة", Snackbar.LENGTH_SHORT)
-                    snackbar.show()
-                    pagingAdapterfullImg.notifyItemChanged(position) // تحديث واجهة المستخدم بعد العملية
+            // تحديد الإجراء الذي يتم تنفيذه عند النقر على عنصر في RecyclerView
+            pagingAdapterfullImg.onItemClick = { item, position ->
+                val currentTime =
+                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+                val fav = FavImgModel(item.id, item.new_img, item.pic, item.image_url).apply {
+                    createdAt = currentTime
                 }
-            } else {
-                sharedViewModel.update_favs_img(item.id, true)
-                sharedViewModel.add_favs_img(fav)
-                lifecycleScope.launch {
-                    val snackbar = Snackbar.make(requireView(), "تم الاضافة الى المفضلة", Snackbar.LENGTH_SHORT)
-                    snackbar.show()
 
-                    pagingAdapterfullImg.notifyItemChanged(position) // تحديث واجهة المستخدم بعد العملية
+                if (item.is_fav) {
+                    sharedViewModel.update_favs_img(item.id, false)
+                    sharedViewModel.delete_favs_img(fav)
+                    lifecycleScope.launch {
+                        val snackbar = Snackbar.make(requireView(), "تم الحذف من المفضلة", Snackbar.LENGTH_SHORT)
+                        snackbar.show()
+                        pagingAdapterfullImg.notifyItemChanged(position) // تحديث واجهة المستخدم بعد العملية
+                    }
+                } else {
+                    sharedViewModel.update_favs_img(item.id, true)
+                    sharedViewModel.add_favs_img(fav)
+                    lifecycleScope.launch {
+                        val snackbar = Snackbar.make(requireView(), "تم الاضافة الى المفضلة", Snackbar.LENGTH_SHORT)
+                        snackbar.show()
+
+                        pagingAdapterfullImg.notifyItemChanged(position) // تحديث واجهة المستخدم بعد العملية
+                    }
                 }
-            }
-            lifecycleScope.launch {
-                pagingAdapterfullImg.notifyItemChanged(position)
-            }
-            // في دالة onItemClick داخل setup()
-            if (item.is_fav) {
-                Log.d("TAG", "Item is now favorite")
-            } else {
-                Log.d("TAG", "Item is not favorite")
-            }
+                lifecycleScope.launch {
+                    pagingAdapterfullImg.notifyItemChanged(position)
+                }
+                // في دالة onItemClick داخل setup()
+                if (item.is_fav) {
+                    Log.d("TAG", "Item is now favorite")
+                } else {
+                    Log.d("TAG", "Item is not favorite")
+                }
 
 //
-            //            }
-        }
-    }}
+                //            }
+            }
+        }}
 
 
 

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -135,53 +136,42 @@ class ImgFragment : Fragment() {
 
     fun setup() {
         if (isAdded) {
-            // تعيين إعدادات RecyclerView
+// إعداد RecyclerView
             binding.rcImgNokat.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
-
-            // تعيين Adapter لـ RecyclerView
             binding.rcImgNokat.adapter = pagingAdapterImg
 
-            // مراقبة تغييرات البيانات في ViewModel وتقديم البيانات إلى ال Adapter
-//            nokatViewModel.getAllImage().observe(viewLifecycleOwner) { pagingData ->
-//                lifecycleScope.launch {
-//                    pagingAdapterImg.submitData(pagingData)
-//                }
-
+// جمع بيانات الصور من ViewModel
             lifecycleScope.launch {
-                // جمع بيانات الصور
                 sharedViewModel.pagingDataFlow.collectLatest { pagingData ->
                     pagingAdapterImg.submitData(viewLifecycleOwner.lifecycle, pagingData)
                 }
             }
 
-            sharedViewModel.favImg.observe(viewLifecycleOwner) { favoriteImages ->
-                // تحويل قائمة الصور المفضلة إلى قائمة من IDs
-                val favoriteImageIds = favoriteImages.map { it.id }
+// جمع البيانات المفضلة من ViewModel
+            lifecycleScope.launch {
+                sharedViewModel.favImgFlow.collectLatest { favoriteImages ->
+                    // تحويل قائمة الصور المفضلة إلى قائمة من IDs
+                    val favoriteImageIds = favoriteImages.map { it.id }
 
-                // تأكد من أن بيانات الصور قد تم تحميلها
-                lifecycleScope.launch {
-                    pagingAdapterImg.loadStateFlow.collect { loadStates ->
-                        if (loadStates.refresh is LoadState.NotLoading) {
-                            val updatedItems = pagingAdapterImg.snapshot().items.filterNotNull().map { image ->
-                                image.apply {
-                                    is_fav = favoriteImageIds.contains(this.id as? Int ?: 0)
+                    // تحقق من أن البيانات قد تم تحميلها
+                    lifecycleScope.launch {
+                        pagingAdapterImg.loadStateFlow.collect { loadStates ->
+                            if (loadStates.refresh is LoadState.NotLoading) {
+                                val updatedItems = pagingAdapterImg.snapshot().items.filterNotNull().map { image ->
+                                    image.apply {
+                                        is_fav = favoriteImageIds.contains(this.id as? Int ?: 0)
+                                    }
                                 }
+
+                                // لا تقم بإعادة تقديم البيانات بشكل يدوي، فهذا ليس ضرورياً
+                                // قد تحتاج إلى إعادة تقييم الحاجة لتحديث حالة `is_fav` في مكان آخر، مثل في `PagingSource` أو `ViewModel`
+//                                pagingAdapterImg.submitData(PagingData.from(updatedItems))
+//                                pagingAdapterImg.notifyDataSetChanged()
                             }
-
-                            // تحديث الـ adapter بالبيانات المعدلة
-                            pagingAdapterImg.submitData(PagingData.from(updatedItems))
-                            pagingAdapterImg.notifyDataSetChanged()
-
                         }
                     }
                 }
             }
-
-
-
-
-        }
-
 
 
 
@@ -239,8 +229,7 @@ class ImgFragment : Fragment() {
 //
                 //            }
             }
-        }
-
+        }}
 
 
 

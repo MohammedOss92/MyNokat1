@@ -13,6 +13,7 @@ import com.sarrawi.mynokat.db.Dao.FavNokatDao
 import com.sarrawi.mynokat.model.FavImgModel
 import com.sarrawi.mynokat.model.FavNokatModel
 import com.sarrawi.mynokat.model.NokatModel
+import kotlinx.coroutines.flow.Flow
 
 class LocaleSource(context: Context) {
 
@@ -94,6 +95,10 @@ private val ID_Type_id=0
 //    suspend fun getAllFavoriteImages(): PagingSource<Int, FavImgModel>{
     suspend fun getAllFavoriteImages(): LiveData<List< FavImgModel>>{
         return favImageDao.getAllFavoriteImages()
+    }
+
+    suspend fun getAllFavoriteImagesflow(): Flow<List<FavImgModel>> {
+        return favImageDao.getAllFavoriteImagesflow()
     }
 
     suspend fun getAllFavoriteImagesa(): PagingSource<Int, FavImgModel>{
