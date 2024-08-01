@@ -21,3 +21,6 @@ package com.sarrawi.mynokat.viewModel
 //ببساطة، SharedViewModel يسمح بمشاركة البيانات والحالة بين شاشات متعددة، بينما ViewModel هو خاص بشاشة واحدة.
 //
 //باختصار، ViewModel يكون مخصصًا لشاشة أو مكون واحد، بينما SharedViewModel يُستخدم لمشاركة البيانات بين عدة شاشات أو مكونات.
+
+//تتيح لك by activityViewModels الحصول على ViewModel مشترك بين النشاطات (Activities) أو الـ Fragments في نفس النشاط (Activity).
+// هذا يعني أن الـ ViewModel سيظل متاحاً طالما أن النشاط الذي يحتوي على الـ Fragments لم يتم تدميره.

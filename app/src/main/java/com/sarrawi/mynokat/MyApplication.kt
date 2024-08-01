@@ -1,17 +1,30 @@
 package com.sarrawi.mynokat
 
 import android.app.Application
+import androidx.lifecycle.ViewModelProvider
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
+import com.sarrawi.mynokat.viewModel.SharedViewModel
 import com.sarrawi.mynokat.workmanager.FetchDataWorker
 
 class MyApplication : Application() {
+    lateinit var sharedViewModel: SharedViewModel
+    lateinit var sharedViewModels: SharedViewModel
+
     override fun onCreate() {
         super.onCreate()
 
         // جدولة FetchDataWorker عند تثبيت التطبيق
         val fetchDataRequest = OneTimeWorkRequest.Builder(FetchDataWorker::class.java).build()
+
         WorkManager.getInstance(this).enqueue(fetchDataRequest)
+
+        //يمكنك إنشاؤه في مستوى التطبيق لتشارك البيانات بين الأنشطة:
+        val sharedViewModel: SharedViewModel by lazy {
+            ViewModelProvider.AndroidViewModelFactory.getInstance(this).create(SharedViewModel::class.java)
+        }
+
+//        sharedViewModels = ViewModelProvider.AndroidViewModelFactory.getInstance(this).create(SharedViewModel::class.java)
 
 
     }

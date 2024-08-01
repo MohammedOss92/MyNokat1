@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -52,15 +53,18 @@ class ImgFullFragment : Fragment() {
         SharedViewModelFactory(retrofitService,mainRepository, requireContext(), PostDatabase.getInstance(requireContext())) // تأكد من تهيئة ApiService بشكل صحيح
     }
 
+
     private val pagingAdapterfullImg by lazy { PagingAdapterFullImg(requireActivity(), this) }
     private lateinit var imgModel: ImgsNokatModel
+//    private val args: ImgFullFragmentArgs by navArgs()
+
     var clickCount = 0
     var mInterstitialAd: InterstitialAd?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         imgModel = ImgFullFragmentArgs.fromBundle(requireArguments()).fullimg
 
-
+//        imgModel = args.fullimg
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
