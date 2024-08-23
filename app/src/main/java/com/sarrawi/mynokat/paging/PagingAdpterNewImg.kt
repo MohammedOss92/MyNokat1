@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -85,9 +86,10 @@ class PagingAdpterNewImg(val con: Context, val frag: Fragment) : PagingDataAdapt
             }
 
 
+
             if (isInternetConnected) {
                 val requestOptions = RequestOptions()
-                    .placeholder(R.drawable.ic_baseline_autorenew_24)
+                    .placeholder(R.drawable.s)
                     .error(R.drawable.error_a)
                     .format(DecodeFormat.PREFER_RGB_565)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -111,6 +113,8 @@ class PagingAdpterNewImg(val con: Context, val frag: Fragment) : PagingDataAdapt
             } else {
                 binding.btnnew.setVisibility(View.VISIBLE)
             }
+
+
         }
 
         private fun setupListeners() {

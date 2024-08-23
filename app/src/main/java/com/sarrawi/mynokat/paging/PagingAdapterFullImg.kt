@@ -70,21 +70,21 @@ class PagingAdapterFullImg(val con: Context, val frag: Fragment) : PagingDataAda
             binding.btnnew.setImageResource(R.drawable.new_msg)
 
             binding.apply {
-                if(imgModel!!.is_fav){
+                if (imgModel!!.is_fav) {
                     favBtn.setImageResource(R.drawable.baseline_favorite_true)
-                }
-
-                else{
+                } else {
                     favBtn.setImageResource(R.drawable.baseline_favorite_border_false)
                 }
-
-
-
             }
+
+
+
+
+
 
             if (isInternetConnected) {
                 val requestOptions = RequestOptions()
-                    .placeholder(R.drawable.ic_baseline_autorenew_24)
+                    .placeholder(R.drawable.s)
                     .error(R.drawable.error_a)
                     .format(DecodeFormat.PREFER_RGB_565)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)

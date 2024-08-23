@@ -80,8 +80,11 @@ class PagingAdapterImgFavFull (val con: Context, val frag: Fragment) : PagingDat
 
             }
 
+
+
+
             val requestOptions = RequestOptions()
-                .placeholder(R.drawable.ic_baseline_autorenew_24)
+                .placeholder(R.drawable.s)
                 .error(R.drawable.error_a)
                 .format(DecodeFormat.PREFER_RGB_565)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

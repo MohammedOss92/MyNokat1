@@ -329,9 +329,8 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
                     favBtn.setImageResource(R.drawable.baseline_favorite_border_false)
                 }
 
-
-
             }
+
 
             binding.imageView.setOnClickListener {
                 val imgModel = getItem(bindingAdapterPosition)
@@ -343,7 +342,7 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
             }
             if (isInternetConnected) {
                 val requestOptions = RequestOptions()
-                    .placeholder(R.drawable.ic_baseline_autorenew_24)
+                    .placeholder(R.drawable.s)
                     .error(R.drawable.error_a)
                     .format(DecodeFormat.PREFER_RGB_565)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -381,6 +380,7 @@ class PagingAdapterImg(val con: Context, val frag: Fragment) : PagingDataAdapter
 
             binding.roundBtn.setOnClickListener {
                 handleItemClick(bindingAdapterPosition)
+                //إرجاع true للإشارة إلى أن النقر قد تمت معالجته.
                 true
             }
 

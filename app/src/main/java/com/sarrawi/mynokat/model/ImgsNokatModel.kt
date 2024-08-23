@@ -17,7 +17,8 @@ data class ImgsNokatModel(
     var pic: String? = "",
     @SerializedName("image_url")
     var image_url: String? = "",
-    var is_fav: Boolean = false
+    var is_fav: Boolean = false,
+
 ) : Parcelable {
     constructor() : this(0, 0, "", "", false) // منشئ افتراضي
 

@@ -21,6 +21,7 @@ import com.sarrawi.img.utils.Utils
 import com.sarrawi.mynokat.R
 import com.sarrawi.mynokat.databinding.ImgRowBinding
 import com.sarrawi.mynokat.model.FavImgModel
+import com.sarrawi.mynokat.model.ImgsNokatModel
 import com.sarrawi.mynokat.ui.frag.img.FavFragment
 import com.sarrawi.mynokat.ui.frag.img.FavFragmentDirections
 import com.sarrawi.mynokat.ui.frag.img.ImgFragmentDirections
@@ -94,7 +95,7 @@ class PagingAdapterImgFav (val con: Context, val frag: Fragment) : PagingDataAda
 
 
             val requestOptions = RequestOptions()
-                .placeholder(R.drawable.ic_baseline_autorenew_24)
+                .placeholder(R.drawable.s)
                 .error(R.drawable.error_a)
                 .format(DecodeFormat.PREFER_RGB_565)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
